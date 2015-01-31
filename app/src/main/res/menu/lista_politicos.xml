@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.gamfig.monitorabrasil.ListaPoliticosActivity" >
+
+    <item
+        android:id="@+id/ic_procura"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="collapseActionView|ifRoom"
+        android:title="@string/menu_search"/>
+    <item
+        android:id="@+id/ic_filtro"
+        android:icon="@drawable/ic_action_view_as_list"
+        android:showAsAction="collapseActionView|ifRoom"
+        android:title="@string/menu_filtro"/>
+    <item
+        android:id="@+id/ic_play"
+        android:icon="@drawable/ic_action_send_now"
+        android:showAsAction="collapseActionView|ifRoom"
+        android:title="@string/menu_filtro"        
+        android:visible="false"/>
+
+</menu>

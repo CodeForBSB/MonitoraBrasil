@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/txtTwitter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txtPartido"
+            android:layout_below="@+id/txtPartido"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/bandeira_azul_claro"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/txtNomeRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtPartido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txtNomeRow"
+            android:layout_below="@+id/txtNomeRow"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="5dp"
+            android:text="TextView"
+            android:textColor="@color/dark_sea_green"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ToggleButton
+            android:id="@+id/toggleButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/txtTwitter"
+            android:layout_alignParentRight="true"
+            android:text="ToggleButton"
+            android:textOff="@string/monitorar"
+            android:textOn="@string/monitorando" />
+
+    </RelativeLayout>
+

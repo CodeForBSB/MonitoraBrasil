@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Monitora, Brasil!</string>
+    <string name="action_settings">Configurações</string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="title_section1">Home</string>
+    <string name="title_section2">Cota Parlamentar</string>
+    <string name="title_section3">Vote nos Projetos</string>
+    <string name="title_section4">Deputados</string>
+    <string name="title_section5">Ranking</string>
+    <string name="title_section6">O que estão falando</string>
+    <string name="title_section7">Gostou do app?</string>
+    <string name="title_section8">Eleições 2014</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="gostou_app">Gostou do App?</string>
+    <string name="outra_hora">Outra hora</string>
+    <string name="mostre_seu_amor">Mostre seu amor!</string>
+    <string name="cancel">Cancelar</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_politicos">Políticos</string>
+    <string name="monitorar">Monitorar</string>
+    <string name="monitorando">Monitorando</string>
+    <string name="title_activity_politicos_monitora">Monitore!</string>
+    <string name="id_key_favoritos">Favoritos</string>
+    <string name="id_key_preferencias">pref</string>
+    <string name="menu_search">Procua</string>
+    <string name="title_activity_pricipal">Monitora, Brasil!</string>
+    <string name="action_example">Example action</string>
+    <string name="avalie">Avalie</string>
+    <string name="ausenciaJustificada">Ausência Justificada</string>
+    <string name="ausenciaNJustificada">Ausência Não Justif. </string>
+    <string name="ausenciatotal">Total de Ausência</string>
+    <string name="preseca">Presença</string>
+    <string name="total">Total</string>
+    <string name="toda_legislatura">Toda Legislatura</string>
+    <string name="title_activity_projeto_detalhe">Detalhe da Proposição</string>
+    <string name="situacao">Situação:</string>
+    <string name="ementa">Ementa:</string>
+    <string name="ultimodespacho">Último Despacho:</string>
+    <string name="link_inteiro_teor">Link Inteiro Teor:</string>
+    <string name="fonte">Fonte de Dados</string>
+    <string name="selecione_cargo">Selecione o cargo</string>
+    <string name="selecione_uf">Selecione o Estado</string>
+    <string name="menu_filtro">Filtro</string>
+    <string name="menu_share">Compartilhe</string>
+    <string name="menu_comente">Comente</string>
+    <string name="debatometro">Debatômetro</string>
+    <string name="ajude">Ajude</string>
+    <string name="url_share">http://www.monitorabrasil.com/ficha.php?id=</string>
+
+    <!-- Mensagens -->
+    <string name="msg_compartilhe" formatted="false">Recomendo o app @MonitoraBrasil para acompanhar os parlamentares 
+        https://play.google.com/store/apps/details?id=com.gamfig.monitorabrasil #monitoraBrasil</string>
+    <string name="msg_compartilhe_debate" formatted="false">App para assistir o debate de uma forma diferente. Disponível no Google Play
+        https://play.google.com/store/apps/details?id=com.gamfig.monitorabrasil #monitoraBrasil</string>
+    <string name="msg_fonte_tbrasil">Transparência Brasil, projetos Excelências e Às Claras. A Transparência Brasil não se responsabiliza pelo uso que venha a ser feito desses dados nesta aplicação.</string>
+
+    <!--  -->
+    <string name="id_key_reg_id">registration_id</string>
+    <string name="id_key_app_verssion">appVersion</string>
+    <string name="id_key_idcadastro_novo">idcadastro</string>
+    <string name="id_key_votos">votosprojetos</string>
+    <string name="id_key_user">user</string>
+    <string name="id_key_comentarios">comentarios_salvos</string>
+    <string name="id_key_avaliacoes">avaliacoes_salvos</string>
+    <string name="id_key_avaliacao_projetos">idAvaliacaoProjetos</string>
+    <string name="id_key_dt_atualicao">dt_atualizacao</string>
+    <string name="id_key_debates">iddebates</string>
+    <string name="id_key_iddebate">id_debate</string>
+    <string name="id_key_sobredebate">id_sobredebate</string>
+    <string name="id_key_projetos_fav">id_projetos_fav</string>
+    <string name="id_key_likes_comentarios">id_likes_coment</string>
+    <string name="pref_listadeputados">listaDeputados</string>
+    <string name="pref_listasenadores">listaSenadores</string>
+    <string name="comentar">Comentar</string>
+    <string name="defina_hashtag">Defina o parlamentar com uma #</string>
+    <string name="title_activity_login">Perfil</string>
+    <string name="title_activity_cota_parlamentar">Cota Parlamentar</string>
+    <string name="title_activity_sobre">Sobre</string>
+    <string name="title_activity_candidatos">Candidatos 2014</string>
+    <string name="app_id">580720381973332</string>
+    <string name="objetivo_debatometro">O objetivo do debatômetro é ajudá-lo a acompanhar o debate. \nQuando iniciar o debate, você será avisado. \nA cada resposta de um candidato, indique se gostou ou não. \nNo final, o resultado final irá mostrar com qual candidato você concordou mais.</string>
+    <string name="title_activity_lista_politicos">ListaPoliticosActivity</string>
+    <string name="title_activity_main2">MainActivity</string>
+    <string name="title_activity_lista_projetos">Proposições</string>
+    <string name="title_activity_cota">CotaActivity</string>
+    <string name="changelog">        Versão 3.3\n
+        - Correção de bugs (tela inicial)\n\n
+        Versão 3.2\n
+        - Ranking de usuários\n
+        - Curtir comentário\n
+        - Correção de bugs (avaliar senadores, comentários de parlamentares)\n\n
+        Versão 3.1\n
+- Resumo de pontos\n
+- Modificação na ficha dos parlamentares\n
+- Correção de bugs\n\n
+        Versão 3.0\n
+- Home modificada\n
+- Monitoramento de avanço de propostas (recebimento de push)\n
+- Opção para não receber push\n
+- Login Google+\n
+- Pesquisa textual de projetos\n
+- Filtros de projetos\n
+- Filtro de políticos\n
+- Correção de bugs\n\n
+
+Versão 2.10\n
+- Comentário na ficha do político\n
+- Compartilhar ficha do político\n\n
+
+Versão 2.9\n
+- Arrumado bug no filtro\n
+\n
+Versão 2.7\n
+- Novo módulo: Debatômetro - uma forma diferente de acompanhar um debate\n
+- Filtros para busca de Deputados e Senadores\n
+- Correção de bugs informados pelos usuários. Obrigado!\n
+\n
+Versão 2.6\n
+- Disponível declarações de bens dos Deputados e Senadores prestadas à Justiça Eleitoral\n 
+- Correção de bugs\n
+\n
+Versão 2.5\n
+- Arrumado a lista de projetos da Câmara do Deputados\n
+- Arrumado a lista de Candidatos\n
+- Outros bugs que usuários enviaram, obrigado!\n
+\n
+Versão 2.2\n
+- Senado Federal - agora com informações dos Senadores e projetos do Senado.\n
+- Correção de bugs informados pelos usuários\n
+\n
+Versão 2.1\n
+- Eleições 2014 - todos os candidatos com informações do Transparência Brasil (inclusive com os processos dos candidatos)\n
+- Ficha do deputados com mini-biografia e processos\n
+\n
+Versão 2.0\n
+-Melhoria na interface\n
+-Gamefication disponível\n
+-Mais informações dos deputados\n
+\n
+Versão 1.9.5\n
+-Funcionalidade para pesquisar projetos pelo número, texto contidos na ementa e deputado autor\n
+-Correção de bug\n
+\n
+Versão 1.9.4\n
+ -Correção de bug informada pelos usuários. Obrigado!\n
+\n
+Versão 1.9.3\n
+ -Colocado a ferramente GetSocialize para melhorar o compartilhamento das informações\n
+ -Melhora nos filtros das cotas parlamentares\n
+\n
+Versão 1.5\n 
+- Comentários de usuários nos projetos\n
+- Listagem de votos dos Deputados (Ex.: PEC37)\n
+- Envio de Twitter ao Deputado que votou\n
+- Mais filtros para Projetos\n
+\n
+Versão 1.4\n 
+ -nova funcionalidade para votar nos projetos propostos pelos Parlamentares.\n
+\n
+Versão 1.3\n
+\n
+- Lista de tweets dos deputados na seção "O que estão falando"\n
+- Envio de emails para grupos de Deputados\n
+- Busca instantânea\n
+- Links de email e telefone dos Deputados</string>
+    <string name="title_activity_login_rede">LoginRedeActivity</string>
+
+</resources>

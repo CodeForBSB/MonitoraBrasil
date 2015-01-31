@@ -1,0 +1,45 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.gamfig.monitorabrasil.PricipalActivity" >
+ <item
+        android:id="@+id/menu_item_share"
+        android:visible="true"
+        android:actionProviderClass="android.widget.ShareActionProvider"
+        android:showAsAction="collapseActionView|ifRoom"
+        android:title="Compartilhe"/>
+  <item
+        android:id="@+id/menu_item_comente"
+        android:icon="@drawable/ic_action_comment"
+        android:showAsAction="collapseActionView|ifRoom"
+        android:title="Comente"/>
+    <item
+        android:id="@+id/ic_procura"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_menu_search"
+        android:title="@string/menu_search"
+        android:visible="false"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="ifRoom"/>
+   
+    <item
+        android:id="@+id/action_perfil"
+        android:orderInCategory="100"
+        android:visible="true"
+        android:title="Perfil"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_fale"
+        android:orderInCategory="100"
+        android:visible="true"
+        android:title="Fale Conosco"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_sobre"
+        android:orderInCategory="100"
+        android:visible="true"
+        android:title="Sobre"
+        app:showAsAction="never"/>
+   
+
+</menu>

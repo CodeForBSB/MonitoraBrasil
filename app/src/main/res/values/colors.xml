@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2012 The Android Open Source Project
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<resources>
+
+    <color name="cor_principal">#006837</color>
+    <color name="cor_principal2">#009820</color>
+    <color name="cinzafundo">#e3e3e3</color>
+    <color name="cinza2">#f5f5f5</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="light_blue">#A8DFF4</color>
+    <color name="light_green">#2f960c</color>
+    <color name="light_red">#FFAFAF</color>
+    <color name="light_yellow">#e0e002</color>
+    <color name="dark_blue">#0099CC</color>
+    <color name="dark_green">#669900</color>
+    <color name="dark_red">#CC0000</color>
+    <color name="dark_yellow">#FF8A00</color>
+    <color name="seashell1">#FFF5EE</color>
+    <color name="dark_sea_green">#8FBC8F</color>
+    <color name="violet">#EE82EE</color>
+    <color name="plum">#c9adad</color>
+    <color name="plum2">#d6c9a9</color>
+    <color name="plum_dark">#6f5353</color>
+    <color name="bandeira_verde">#1c551c</color>
+    <color name="bandeira_verde_claro">#2d9e49</color>
+    <color name="bandeira_azul">#001caa</color>
+    <color name="bandeira_amarelo">#ffff00</color>
+    <color name="bandeira_amarelo_claro">#ffff5a</color>
+    <color name="bandeira_azul_claro">#aac6e2</color>
+    <color name="vermelho">#a60000</color>
+    <color name="transparent">#00000000</color>
+    <color name="black_overlay">#66000000</color>
+    <!-- botoes palette http://www.colourlovers.com/palette/1297878/fruity -->
+    <color name="fruit_laranja">#F39413</color>
+	<color name="fruit_azul">#3F5CBF</color>
+	<color name="fruit_amarelo">#F3C530</color>
+	<color name="fruit_grape">#131D3F</color>
+	<color name="fruit_cherry">#D9200A</color>
+</resources>

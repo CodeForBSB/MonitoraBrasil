@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright  2013 de Geraldo Augusto de Morais Figueiredo
+  Este arquivo é parte do programa Monitora, Brasil!. O Monitora, Brasil! é um software livre.
+  Você pode redistribuí-lo e/ou modificá-lo dentro dos termos da GNU Affero General Public License 
+  como publicada pela Fundação do Software Livre (FSF); na versão 3 da Licença. 
+  Este programa é distribuído na esperança que possa ser útil, mas SEM NENHUMA GARANTIA,
+  sem uma garantia implícita de ADEQUAÇÃO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. 
+  Veja a licença para maiores detalhes. 
+  Você deve ter recebido uma cópia da GNU Affero General Public License, sob o título "LICENSE.txt", 
+  junto com este programa, se não, acesse http://www.gnu.org/licenses/
+-->
+<resources>
+
+    <string-array name="anos">
+        <item>2014</item>
+        <item>2013</item>
+        <item>2012</item>
+        <item>2011</item>
+    </string-array>
+    <string-array name="mes">
+        <item>Mês</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+    <string-array name="votos">
+        <item>Voto</item>
+        <item>Sim</item>
+        <item>Não</item>
+    </string-array>
+    <string-array name="subCotas">
+        <item>Filtrar</item>
+        <item>Todas</item>
+        <item>ASSINATURA DE PUBLICAÇÕES-12</item>
+        <item>COMBUSTÍVEIS E LUBRIFICANTES-3</item>
+        <item>CONSULTORIAS, PESQUISAS E TRABALHOS TÉCNICOS-4</item>
+        <item>DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR-5</item>
+        <item>Emissão Bilhete Aéreo-999</item>
+        <item>FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR-13</item>
+        <item>HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDE-14</item>
+        <item>LOCAÇÃO DE VEÍCULOS AUTOMOTORES OU FRETAMENTO DE E-15</item>
+        <item>MANUTENÇÃO DE ESCRITÓRIO DE APOIO À· ATIVIDADE PAR-1</item>
+        <item>PASSAGENS AÉREAS E FRETAMENTO DE AERONAVES-9</item>
+        <item>SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIAL-8</item>
+        <item>SERVIÇOS POSTAIS-11</item>
+        <item>TELEFONIA-10</item>
+    </string-array>
+    <string-array name="opcaofiltroprojetos">
+        <!-- 
+        <item>Projetos Votados na Câmara</item> -->
+        <item>Projetos mais Recentes</item>
+        <item>Projetos Monitorados</item>
+        <item>Projetos mais Comentados</item>
+        <item>Projetos mais Votados</item>
+        <item>Projetos que votei</item>
+        <item>Projetos que não votei</item>
+    </string-array>
+    <string-array name="partidos">
+        <item>Todos os Partidos</item>
+        <item>DEM</item>
+        <item>PCdoB</item>
+        <item>PDT</item>
+        <item>PHS</item>
+        <item>PMDB</item>
+        <item>PP</item>
+        <item>PPS</item>
+        <item>PR</item>
+        <item>PRB</item>
+        <item>PRP</item>
+        <item>PRTB</item>
+        <item>PSB</item>
+        <item>PSC</item>
+        <item>PSD</item>
+        <item>PSDB</item>
+        <item>PSL</item>
+        <item>PSOL</item>
+        <item>PT</item>
+        <item>PTB</item>
+        <item>PTdoB</item>
+        <item>PV</item>
+    </string-array>
+    <string-array name="faixa">
+        <item>Faixa Etária</item>
+        <item>0 a 15 anos</item>
+        <item>16 a 18 anos</item>
+        <item>18 a 25 anos</item>
+        <item>26 a 30 anos</item>
+        <item>31 a 40 anos</item>
+        <item>41 a 50 anos</item>
+        <item>61 a 70 anos</item>
+        <item>71 ou mais</item>
+    </string-array>
+    <string-array name="ufs">
+        <item>UF atual</item>
+        <item> AC</item>
+        <item>AL</item>
+        <item>AM</item>
+        <item>AP</item>
+        <item>BA</item>
+        <item>CE</item>
+        <item>DF</item>
+        <item>ES</item>
+        <item>GO</item>
+        <item>MA</item>
+        <item>MG</item>
+        <item>MS</item>
+        <item>MT</item>
+        <item>PA</item>
+        <item>PB</item>
+        <item>PE</item>
+        <item>PI</item>
+        <item>PR</item>
+        <item>RJ</item>
+        <item>RN</item>
+        <item>RO</item>
+        <item>RR</item>
+        <item>RS</item>
+        <item>SC</item>
+        <item>SE</item>
+        <item>SP</item>
+        <item>TO</item>
+    </string-array>
+    <string-array name="ufs_brasil">
+        <item>Brasil</item>
+        <item> AC</item>
+        <item>AL</item>
+        <item>AM</item>
+        <item>AP</item>
+        <item>BA</item>
+        <item>CE</item>
+        <item>DF</item>
+        <item>ES</item>
+        <item>GO</item>
+        <item>MA</item>
+        <item>MG</item>
+        <item>MS</item>
+        <item>MT</item>
+        <item>PA</item>
+        <item>PB</item>
+        <item>PE</item>
+        <item>PI</item>
+        <item>PR</item>
+        <item>RJ</item>
+        <item>RN</item>
+        <item>RO</item>
+        <item>RR</item>
+        <item>RS</item>
+        <item>SC</item>
+        <item>SE</item>
+        <item>SP</item>
+        <item>TO</item>
+    </string-array>
+
+</resources>

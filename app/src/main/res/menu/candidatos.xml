@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/ic_procura"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="collapseActionView|ifRoom"
+        android:title="@string/menu_search"/>
+    <item
+        android:id="@+id/ic_filtro"
+        android:icon="@drawable/ic_action_sort_by_size"
+        android:showAsAction="collapseActionView|ifRoom"
+        android:title="@string/menu_filtro"/>
+    <item
+        android:id="@+id/ic_fonte"
+        android:icon="@drawable/ic_action_about"
+        android:showAsAction="collapseActionView|ifRoom"
+        android:title="@string/fonte"/>
+
+</menu>

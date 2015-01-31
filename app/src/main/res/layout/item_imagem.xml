@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="114dp"
+    android:layout_height="152dp" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="114dp"
+        android:layout_height="152dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_action_add"/>
+
+    <TextView
+        android:id="@+id/txtNomeRow"
+        android:layout_width="114dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:background="#77000000"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:text="TextView" />
+
+</RelativeLayout>
