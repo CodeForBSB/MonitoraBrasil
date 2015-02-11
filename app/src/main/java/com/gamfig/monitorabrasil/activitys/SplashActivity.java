@@ -20,16 +20,11 @@ import android.os.StrictMode;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.crashlytics.android.Crashlytics;
 import com.gamfig.monitorabrasil.DAO.DeputadoDAO;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.classes.Usuario;
 import com.google.gson.Gson;
-
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.tweetui.TweetUi;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,8 +33,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends Activity {
 
@@ -50,7 +43,6 @@ public class SplashActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-        Fabric.with(this, new Crashlytics());
 
 
 
