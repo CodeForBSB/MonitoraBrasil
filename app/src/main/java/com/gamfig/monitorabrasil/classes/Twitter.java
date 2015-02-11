@@ -8,6 +8,21 @@ public class Twitter {
 	private String screenName;
 	private String nome;
 	private Bitmap foto;
+    private String nomeRetweet;
+    private String urlFoto;
+    private String data;
+    private String media;
+
+    public String getMedia() {
+        return media;
+    }
+
+    public void setMedia(String media) {
+        this.media = media;
+    }
+
+
+
 	public String getTexto() {
 		return texto;
 	}
@@ -44,7 +59,12 @@ public class Twitter {
 	public void setFoto(Bitmap foto) {
 		this.foto = foto;
 	}
-	private String urlFoto;
-	private String data;
 
+    public String getNomeRetweet() {
+        return nomeRetweet;
+    }
+
+    public void setNomeRetweet(String nomeRetweet) {
+        this.nomeRetweet = nomeRetweet;
+    }
 }

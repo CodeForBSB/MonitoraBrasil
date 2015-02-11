@@ -15,7 +15,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.gamfig.monitorabrasil.R;
+import com.gamfig.monitorabrasil.classes.Imagens;
 import com.gamfig.monitorabrasil.classes.Twitter;
 
 public class TwitterAdapter extends ArrayAdapter<Twitter> {
@@ -44,6 +46,9 @@ public class TwitterAdapter extends ArrayAdapter<Twitter> {
 			holder.txtTwitterMsg = (TextView) row.findViewById(R.id.txtTwitterMsg);
 			holder.txtTwitterTempo = (TextView) row.findViewById(R.id.txtTwitterTempo);
 			holder.imgTwitter = (ImageView) row.findViewById(R.id.imgTwitter);
+
+            holder.imagem = (ImageView) row.findViewById(R.id.imageView);
+
 
 			row.setTag(holder);
 		} else {
@@ -103,20 +108,25 @@ public class TwitterAdapter extends ArrayAdapter<Twitter> {
 		}
 		holder.txtTwitterMsg.setText(Html.fromHtml(mensagem));
 		holder.txtTwitterMsg.setMovementMethod(LinkMovementMethod.getInstance());
+        holder.txtTwitterTempo.setText(status.getData());
 
-		// calcula tempo
-		// long diferenca = System.currentTimeMillis() - status.getData().getTime();
-		// long diferencaMin = diferenca / (60 * 1000); // diferenca em minutos
-		// long diferencaHoras = diferenca / 3600000;
-		// if (diferencaMin < 60) {
-		// holder.txtTwitterTempo.setText(String.valueOf(diferencaMin) + "min");
-		// } else if (diferencaHoras < 24) {
-		//
-		// holder.txtTwitterTempo.setText(String.valueOf(diferencaHoras) + "h");
-		// } else {
-		// holder.txtTwitterTempo.setText(String.valueOf(diferencaHoras / 24) + "d");
-		// }
 		holder.imgTwitter.setImageBitmap(status.getFoto());
+
+        try {
+            holder.imgTwitter.setImageBitmap(Imagens.getImageBitmap(status.getUrlFoto()));
+            holder.imgTwitter.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            Crashlytics.logException(e);
+        }
+        holder.imagem.setVisibility(View.GONE);
+        if(status.getMedia()!=null){
+            try {
+                holder.imagem.setImageBitmap(Imagens.getImageBitmap(status.getMedia()));
+                holder.imagem.setVisibility(View.VISIBLE);
+            } catch (Exception e) {
+                Crashlytics.logException(e);
+            }
+        }
 
 		return row;
 	}
@@ -127,7 +137,8 @@ public class TwitterAdapter extends ArrayAdapter<Twitter> {
 		TextView txtTwitterNome;
 		TextView txtTwitterMsg;
 		TextView txtTwitterTempo;
-		ImageView imgTwitter;
+        ImageView imgTwitter;
+        ImageView imagem;
 	}
 
 }

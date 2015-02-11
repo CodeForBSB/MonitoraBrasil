@@ -2,6 +2,7 @@ package com.gamfig.monitorabrasil.fragments.ficha;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONObject;
 
@@ -24,17 +25,27 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.DAO.DeputadoDAO;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
 import com.gamfig.monitorabrasil.activitys.PrincipalActivity;
+import com.gamfig.monitorabrasil.activitys.TwittterActivity;
 import com.gamfig.monitorabrasil.adapter.TwitterAdapter;
 import com.gamfig.monitorabrasil.classes.Imagens;
 import com.gamfig.monitorabrasil.classes.Politico;
 import com.gamfig.monitorabrasil.classes.Presenca;
-import com.gamfig.monitorabrasil.classes.Twitter;
+import com.twitter.sdk.android.Twitter;
 import com.gamfig.monitorabrasil.dialog.DialogAvaliacao;
 import com.gamfig.monitorabrasil.pojo.PreferenciasUtil;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.models.Search;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.services.SearchService;
+import com.twitter.sdk.android.core.services.StatusesService;
+import com.twitter.sdk.android.tweetui.TweetViewAdapter;
 
 public class FichaDeputado extends TabFactory {
 	private RelativeLayout rlPb;
@@ -206,8 +217,7 @@ public class FichaDeputado extends TabFactory {
 					// salvar o json de presencas
 					new PreferenciasUtil().salvaPresenca(politico.getPresenca(), getActivity());
 
-					// busca timeline do twitter
-					new BuscaTimeline(getActivity(), twitter).execute();
+
 
 					// busca infos tbrasil
 					new BuscaInfosTbrasil(getActivity(), politico.getIdTbrasil()).execute();
@@ -284,55 +294,9 @@ public class FichaDeputado extends TabFactory {
 
 		}
 
-		/**
-		 * 
-		 * @author geral_000
-		 * 
-		 */
-		public class BuscaTimeline extends AsyncTask<Void, Void, String> {
-			Activity mActivity;
-			String twitter;
-			ArrayList<Twitter> tweets;
 
-			public BuscaTimeline(Activity activity, String twitter) {
 
-				this.twitter = twitter;
-				mActivity = activity;
-			}
 
-			@Override
-			protected String doInBackground(Void... params) {
-
-				new DeputadoDAO();
-				try {
-					// buscar o timeline
-					if (twitter.length() > 0)
-						tweets = DeputadoDAO.buscaTimeLine(twitter, 1);
-					else
-						Toast.makeText(getActivity().getApplicationContext(), "Ainda não tem twitter! Dá para acreditar?", Toast.LENGTH_LONG).show();
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-
-				return "";
-			}
-
-			protected void onPostExecute(String results) {
-				try {
-
-					if (tweets != null) {
-						// popular lista
-						TwitterAdapter tAdapter = new TwitterAdapter(mActivity.getApplicationContext(), R.layout.listview_item_twitter, tweets);
-						ListView lvTwitter = (ListView) mActivity.findViewById(R.id.lvTwitter);
-						lvTwitter.setAdapter(tAdapter);
-					}
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-
-			}
-
-		}
 
 	}
 }

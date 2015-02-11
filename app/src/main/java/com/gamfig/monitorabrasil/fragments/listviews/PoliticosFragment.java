@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -40,7 +41,7 @@ public class PoliticosFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+        ActionBar actionBar = getActivity().getActionBar();
 	}
 
 	// Note: ListFragments come with a default onCreateView() method.
@@ -80,6 +81,7 @@ public class PoliticosFragment extends ListFragment {
 
 		} else {
 			Log.i(TAG, "NAVIGATION_MODE_STANDARD");
+
 			ActionBar actionBar = getActivity().getActionBar();
             if (actionBar != null) {
                 actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);

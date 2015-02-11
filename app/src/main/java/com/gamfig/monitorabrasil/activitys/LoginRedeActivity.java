@@ -21,13 +21,14 @@ import io.fabric.sdk.android.Fabric;
 
 public class LoginRedeActivity extends ActionBarActivity {
     TwitterLoginButton loginButton;
-    private static final String TWITTER_KEY = "wZWIfJq7OaWhRCVfEQVUk9gLr";
-    private static final String TWITTER_SECRET = "LgvF2zVZctyA9mLg3GlcJPONAeRwNtn9fJXTS6fg27KTorKqYi";
+    private static final String TWITTER_KEY = "ttP35uLXOxJSJBQYyJKeqaDqv";
+    private static final String TWITTER_SECRET = "lDQ5GWzFa9sqx2Hj4aV90dOnKkaRk0UhVD3K7tBFY7hDtzd1Qm";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_rede);
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);Fabric.with(this, new Crashlytics(), new Twitter(authConfig));
+//        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+//        Fabric.with(this, new Crashlytics(), new Twitter(authConfig));
 
         loginButton = (TwitterLoginButton)
                 findViewById(R.id.login_button);

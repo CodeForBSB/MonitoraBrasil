@@ -129,7 +129,8 @@ public class ProjetosActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.ic_filtro) {
-			mFiltro = new FiltroGeral(R.layout.fragment_filtro_projeto);
+			mFiltro = new FiltroGeral();
+            mFiltro.setLayout(R.layout.fragment_filtro_projeto);
 			FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
 			fragmentTransaction.setCustomAnimations(R.drawable.slide_in_up, R.drawable.fade_out);
 			fragmentTransaction.replace(R.id.container, mFiltro);

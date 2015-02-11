@@ -18,64 +18,101 @@
     android:orientation="vertical" >
 
     <LinearLayout
-                android:id="@+id/lnLayoutTwett"
+        android:id="@+id/lnLayoutTwett"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" >
+            android:layout_height="wrap_content" >
 
             <ImageView
                 android:id="@+id/imgTwitter"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="top"
-                android:src="@drawable/ic_action_person" />
+                android:src="@drawable/ic_action_person"
+                android:layout_margin="8dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="20dp" >
+            android:layout_height="wrap_content"
+            android:id="@+id/ll">
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical" >
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
 
                     <TextView
                         android:id="@+id/txtTwitterNome"
                         style="@style/textoMenorBranco"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:text="Benedita da Silva"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/txtTwitterId"
                         style="@style/textoMenorBranco"                        
                         android:layout_marginLeft="5dp"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="\@blogdabenedita"
+                        android:textColor="@color/tw__medium_gray"
+                        android:textSize="14sp" />
+
+
 
                     <TextView
-                        android:id="@+id/txtTwitterTempo"
-                        style="@style/textoMenorBranco"
-                        android:layout_width="fill_parent"
-                        android:layout_gravity="right"
-                        android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" . 7m"
+                        android:textColor="@color/tw__medium_gray"
+                        android:textSize="14sp"
+                        android:id="@+id/txtTwitterTempo"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView2"
+                        android:src="@drawable/twitter_ico30"
+                        android:layout_marginLeft="10dp" />
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/txtTwitterMsg"
                     style="@style/textoMenorBranco"
-                    android:layout_height="fill_parent" />
+                    android:layout_height="fill_parent"
+                    android:text="fasdfa sda fasd fads fad as fad fda fad a adsf a afd"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="8dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:id="@+id/imageView"
+                    android:background="@drawable/splash"
+                    android:cropToPadding="false"
+                    android:adjustViewBounds="false"
+                    android:nestedScrollingEnabled="false"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="8dp"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

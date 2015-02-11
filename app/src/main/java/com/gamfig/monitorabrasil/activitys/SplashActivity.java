@@ -27,6 +27,10 @@ import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.classes.Usuario;
 import com.google.gson.Gson;
 
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.tweetui.TweetUi;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,7 +49,11 @@ public class SplashActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
         Fabric.with(this, new Crashlytics());
+
+
+
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

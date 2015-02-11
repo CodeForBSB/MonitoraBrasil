@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -50,6 +51,7 @@ public class PoliticosActivity extends Activity implements PoliticosFragment.Sel
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		setContentView(R.layout.activity_lista_politicos);
 
 		Log.i(PrincipalActivity.TAG, "Activity = onCreate");
@@ -258,7 +260,8 @@ public class PoliticosActivity extends Activity implements PoliticosFragment.Sel
 		int id = item.getItemId();
 		switch (id) {
 		case R.id.ic_filtro:
-			mFiltro = new FiltroGeral(R.layout.fragment_filtro_politico);
+			mFiltro = new FiltroGeral();
+            mFiltro.setLayout(R.layout.fragment_filtro_politico);
 			FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
 			fragmentTransaction.setCustomAnimations(R.drawable.slide_in_up, R.drawable.fade_out);
 			fragmentTransaction.replace(R.id.fragment_container, mFiltro);

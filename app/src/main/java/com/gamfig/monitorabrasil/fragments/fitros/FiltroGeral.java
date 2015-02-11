@@ -10,6 +10,7 @@
  */
 package com.gamfig.monitorabrasil.fragments.fitros;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +19,9 @@ import android.view.ViewGroup;
 
 public class FiltroGeral extends Fragment {
 	private int layout;
-	public FiltroGeral(int layout) {
+    public FiltroGeral(){}
+
+    public void setLayout(int layout) {
 		this.layout=layout;
 	}
 

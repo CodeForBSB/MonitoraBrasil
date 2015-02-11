@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gamfig.monitorabrasil"
-    android:versionCode="38"
-    android:versionName="3.3" >
+    android:versionCode="41"
+    android:versionName="3.5" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -65,7 +65,6 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
 
-
         <activity
             android:name=".activitys.PrincipalActivity"
             android:label="@string/title_activity_pricipal" >
@@ -73,13 +72,13 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activitys.ProjetoDetalheActivity" >
         </activity>
         <activity
             android:name=".activitys.PoliticosActivity"
             android:label="@string/title_activity_politicos"
-            android:parentActivityName=".activitys.PrincipalActivity" >
+            android:parentActivityName=".activitys.PrincipalActivity"
+            android:theme="@android:style/Theme.Holo.Light" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gamfig.monitorabrasil.activitys.PrincipalActivity" />
@@ -90,9 +89,9 @@
         </activity>
         <activity
             android:name=".activitys.FichaActivity"
-            android:label="@string/title_activity_cota_parlamentar" >
+            android:label="@string/title_activity_cota_parlamentar"
+            android:theme="@android:style/Theme.Holo.Light" >
         </activity>
-
         <activity
             android:name=".activitys.SobreActivity"
             android:label="@string/title_activity_sobre"
@@ -101,7 +100,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gamfig.monitorabrasil.activitys.PrincipalActivity" />
         </activity>
-
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -123,7 +121,8 @@
         <activity
             android:name=".activitys.ProjetosActivity"
             android:label="@string/title_activity_lista_projetos"
-            android:parentActivityName=".activitys.PrincipalActivity" >
+            android:parentActivityName=".activitys.PrincipalActivity"
+            android:theme="@android:style/Theme.Holo.Light" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gamfig.monitorabrasil.activitys.PrincipalActivity" />
@@ -131,7 +130,8 @@
         <activity
             android:name=".activitys.RankUserActivity"
             android:label="@string/title_activity_lista_projetos"
-            android:parentActivityName=".activitys.PrincipalActivity" >
+            android:parentActivityName=".activitys.PrincipalActivity"
+            android:theme="@android:style/Theme.Holo.Light" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gamfig.monitorabrasil.activitys.PrincipalActivity" />
@@ -139,15 +139,13 @@
         <activity
             android:name=".activitys.CotaActivity"
             android:label="@string/title_activity_cota"
-            android:parentActivityName=".activitys.PrincipalActivity" >
+            android:parentActivityName=".activitys.PrincipalActivity"
+            android:theme="@android:style/Theme.Holo.Light" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gamfig.monitorabrasil.activitys.PrincipalActivity" />
         </activity>
 
-        <meta-data
-            android:name="com.crashlytics.ApiKey"
-            android:value="fb370c047719aaf76293ffecd977d8476584bbee" />
 
         <activity
             android:name=".activitys.LoginRedeActivity"
@@ -157,6 +155,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gamfig.monitorabrasil.activitys.PrincipalActivity" />
         </activity>
+        <activity
+            android:name=".activitys.TwittterActivity"
+            android:label="@string/title_activity_twittter"
+            android:theme="@android:style/Theme.Holo.Light"
+            android:parentActivityName=".activitys.PrincipalActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gamfig.monitorabrasil.activitys.PrincipalActivity" />
+        </activity>
+
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="fb370c047719aaf76293ffecd977d8476584bbee" />
     </application>
 
 </manifest>

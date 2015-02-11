@@ -60,24 +60,6 @@ public final class PoliticoDetalheFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		// Bundle bundle = this.getArguments();
-		// fm = getActivity().getFragmentManager();
-		// int idPolitico = bundle.getInt("idPolitico");
-		//
-		// bundle.putInt("idPolitico", idPolitico);
-		//
-		// ActionBar tabBar = getActivity().getActionBar();
-		// tabBar.removeAllTabs();
-		// tabBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		// if (bundle.containsKey("casa")) {
-		// if (bundle.getString("casa").equals("senado") || bundle.getString("casa").equals("s")) {
-		// montaFichaSenador(bundle, tabBar);
-		// } else {
-		// montaFichaDeputado(bundle, tabBar);
-		// }
-		// } else {
-		// montaFichaDeputado(bundle, tabBar);
-		// }
 
 	}
 
@@ -88,23 +70,15 @@ public final class PoliticoDetalheFragment extends Fragment {
 		 */
 		@Override
 		public int getCount() {
-			return 4;
+			return 5;
 		}
 
-		/**
-		 * @return true if the value returned from {@link #instantiateItem(android.view.ViewGroup, int)} is the same object as the {@link android.view.View} added to the {@link android.support.v4.view.ViewPager}.
-		 */
 		@Override
 		public boolean isViewFromObject(View view, Object o) {
 			return o == view;
 		}
 
-		// BEGIN_INCLUDE (pageradapter_getpagetitle)
-		/**
-		 * Return the title of the item at {@code position}. This is important as what this method returns is what is displayed in the {@link SlidingTabLayout}.
-		 * <p>
-		 * Here we construct one using the position value, but for real application the title should refer to the item's contents.
-		 */
+
 		@Override
 		public CharSequence getPageTitle(int position) {
 			String titulo = null;
@@ -112,13 +86,16 @@ public final class PoliticoDetalheFragment extends Fragment {
 			case 0:
 				titulo = "Dados";
 				break;
-			case 1:
+             case 1:
+                 titulo = "Twitter";
+                  break;
+			case 2:
 				titulo = "Bens";
 				break;
-			case 2:
+			case 3:
 				titulo = "#Hashtag";
 				break;
-			case 3:
+			case 4:
 				titulo = "Projetos";
 				break;
 
@@ -128,12 +105,6 @@ public final class PoliticoDetalheFragment extends Fragment {
 			return titulo;
 		}
 
-		// END_INCLUDE (pageradapter_getpagetitle)
-
-		/**
-		 * Instantiate the {@link android.view.View} which should be displayed at {@code position}. Here we inflate a layout from the apps resources and then change the text view to signify the
-		 * position.
-		 */
 		@Override
 		public Object instantiateItem(ViewGroup container, int position) {
 			// Inflate a new layout from our resources
@@ -144,9 +115,7 @@ public final class PoliticoDetalheFragment extends Fragment {
 			// montar o layout
 			montaLayout(position);
 
-			// Retrieve a TextView from the inflated View, and update it's text
-			// TextView title = (TextView) view.findViewById(R.id.item_title);
-			// title.setText(String.valueOf(position + 1));
+
 
 			// Return the View
 			return view;
@@ -157,16 +126,19 @@ public final class PoliticoDetalheFragment extends Fragment {
 			TabFactory tab = new TabFactory(getActivity(), getArguments());
 
 			switch (position) {
-			case 0:
-				tab.criaTab(new FichaSenador());
-				break;
-			case 1:
+            case 0:
+                tab.criaTab(new FichaSenador());
+                break;
+            case 1:
+                tab.criaTab(new TwitterFragment());
+                break;
+			case 2:
 				tab.criaTab(new BensFragment());
 				break;
-			case 2:
+			case 3:
 				tab.criaTab(new HashtagFragment());
 				break;
-			case 3:
+			case 4:
 				tab.criaTab(new TabProjetos());
 				break;
 
@@ -182,13 +154,16 @@ public final class PoliticoDetalheFragment extends Fragment {
 			case 0:
 				layout = R.layout.fragment_ficha_deputado;
 				break;
-			case 1:
+            case 1:
+                layout = R.layout.fragment_twitter;
+                break;
+			case 2:
 				layout = R.layout.fragment_ficha_bens;
 				break;
-			case 2:
+			case 3:
 				layout = R.layout.fragment_hashtag;
 				break;
-			case 3:
+			case 4:
 				layout = R.layout.tab_projetos;
 				break;
 
@@ -239,23 +214,27 @@ public final class PoliticoDetalheFragment extends Fragment {
 			case 0:
 				titulo = "Dados";
 				break;
-			case 1:
+
+                case 1:
+                    titulo = "Twitter";
+                    break;
+			case 2:
 				titulo = "Bens";
 				break;
-			case 2:
+			case 3:
 				titulo = "#Hashtag";
 				break;
-			case 3:
-				titulo = "Presen�a";
-				break;
 			case 4:
-				titulo = "Projetos";
+				titulo = "Presença";
 				break;
 			case 5:
-				titulo = "Cota Parlamentar";
+				titulo = "Projetos";
 				break;
 			case 6:
-				titulo = "Doa��es de Campanha";
+				titulo = "Cota Parlamentar";
+				break;
+			case 7:
+				titulo = "Doações de Campanha";
 				break;
 
 			default:
@@ -295,22 +274,25 @@ public final class PoliticoDetalheFragment extends Fragment {
 			case 0:
 				tab.criaTab(new FichaDeputado());
 				break;
-			case 1:
+                case 1:
+                    tab.criaTab(new TwitterFragment());
+                    break;
+			case 2:
 				tab.criaTab(new BensFragment());
 				break;
-			case 2:
+			case 3:
 				tab.criaTab(new HashtagFragment());
 				break;
-			case 3:
+			case 4:
 				tab.criaTab(new PresencaFragment());
 				break;
-			case 4:
+			case 5:
 				tab.criaTab(new TabProjetos());
 				break;
-			case 5:
+			case 6:
 				tab.criaTab(new CotaFichaFragment());
 				break;
-			case 6:
+			case 7:
 				tab.criaTab(new DoacaoFragment());
 				break;
 			default:
@@ -325,22 +307,25 @@ public final class PoliticoDetalheFragment extends Fragment {
 			case 0:
 				layout = R.layout.fragment_ficha_deputado;
 				break;
-			case 1:
+                case 1:
+                    layout = R.layout.fragment_twitter;
+                    break;
+			case 2:
 				layout = R.layout.fragment_ficha_bens;
 				break;
-			case 2:
+			case 3:
 				layout = R.layout.fragment_hashtag;
 				break;
-			case 3:
+			case 4:
 				layout = R.layout.fragment_ficha_presenca;
 				break;
-			case 4:
+			case 5:
 				layout = R.layout.tab_projetos;
 				break;
-			case 5:
+			case 6:
 				layout = R.layout.fragment_cotas_parlamentar;
 				break;
-			case 6:
+			case 7:
 				layout = R.layout.fragment_doacao;
 				break;
 

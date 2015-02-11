@@ -1,6 +1,7 @@
 package com.gamfig.monitorabrasil.fragments.ficha;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONObject;
 
@@ -23,6 +24,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.DAO.DeputadoDAO;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
@@ -32,6 +34,12 @@ import com.gamfig.monitorabrasil.classes.Imagens;
 import com.gamfig.monitorabrasil.classes.Politico;
 import com.gamfig.monitorabrasil.classes.Twitter;
 import com.gamfig.monitorabrasil.dialog.DialogAvaliacao;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.services.StatusesService;
+import com.twitter.sdk.android.tweetui.TweetViewAdapter;
 
 public class FichaSenador extends TabFactory {
 	private RelativeLayout rlPb;
@@ -199,9 +207,6 @@ public class FichaSenador extends TabFactory {
 					txtProjetos.setVisibility(View.GONE);
 					// txtProjetos.setText(Html.fromHtml("<b>" + String.valueOf(politico.getNrProjetos()) + "</b><br>PROJETOS"));
 
-					// busca timeline do twitter
-					new BuscaTimeline(getActivity(), twitter).execute();
-
 					// busca infos tbrasil
 					new BuscaInfosTbrasil(getActivity(), politico.getIdTbrasil()).execute();
 
@@ -268,56 +273,6 @@ public class FichaSenador extends TabFactory {
 							txtBancadas.setText(bancadas);
 						}
 
-					}
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-
-			}
-
-		}
-
-		/**
-		 * 
-		 * @author geral_000
-		 * 
-		 */
-		public class BuscaTimeline extends AsyncTask<Void, Void, String> {
-			Activity mActivity;
-			String twitter;
-			ArrayList<Twitter> tweets;
-
-			public BuscaTimeline(Activity activity, String twitter) {
-
-				this.twitter = twitter;
-				mActivity = activity;
-			}
-
-			@Override
-			protected String doInBackground(Void... params) {
-
-				new DeputadoDAO();
-				try {
-					// buscar o timeline
-					if (twitter.length() > 0)
-						tweets = DeputadoDAO.buscaTimeLine(twitter, 1);
-					else
-						Toast.makeText(getActivity().getApplicationContext(), "Ainda não tem twitter! Dá para acreditar?", Toast.LENGTH_LONG).show();
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-
-				return "";
-			}
-
-			protected void onPostExecute(String results) {
-				try {
-
-					if (tweets != null) {
-						// popular lista
-						TwitterAdapter tAdapter = new TwitterAdapter(mActivity.getApplicationContext(), R.layout.listview_item_twitter, tweets);
-						ListView lvTwitter = (ListView) mActivity.findViewById(R.id.lvTwitter);
-						lvTwitter.setAdapter(tAdapter);
 					}
 				} catch (Exception e) {
 					// TODO: handle exception

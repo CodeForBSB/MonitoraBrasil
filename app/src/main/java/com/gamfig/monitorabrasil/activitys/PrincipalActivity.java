@@ -31,6 +31,7 @@ import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
 
+import com.crashlytics.android.Crashlytics;
 import com.gamfig.monitorabrasil.NavigationDrawerFragment;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
@@ -40,12 +41,15 @@ import com.gamfig.monitorabrasil.dialog.DialogComentario;
 import com.gamfig.monitorabrasil.fragments.PontuacaoFragment;
 import com.gamfig.monitorabrasil.fragments.ResumoInicialFragment;
 import com.gamfig.monitorabrasil.fragments.listviews.PoliticosFragment;
-import com.gamfig.monitorabrasil.fragments.listviews.TwitterFragment;
 import com.gamfig.monitorabrasil.pojo.PreferenciasUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+
+import io.fabric.sdk.android.Fabric;
 
 public class PrincipalActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, PoliticosFragment.SelectionListener {
 	public static final String TAG = "MonitoraBrasil";
@@ -69,11 +73,13 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 			StrictMode.setThreadPolicy(policy);
 		}
 		setContentView(R.layout.activity_pricipal);
+
 
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 		mTitle = getTitle();
@@ -237,10 +243,10 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
 		// tela o que estao falando
 		case 3:
 
-			setTitle("O que estão Falando - Twitter");
-			fragment2open = new TwitterFragment();
-			abreFragment(fragment2open);
-			mTitle = getString(R.string.title_section6);
+            intent = new Intent();
+            intent.setClass(this, TwittterActivity.class);
+            startActivity(intent);
+
 			break;
 
 		// pontua��o

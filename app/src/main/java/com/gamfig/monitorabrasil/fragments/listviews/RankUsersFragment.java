@@ -55,8 +55,7 @@ public class RankUsersFragment extends ListFragment implements OnScrollListener 
 
 	/**
 	 * BUSCA Rank
-	 * 
-	 * @author 89741803168
+	 *
 	 * 
 	 */
 	public class buscaRank extends AsyncTask<Void, Void, List<Usuario>> {

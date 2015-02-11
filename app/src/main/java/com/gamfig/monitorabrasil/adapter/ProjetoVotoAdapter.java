@@ -56,14 +56,7 @@ public class ProjetoVotoAdapter extends ArrayAdapter<Projeto> {
 		this.fragmentManager = fragmentManager;
 		this.casa = casa;
 
-		// limpar votos
-		// SharedPreferences sharedPref = getContext().getSharedPreferences(
-		// getContext().getString(R.string.id_key_preferencias),
-		// getContext().MODE_PRIVATE);
-		// SharedPreferences.Editor editor = sharedPref.edit();
-		// editor.putString(getContext().getString(R.string.id_key_votos),
-		// null);
-		// editor.commit();
+
 	}
 
 	private String buscaVoto(int id) {
@@ -194,11 +187,11 @@ public class ProjetoVotoAdapter extends ArrayAdapter<Projeto> {
 						p.txtVotoSim.setText(String.valueOf(sim));
 
 						// verificar se j� votou
-						if (p.btnVotoNao.getText().equals("N�o")) {
+						if (p.btnVotoNao.getText().equals("Não")) {
 							int total = Integer.valueOf(p.txtVotoTotal.getText().toString()) + 1;
 							p.txtVotoTotal.setText(String.valueOf(total));
 						} else {
-							p.btnVotoNao.setText("N�o");
+							p.btnVotoNao.setText("Não");
 							// diminui do voto nao
 							int nao = Integer.valueOf(p.txtVotoNao.getText().toString()) - 1;
 							p.txtVotoNao.setText(String.valueOf(nao));
@@ -215,8 +208,8 @@ public class ProjetoVotoAdapter extends ArrayAdapter<Projeto> {
 				public void onClick(View v) {
 
 					Button bt = (Button) v;
-					if (bt.getText().equals("N�o")) {
-						bt.setText("Votou N�o");
+					if (bt.getText().equals("Não")) {
+						bt.setText("Votou Não");
 						ProjetoVotoHolder p = (ProjetoVotoHolder) bt.getTag();
 						int nao = Integer.valueOf(p.txtVotoNao.getText().toString()) + 1;
 						p.txtVotoNao.setText(String.valueOf(nao));
@@ -268,7 +261,7 @@ public class ProjetoVotoAdapter extends ArrayAdapter<Projeto> {
 
 		holder.txtPropostaTitulo.setText(projeto.getNome());
 		if (projeto.getDtApresentacao() != null)
-			holder.dtProposicao.setText("Dt. Apresenta��o: " + projeto.getDtApresentacao());
+			holder.dtProposicao.setText("Dt. Apresentação: " + projeto.getDtApresentacao());
 		else
 			holder.dtProposicao.setText("");
 		
@@ -276,33 +269,31 @@ public class ProjetoVotoAdapter extends ArrayAdapter<Projeto> {
 		holder.txtVotoSim.setText(String.valueOf(projeto.getS()));
 		holder.txtVotoNao.setText(String.valueOf(projeto.getN()));
 		String voto = buscaVoto(projeto.getId());
-		holder.btnVotoNao.setText("N�o");
+		holder.btnVotoNao.setText("Não");
 		holder.btnVotoSim.setText("Sim");
 		holder.email = projeto.getEmail();
 		if (voto != null) {
 			if (voto.equals("s")) {
 				holder.btnVotoSim.setText("Votou Sim");
-				holder.btnVotoNao.setText("N�o");
+				holder.btnVotoNao.setText("Não");
 			}
 			if (voto.equals("n")) {
-				holder.btnVotoNao.setText("Votou N�o");
+				holder.btnVotoNao.setText("Votou Não");
 				holder.btnVotoSim.setText("Sim");
 			}
 		} else {
 			if (projeto.getVotoUser() != null) {
 				if (projeto.getVotoUser().equals("s")) {
 					holder.btnVotoSim.setText("Votou Sim");
-					holder.btnVotoNao.setText("N�o");
+					holder.btnVotoNao.setText("Não");
 				} else {
-					holder.btnVotoNao.setText("Votou N�o");
+					holder.btnVotoNao.setText("Votou Não");
 					holder.btnVotoSim.setText("Sim");
 				}
 			}
 		}
 		if (projeto.getComentario() != null) {
 			holder.txtUserComentario.setText(projeto.getComentario().getComent());
-			// holder.imgUserComentario.setPresetSize(ProfilePictureView.SMALL);
-			// holder.fotoFaceComentario.setProfileId(projeto.getComentario().getId());
 			holder.txtNomeComentario.setText(projeto.getComentario().getNome());
 			holder.rlComentario.setVisibility(View.VISIBLE);
 		} else {
@@ -321,25 +312,10 @@ public class ProjetoVotoAdapter extends ArrayAdapter<Projeto> {
 				int id = Integer.valueOf(projeto.getId());
 				sendBundle.putInt("idProjeto", id);
 				sendBundle.putString("nomePec", projeto.getNome());
-				// Intent i = new Intent(getContext(), VotosActivity.class);
-				// i.putExtras(sendBundle);
-				// getContext().startActivity(i);
+
 			}
 		};
 
-		// verifica se j� foi votado
-		// if (projeto.isVotado()) {
-		// holder.txtPropostaVotado.setVisibility(View.VISIBLE);
-		// holder.imgVotado.setVisibility(View.VISIBLE);
-		// holder.txtPropostaVotado.setOnClickListener(onclicklistenerVotos);
-		// holder.txtPropostaVotado.setTag(projeto);
-		//
-		// holder.imgVotado.setOnClickListener(onclicklistenerVotos);
-		// holder.imgVotado.setTag(projeto.getId());
-		// } else {
-		// holder.txtPropostaVotado.setVisibility(View.INVISIBLE);
-		// holder.imgVotado.setVisibility(View.INVISIBLE);
-		// }
 
 		// verifica se tem coment�rios
 
@@ -354,34 +330,7 @@ public class ProjetoVotoAdapter extends ArrayAdapter<Projeto> {
 		return row;
 	}
 
-	/*
-	 * public void showShareCommentDialog(Context context, final DialogFlowController controller) {
-	 * 
-	 * final EditText text = new EditText(context); text.setMinLines(3); text.setGravity(Gravity.TOP);
-	 * 
-	 * AlertDialog.Builder builder = new AlertDialog.Builder(context); builder.setTitle("Compartilhar");
-	 * builder.setMessage("Insira um coment�rio (Opcional)"); builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-	 * 
-	 * @Override public void onClick(DialogInterface dialog, int which) { controller.onContinue(text.getText().toString()); } });
-	 * builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-	 * 
-	 * @Override public void onClick(DialogInterface dialog, int which) { controller.onCancel(); } });
-	 * 
-	 * AlertDialog dialog = builder.create(); dialog.setView(text); dialog.show(); }
-	 * 
-	 * private JSONObject getMetaData(ProjetoVotoHolder ch) { // Store a custom dictionary as a JSON object JSONObject metaData = new JSONObject();
-	 * try { String hashTag = ch.txtPropostaTitulo.getText().toString().replace(" ", ""); hashTag = "#" + hashTag.substring(0, hashTag.length() - 5);
-	 * 
-	 * String texto = "Proposta: " + ch.txtPropostaTitulo.getText() + "<br>Autor: " + ch.txtPropostaAutor.getText() + "<br>Ementa<br>" +
-	 * ch.txtPropostaEmenta.getText() + "<br><br>Votos:" + ch.txtPropostaVotos.getText() + " Sim:" + ch.txtPropostaSim.getText() + " N�o:" +
-	 * ch.txtPropostaNao.getText() + "<br><br>#MonitoraBrasil";
-	 * 
-	 * metaData.put("szsd_title", hashTag + " #MonitoraBrasil"); metaData.put("szsd_description", texto); metaData.put("szsd_creator",
-	 * "@monitoraBrasil");
-	 * 
-	 * // Optionally add a thumbnail URL to be rendered on the entity page metaData.put("szsd_thumb", "http://www.monitorabrasil.com/topo.jpg"); }
-	 * catch (Exception e) { // TODO: handle exception } return metaData; }
-	 */
+
 	static class ProjetoVotoHolder {
 
 		int id;

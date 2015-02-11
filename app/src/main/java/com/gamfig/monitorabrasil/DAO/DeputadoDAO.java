@@ -909,9 +909,7 @@ public class DeputadoDAO {
 
 	/**
 	 * busca as infos da api da tbrasil de um politico
-	 * 
-	 * @param idCadastro
-	 * @param idTipo
+	 *
 	 * @return jsonobject
 	 */
 	public JSONObject getInformacoesTBrasilDeputado(int idTbrasil) {

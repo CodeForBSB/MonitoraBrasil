@@ -10,6 +10,7 @@ package com.gamfig.monitorabrasil.fragments;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -25,7 +26,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
 import com.gamfig.monitorabrasil.activitys.CotaActivity;
@@ -33,9 +37,29 @@ import com.gamfig.monitorabrasil.activitys.FichaActivity;
 import com.gamfig.monitorabrasil.activitys.PoliticosActivity;
 import com.gamfig.monitorabrasil.activitys.PrincipalActivity;
 import com.gamfig.monitorabrasil.activitys.ProjetosActivity;
+import com.gamfig.monitorabrasil.activitys.SplashActivity;
+import com.gamfig.monitorabrasil.activitys.TwittterActivity;
 import com.gamfig.monitorabrasil.adapter.ImageAdapter;
 import com.gamfig.monitorabrasil.classes.Politico;
 import com.gamfig.monitorabrasil.classes.cards.CardFactory;
+import com.gamfig.monitorabrasil.classes.twitter.TwitterFabric;
+import com.gamfig.monitorabrasil.classes.twitter.TwitterProxy;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.models.Search;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.services.SearchService;
+import com.twitter.sdk.android.tweetui.CompactTweetView;
+import com.twitter.sdk.android.tweetui.LoadCallback;
+import com.twitter.sdk.android.tweetui.TweetUi;
+import com.twitter.sdk.android.tweetui.TweetUtils;
+import com.twitter.sdk.android.tweetui.TweetView;
+
+import io.fabric.sdk.android.Fabric;
 
 public class ResumoInicialFragment extends Fragment {
 	/**
@@ -63,13 +87,13 @@ public class ResumoInicialFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		Log.i(PrincipalActivity.TAG, "Fragment = onCreateView");
-
 		View rootView = inflater.inflate(R.layout.resumo_principal, container, false);
+
 		if (savedInstanceState != null) {
-			Log.i(PrincipalActivity.TAG, "Fragment = savedInstanceState is not null");
 			// monta view offline
 		} else {
+            //busca ultimo tweet
+            buscaTweet(rootView);
 			montaFlippers(rootView);
 		}
 
@@ -174,7 +198,17 @@ public class ResumoInicialFragment extends Fragment {
 		return rootView;
 	}
 
-	private void abreProposicoes(View v) {
+    private void buscaTweet(View rootView) {
+
+
+        final LinearLayout myLayout
+                = (LinearLayout) rootView.findViewById(R.id.twitter_resumo);
+       myLayout.addView(new TwitterProxy().getTweetTelaInicial(myLayout, getActivity()));
+
+    }
+
+
+    private void abreProposicoes(View v) {
 		Intent intent;
 		intent = new Intent();
 		intent.putExtra("casa", "c");

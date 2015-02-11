@@ -70,6 +70,23 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/twitter_resumo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp" >
+                <TextView
+                    android:id="@+id/mb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="#MonitoraBrasil"
+                    android:textStyle="bold" />
+                </LinearLayout>
+
+
+            <LinearLayout
                 android:id="@+id/lay_ultimas_atividades"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
