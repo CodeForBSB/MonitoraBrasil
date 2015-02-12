@@ -101,7 +101,7 @@ public class TwitterFragment extends TabFactory {
         protected List<com.gamfig.monitorabrasil.classes.Twitter> doInBackground(Void... params) {
 
             // buscar os projetos da lista do user
-
+            getActivity().setProgressBarIndeterminateVisibility(true);
             return new TwitterProxy().getTimeline(twitter);
 
         }
@@ -110,6 +110,7 @@ public class TwitterFragment extends TabFactory {
 
             try {
                 if (tweets != null) {
+                    getActivity().setProgressBarIndeterminateVisibility(false);
                     TwitterAdapter adapt = new TwitterAdapter(getActivity(),R.layout.listview_item_twitter,tweets);
                     ListView lvTwitter = (ListView) getActivity().findViewById(R.id.listTwitter);
                     lvTwitter.setVisibility(View.VISIBLE);

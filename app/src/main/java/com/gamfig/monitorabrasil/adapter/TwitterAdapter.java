@@ -19,6 +19,7 @@ import com.crashlytics.android.Crashlytics;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.classes.Imagens;
 import com.gamfig.monitorabrasil.classes.Twitter;
+import com.gamfig.monitorabrasil.pojo.Util;
 
 public class TwitterAdapter extends ArrayAdapter<Twitter> {
 	Context context;
@@ -63,50 +64,10 @@ public class TwitterAdapter extends ArrayAdapter<Twitter> {
 		holder.txtTwitterNome.setText(status.getNome());
 
 		String mensagem = status.getTexto();
-		// verifica se tem a #MonitoraBrasil
-		int indexSearch = -1;
-		indexSearch = mensagem.indexOf("#MonitoraBrasil");
-		LinearLayout ln = (LinearLayout) row.findViewById(R.id.lnLayoutTwett);
-		if (indexSearch >= 0) {
-
-			ln.setBackgroundResource(R.color.white);
-			holder.txtTwitterMsg.setTextColor(Color.BLACK);
-			holder.txtTwitterId.setTextColor(Color.BLACK);
-			holder.txtTwitterNome.setTextColor(Color.BLACK);
-			holder.txtTwitterTempo.setTextColor(Color.BLACK);
-		} else {
-			ln.setBackgroundResource(R.color.cinzafundo);
-			holder.txtTwitterMsg.setTextColor(Color.BLACK);
-			holder.txtTwitterId.setTextColor(Color.BLACK);
-			holder.txtTwitterNome.setTextColor(Color.BLACK);
-			holder.txtTwitterTempo.setTextColor(Color.BLACK);
-		}
-		// busca link http
-		int indexInicio = mensagem.indexOf("http://");
-		int indexFim = mensagem.indexOf(" ", indexInicio);
-		if (indexFim == -1)
-			indexFim = mensagem.length();
-		if (indexInicio > -1) {
-			String link = mensagem.substring(indexInicio, indexFim);
-			String linkNovo = "<a href='" + link + "'>" + link + "</a>";
-			try {
-				mensagem = mensagem.replaceAll(link, linkNovo);
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-		}
 
 		// busca link http
-		indexInicio = mensagem.indexOf("https://");
-		indexFim = mensagem.indexOf(" ", indexInicio);
-		if (indexFim == -1)
-			indexFim = mensagem.length();
-		if (indexInicio > -1) {
-			String link = mensagem.substring(indexInicio, indexFim);
-			String linkNovo = "<a href='" + link + "'>" + link + "</a>";
-			mensagem = mensagem.replaceAll(link, linkNovo);
-		}
-		holder.txtTwitterMsg.setText(Html.fromHtml(mensagem));
+
+		holder.txtTwitterMsg.setText(Html.fromHtml(Util.formataTextoTwitter(mensagem)));
 		holder.txtTwitterMsg.setMovementMethod(LinkMovementMethod.getInstance());
         holder.txtTwitterTempo.setText(status.getData());
 

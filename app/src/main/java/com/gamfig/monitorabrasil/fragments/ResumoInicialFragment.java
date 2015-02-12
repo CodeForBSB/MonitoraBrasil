@@ -16,6 +16,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -40,6 +42,7 @@ import com.gamfig.monitorabrasil.activitys.ProjetosActivity;
 import com.gamfig.monitorabrasil.activitys.SplashActivity;
 import com.gamfig.monitorabrasil.activitys.TwittterActivity;
 import com.gamfig.monitorabrasil.adapter.ImageAdapter;
+import com.gamfig.monitorabrasil.adapter.TwitterAdapter;
 import com.gamfig.monitorabrasil.classes.Politico;
 import com.gamfig.monitorabrasil.classes.cards.CardFactory;
 import com.gamfig.monitorabrasil.classes.twitter.TwitterFabric;
@@ -93,7 +96,7 @@ public class ResumoInicialFragment extends Fragment {
 			// monta view offline
 		} else {
             //busca ultimo tweet
-            buscaTweet(rootView);
+            new BuscaTweet().execute();
 			montaFlippers(rootView);
 		}
 
@@ -317,5 +320,40 @@ public class ResumoInicialFragment extends Fragment {
 	public void abreEvento() {
 
 	}
+
+    public class BuscaTweet extends AsyncTask<Void, Void, View> {
+        String twitter;
+
+        public BuscaTweet() {
+            this.twitter = twitter;
+
+        }
+
+        @Override
+        protected View doInBackground(Void... params) {
+
+            // buscar os projetos da lista do user
+             LinearLayout myLayout
+                    = (LinearLayout) getActivity().findViewById(R.id.twitter_resumo);
+
+            return new TwitterProxy().getTweetTelaInicial(myLayout, getActivity());
+
+        }
+
+        protected void onPostExecute(View view) {
+
+            try {
+                if (view != null) {
+                    LinearLayout myLayout
+                            = (LinearLayout) getActivity().findViewById(R.id.twitter_resumo);
+                    myLayout.addView(view);
+                }
+
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+
+        }
+    }
 
 }

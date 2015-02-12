@@ -29,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.crashlytics.android.Crashlytics;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
 import com.gamfig.monitorabrasil.adapter.PoliticoAdapter;
@@ -303,20 +304,27 @@ public class PoliticosActivity extends Activity implements PoliticosFragment.Sel
 
 	// acoes dos botoes da ficha
 	public void abreGrafico(View v) {
-		Button btn = (Button) v;
-		ViewFlipper mVf = (ViewFlipper) findViewById(R.id.viewFlipper1);
+        try{
+            Button btn = (Button) v;
+            ViewFlipper mVf = (ViewFlipper) findViewById(R.id.viewFlipper1);
 
-		mVf.setInAnimation(this, android.R.anim.fade_in);
-		mVf.setOutAnimation(this, android.R.anim.fade_out);
+            mVf.setInAnimation(this, android.R.anim.fade_in);
+            mVf.setOutAnimation(this, android.R.anim.fade_out);
 
-		if (mVf.getDisplayedChild() == 0) {
-			mVf.showNext();
-			btn.setText("Números");
-		} else {
-			mVf.showPrevious();
-			btn.setText("Gráfico");
-		}
-	}
+            if (mVf.getDisplayedChild() == 0) {
+                mVf.showNext();
+                btn.setText("Números");
+            } else {
+                mVf.showPrevious();
+                btn.setText("Gráfico");
+            }
+        }
+        catch (Exception e) {
+            Crashlytics.logException(e);
+        }
+
+
+    }
 
 	public void abreFonte(View v) {
 		new AlertDialog.Builder(this).setTitle(R.string.fonte).setMessage(R.string.msg_fonte_tbrasil).setIcon(R.drawable.ic_action_about)

@@ -3,6 +3,8 @@ package com.gamfig.monitorabrasil.classes.twitter;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import com.gamfig.monitorabrasil.activitys.PrincipalActivity;
 import com.gamfig.monitorabrasil.classes.Imagens;
 import com.gamfig.monitorabrasil.classes.Twitter;
 import com.gamfig.monitorabrasil.classes.Usuario;
+import com.gamfig.monitorabrasil.pojo.Util;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
@@ -48,8 +51,10 @@ public class TwitterProxy extends TwitterFabric{
         imagem.setVisibility(View.GONE);
 
         txtNome.setText(t.getNome());
-        txtMsg.setText(t.getTexto());
-        txtId.setText("@"+t.getScreenName());
+        txtMsg.setText(Util.formataTextoTwitter(t.getTexto()));
+        txtId.setText(Html.fromHtml("<a href='http://twitter.com/#!/" + t.getScreenName() + "'>@" + t.getScreenName()
+                + "</a>"));
+        txtId.setMovementMethod(LinkMovementMethod.getInstance());
         txtTempo.setText(" . "+t.getData());
         try {
             foto.setImageBitmap(Imagens.getImageBitmap(t.getUrlFoto()));

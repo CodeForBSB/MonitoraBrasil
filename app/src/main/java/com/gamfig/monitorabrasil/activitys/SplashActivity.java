@@ -20,6 +20,7 @@ import android.os.StrictMode;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.crashlytics.android.Crashlytics;
 import com.gamfig.monitorabrasil.DAO.DeputadoDAO;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
 import com.gamfig.monitorabrasil.R;
@@ -34,6 +35,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import io.fabric.sdk.android.Fabric;
+
 public class SplashActivity extends Activity {
 
 	public ProgressBar pb = null;
@@ -42,7 +45,7 @@ public class SplashActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+        Fabric.with(this, new Crashlytics());
 
 
 
