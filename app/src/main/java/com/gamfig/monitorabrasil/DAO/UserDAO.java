@@ -529,6 +529,8 @@ public class UserDAO {
         } catch (IOException e) {
 
             e.printStackTrace();
+        }
+        catch (JsonParseException e) {
             e.printStackTrace();
         }
         return;

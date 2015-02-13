@@ -22,6 +22,9 @@ import com.gamfig.monitorabrasil.classes.twitter.MyTwitterApiClient;
 import com.gamfig.monitorabrasil.classes.twitter.TwitterProxy;
 import com.gamfig.monitorabrasil.fragments.PontuacaoFragment;
 import com.google.gson.Gson;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -87,6 +90,11 @@ public class TwittterActivity extends ListActivity {
     private void loadTweets() {
         Crashlytics.log("Buscando Tweets");
         setProgressBarIndeterminateVisibility(true);
+
+
+
+
+
         new buscaTweets(this).execute();
 
         /*MyTwitterApiClient client = new MyTwitterApiClient(Twitter.getSessionManager().getActiveSession());
@@ -140,10 +148,19 @@ public class TwittterActivity extends ListActivity {
         }
 
         protected void onPostExecute(List<com.gamfig.monitorabrasil.classes.Twitter> tweets) {
+            //configurando o imageloader
+            DisplayImageOptions mDisplayImageOptions = new DisplayImageOptions.Builder().cacheInMemory(true).build();
+            ImageLoaderConfiguration conf = new ImageLoaderConfiguration.Builder(TwittterActivity.this)
+                    .defaultDisplayImageOptions(mDisplayImageOptions)
+                    .memoryCacheSize(50*1024*1024)
+                    .build();
+            ImageLoader mImagemLoader = ImageLoader.getInstance();
+            mImagemLoader.init(conf);
+
 
             try {
                 if (tweets != null) {
-                    TwitterAdapter adapt = new TwitterAdapter(mActivity,R.layout.listview_item_twitter,tweets);
+                    TwitterAdapter adapt = new TwitterAdapter(mActivity,R.layout.listview_item_twitter,tweets,mImagemLoader);
                     setListAdapter(adapt);
 
                     setProgressBarIndeterminateVisibility(false);

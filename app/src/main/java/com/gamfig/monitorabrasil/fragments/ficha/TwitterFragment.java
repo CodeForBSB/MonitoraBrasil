@@ -1,44 +1,20 @@
 package com.gamfig.monitorabrasil.fragments.ficha;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.webkit.WebView;
 import android.widget.AdapterView;
-import android.widget.ExpandableListView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.gamfig.monitorabrasil.DAO.DeputadoDAO;
 import com.gamfig.monitorabrasil.R;
-import com.gamfig.monitorabrasil.adapter.BemAdapter;
 import com.gamfig.monitorabrasil.adapter.TwitterAdapter;
-import com.gamfig.monitorabrasil.classes.Bem;
-import com.gamfig.monitorabrasil.classes.Politico;
-import com.gamfig.monitorabrasil.classes.Usuario;
 import com.gamfig.monitorabrasil.classes.twitter.TwitterProxy;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.services.StatusesService;
-import com.twitter.sdk.android.tweetui.TweetViewAdapter;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class TwitterFragment extends TabFactory {
@@ -51,6 +27,7 @@ public class TwitterFragment extends TabFactory {
     public void montaLayout() {
         String twitter =  getBundle().getString("twitter");
         RelativeLayout rlSemConta = (RelativeLayout) getActivity().findViewById(R.id.rlSemConta);
+        if(null != twitter)
         if (twitter.length() > 0){
             rlSemConta.setVisibility(View.INVISIBLE);
             Crashlytics.log("Buscando Tweets");
@@ -107,11 +84,18 @@ public class TwitterFragment extends TabFactory {
         }
 
         protected void onPostExecute(List<com.gamfig.monitorabrasil.classes.Twitter> tweets) {
-
+            //configurando o imageloader
+            DisplayImageOptions mDisplayImageOptions = new DisplayImageOptions.Builder().cacheInMemory(true).build();
+            ImageLoaderConfiguration conf = new ImageLoaderConfiguration.Builder(getActivity())
+                    .defaultDisplayImageOptions(mDisplayImageOptions)
+                    .memoryCacheSize(50*1024*1024)
+                    .build();
+            ImageLoader mImagemLoader = ImageLoader.getInstance();
+            mImagemLoader.init(conf);
             try {
                 if (tweets != null) {
                     getActivity().setProgressBarIndeterminateVisibility(false);
-                    TwitterAdapter adapt = new TwitterAdapter(getActivity(),R.layout.listview_item_twitter,tweets);
+                    TwitterAdapter adapt = new TwitterAdapter(getActivity(),R.layout.listview_item_twitter,tweets, mImagemLoader);
                     ListView lvTwitter = (ListView) getActivity().findViewById(R.id.listTwitter);
                     lvTwitter.setVisibility(View.VISIBLE);
                     lvTwitter.setAdapter(adapt);

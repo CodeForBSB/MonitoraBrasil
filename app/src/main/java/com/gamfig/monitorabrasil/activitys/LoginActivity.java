@@ -97,8 +97,9 @@ public class LoginActivity extends Activity implements ConnectionCallbacks, OnCo
 		}
 
 		// btnGoogle
+        Button btnLogin = (Button) findViewById(R.id.btnLoginGoogle);
+        btnLogin.setVisibility(View.GONE);
 		if (user.getIdGoogle() != null) {
-			Button btnLogin = (Button) findViewById(R.id.btnLoginGoogle);
 			btnLogin.setVisibility(View.GONE);
 			btnLogin.setText("Logado");
 			btnLogin.setEnabled(false);
@@ -160,7 +161,7 @@ public class LoginActivity extends Activity implements ConnectionCallbacks, OnCo
 		user.setReceberNotificacao(String.valueOf(sw.isChecked()));
 
 		new SalvaUser(user).execute();
-		Toast.makeText(getApplicationContext(), "Informações salvas com sucesso!", Toast.LENGTH_SHORT).show();
+		Toast.makeText(LoginActivity.this, "Informações salvas com sucesso!", Toast.LENGTH_SHORT).show();
 	}
 
 	// private String transformaData(String data) {
@@ -172,7 +173,7 @@ public class LoginActivity extends Activity implements ConnectionCallbacks, OnCo
 	// }
 
 	public void loginGoogle(View view) {
-		Toast.makeText(getApplicationContext(), "Aguarde", Toast.LENGTH_LONG).show();	
+		Toast.makeText(LoginActivity.this, "Aguarde", Toast.LENGTH_LONG).show();
 		mPlusClient.connect();
 		// new connectGoogle(this).execute();
 		pb.setVisibility(View.VISIBLE);

@@ -23,8 +23,8 @@ android {
         applicationId "com.gamfig.monitorabrasil"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 41
-        versionName "3.5"
+        versionCode 47
+        versionName "3.7"
     }
     buildTypes {
         release {
@@ -49,4 +49,5 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.2.1@aar') {
         transitive = true;
     }
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
 }

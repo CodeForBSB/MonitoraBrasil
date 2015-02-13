@@ -78,7 +78,10 @@ public class BensFragment extends TabFactory {
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
-			return DeputadoDAO.buscaBens(politico.getIdTbrasil());
+            if(politico!= null)
+			    return DeputadoDAO.buscaBens(politico.getIdTbrasil());
+            else
+                return null;
 		}
 
 		protected void onPostExecute(List<Bem> bens) {

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,18 +50,20 @@ public class TwitterProxy extends TwitterFabric{
         ImageView foto = (ImageView) ll.findViewById(R.id.imgTwitter);
         ImageView imagem = (ImageView) ll.findViewById(R.id.imageView);
         imagem.setVisibility(View.GONE);
-
-        txtNome.setText(t.getNome());
-        txtMsg.setText(Util.formataTextoTwitter(t.getTexto()));
-        txtId.setText(Html.fromHtml("<a href='http://twitter.com/#!/" + t.getScreenName() + "'>@" + t.getScreenName()
-                + "</a>"));
-        txtId.setMovementMethod(LinkMovementMethod.getInstance());
-        txtTempo.setText(" . "+t.getData());
-        try {
-            foto.setImageBitmap(Imagens.getImageBitmap(t.getUrlFoto()));
-            foto.setVisibility(View.VISIBLE);
-        } catch (Exception e) {
-            Crashlytics.logException(e);
+        if(t != null) {
+            txtNome.setText(t.getNome());
+            txtMsg.setText(t.getTexto());
+            Linkify.addLinks(txtMsg,Linkify.WEB_URLS);
+            txtId.setText(Html.fromHtml("<a href='http://twitter.com/#!/" + t.getScreenName() + "'>@" + t.getScreenName()
+                    + "</a>"));
+            txtId.setMovementMethod(LinkMovementMethod.getInstance());
+            txtTempo.setText(" . " + t.getData());
+            try {
+                foto.setImageBitmap(Imagens.getImageBitmap(t.getUrlFoto()));
+                foto.setVisibility(View.VISIBLE);
+            } catch (Exception e) {
+                Crashlytics.logException(e);
+            }
         }
 
         //TODO

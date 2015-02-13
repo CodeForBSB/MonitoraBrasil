@@ -96,7 +96,7 @@ public class ResumoInicialFragment extends Fragment {
 			// monta view offline
 		} else {
             //busca ultimo tweet
-            new BuscaTweet().execute();
+
 			montaFlippers(rootView);
 		}
 
@@ -196,6 +196,7 @@ public class ResumoInicialFragment extends Fragment {
 				fragmentTransaction.commit();
 			}
 		});
+        new BuscaTweet(rootView).execute();
 
 		
 		return rootView;
@@ -322,22 +323,26 @@ public class ResumoInicialFragment extends Fragment {
 	}
 
     public class BuscaTweet extends AsyncTask<Void, Void, View> {
-        String twitter;
 
-        public BuscaTweet() {
-            this.twitter = twitter;
+        View rootView;
+
+        public BuscaTweet(View rootView) {
+            this.rootView = rootView;
 
         }
 
         @Override
         protected View doInBackground(Void... params) {
 
-            // buscar os projetos da lista do user
-             LinearLayout myLayout
-                    = (LinearLayout) getActivity().findViewById(R.id.twitter_resumo);
 
-            return new TwitterProxy().getTweetTelaInicial(myLayout, getActivity());
+            try{
+                LinearLayout myLayout
+                        = (LinearLayout) rootView.findViewById(R.id.twitter_resumo);
+                return new TwitterProxy().getTweetTelaInicial(myLayout, getActivity());
+            }catch (Exception e){
 
+            }
+            return null;
         }
 
         protected void onPostExecute(View view) {

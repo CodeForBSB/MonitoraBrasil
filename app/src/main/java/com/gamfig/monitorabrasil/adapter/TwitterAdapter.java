@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,17 +21,20 @@ import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.classes.Imagens;
 import com.gamfig.monitorabrasil.classes.Twitter;
 import com.gamfig.monitorabrasil.pojo.Util;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class TwitterAdapter extends ArrayAdapter<Twitter> {
 	Context context;
 	int layoutResourceId;
 	List<Twitter> data = null;
+    private ImageLoader mImagemLoader;
 
-	public TwitterAdapter(Context context, int layoutResourceId, List<Twitter> status) {
+	public TwitterAdapter(Context context, int layoutResourceId, List<Twitter> status, ImageLoader mImagemLoader) {
 		super(context, layoutResourceId, status);
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 		this.data = status;
+        this.mImagemLoader = mImagemLoader;
 	}
 
 	@Override
@@ -67,22 +71,17 @@ public class TwitterAdapter extends ArrayAdapter<Twitter> {
 
 		// busca link http
 
-		holder.txtTwitterMsg.setText(Html.fromHtml(Util.formataTextoTwitter(mensagem)));
-		holder.txtTwitterMsg.setMovementMethod(LinkMovementMethod.getInstance());
+		holder.txtTwitterMsg.setText(Html.fromHtml(mensagem));
+
+        Linkify.addLinks(holder.txtTwitterMsg, Linkify.WEB_URLS);
+//		holder.txtTwitterMsg.setMovementMethod(LinkMovementMethod.getInstance());
         holder.txtTwitterTempo.setText(status.getData());
-
-		holder.imgTwitter.setImageBitmap(status.getFoto());
-
-        try {
-            holder.imgTwitter.setImageBitmap(Imagens.getImageBitmap(status.getUrlFoto()));
-            holder.imgTwitter.setVisibility(View.VISIBLE);
-        } catch (Exception e) {
-            Crashlytics.logException(e);
-        }
+        mImagemLoader.displayImage(status.getUrlFoto(),holder.imgTwitter);
         holder.imagem.setVisibility(View.GONE);
         if(status.getMedia()!=null){
             try {
-                holder.imagem.setImageBitmap(Imagens.getImageBitmap(status.getMedia()));
+
+                mImagemLoader.displayImage(status.getMedia(), holder.imagem);
                 holder.imagem.setVisibility(View.VISIBLE);
             } catch (Exception e) {
                 Crashlytics.logException(e);

@@ -90,6 +90,7 @@
     <orderEntry type="library" exported="" name="digits-1.2.0" level="project" />
     <orderEntry type="library" exported="" name="achartengine-1.2.0" level="project" />
     <orderEntry type="library" exported="" name="retrofit-1.6.1" level="project" />
+    <orderEntry type="library" exported="" name="universal-image-loader-1.9.3" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.3.2" level="project" />
     <orderEntry type="library" exported="" name="play-services-6.5.87" level="project" />
     <orderEntry type="library" exported="" name="crashlytics-2.2.1" level="project" />
