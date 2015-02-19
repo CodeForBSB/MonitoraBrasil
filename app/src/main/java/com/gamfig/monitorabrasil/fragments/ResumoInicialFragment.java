@@ -8,10 +8,6 @@
  */
 package com.gamfig.monitorabrasil.fragments;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -28,41 +24,21 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
-import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
+import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.activitys.CotaActivity;
 import com.gamfig.monitorabrasil.activitys.FichaActivity;
 import com.gamfig.monitorabrasil.activitys.PoliticosActivity;
 import com.gamfig.monitorabrasil.activitys.PrincipalActivity;
 import com.gamfig.monitorabrasil.activitys.ProjetosActivity;
-import com.gamfig.monitorabrasil.activitys.SplashActivity;
-import com.gamfig.monitorabrasil.activitys.TwittterActivity;
 import com.gamfig.monitorabrasil.adapter.ImageAdapter;
-import com.gamfig.monitorabrasil.adapter.TwitterAdapter;
 import com.gamfig.monitorabrasil.classes.Politico;
 import com.gamfig.monitorabrasil.classes.cards.CardFactory;
-import com.gamfig.monitorabrasil.classes.twitter.TwitterFabric;
 import com.gamfig.monitorabrasil.classes.twitter.TwitterProxy;
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.models.Search;
-import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.services.SearchService;
-import com.twitter.sdk.android.tweetui.CompactTweetView;
-import com.twitter.sdk.android.tweetui.LoadCallback;
-import com.twitter.sdk.android.tweetui.TweetUi;
-import com.twitter.sdk.android.tweetui.TweetUtils;
-import com.twitter.sdk.android.tweetui.TweetView;
 
-import io.fabric.sdk.android.Fabric;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class ResumoInicialFragment extends Fragment {
 	/**
@@ -87,18 +63,24 @@ public class ResumoInicialFragment extends Fragment {
 	public ResumoInicialFragment() {
 	}
 
+    @Override
+    public void onViewCreated(View view,  Bundle savedInstanceState) {
+        //busca twitter
+        LinearLayout myLayout
+                = (LinearLayout) getActivity().findViewById(R.id.twitter_resumo);
+        new TwitterProxy().getTweetTelaInicial(myLayout, getActivity());
+
+
+    }
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View rootView = inflater.inflate(R.layout.resumo_principal, container, false);
+        //monta os flippers
+        montaFlippers(rootView);
 
-		if (savedInstanceState != null) {
-			// monta view offline
-		} else {
-            //busca ultimo tweet
 
-			montaFlippers(rootView);
-		}
 
 		// brn lista de deputados
 		Button btnDeputados = (Button) rootView.findViewById(R.id.btnDeputados);
@@ -109,7 +91,7 @@ public class ResumoInicialFragment extends Fragment {
 
 				Intent intent;
 				intent = new Intent();
-				intent.putExtra("casa", "camara");
+				intent.putExtra("casa", "c");
 				intent.setClass(getActivity(), PoliticosActivity.class);
 				startActivity(intent);
 
@@ -125,7 +107,7 @@ public class ResumoInicialFragment extends Fragment {
 
 				Intent intent;
 				intent = new Intent();
-				intent.putExtra("casa", "senado");
+				intent.putExtra("casa", "s");
 				intent.setClass(getActivity(), PoliticosActivity.class);
 				startActivity(intent);
 
@@ -196,21 +178,12 @@ public class ResumoInicialFragment extends Fragment {
 				fragmentTransaction.commit();
 			}
 		});
-        new BuscaTweet(rootView).execute();
+
+
 
 		
 		return rootView;
 	}
-
-    private void buscaTweet(View rootView) {
-
-
-        final LinearLayout myLayout
-                = (LinearLayout) rootView.findViewById(R.id.twitter_resumo);
-       myLayout.addView(new TwitterProxy().getTweetTelaInicial(myLayout, getActivity()));
-
-    }
-
 
     private void abreProposicoes(View v) {
 		Intent intent;

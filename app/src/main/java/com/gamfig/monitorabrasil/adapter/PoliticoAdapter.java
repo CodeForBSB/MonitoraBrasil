@@ -56,7 +56,7 @@ public class PoliticoAdapter extends ArrayAdapter<Politico> {
 
 		holder.id = politico.getIdCadastro();
 		holder.txtNomeRow.setText(politico.getNome());
-		holder.txtPartido.setText(politico.getPartido().getSigla());
+		holder.txtPartido.setText(politico.getSiglaPartido()+"-"+politico.getUf());
 		holder.txtTwitter.setText(politico.getTwitter());
 		// if (politico.getLider() != null) {
 		// if (politico.getLider().length() > 0)

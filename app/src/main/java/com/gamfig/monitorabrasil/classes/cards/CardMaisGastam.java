@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,11 @@ import android.widget.TextView;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.DAO.MonitoraDAO;
 import com.gamfig.monitorabrasil.activitys.FichaActivity;
+import com.gamfig.monitorabrasil.application.CustomApplication;
 import com.gamfig.monitorabrasil.classes.Cota;
 import com.gamfig.monitorabrasil.classes.Imagens;
 import com.gamfig.monitorabrasil.classes.Politico;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class CardMaisGastam extends CardFactory {
 
@@ -77,6 +80,7 @@ public class CardMaisGastam extends CardFactory {
 			List<Politico> politicos = new MonitoraDAO().buscaPoliticosMaisGastam();
 			// busca fotos
 			for (Politico politico : politicos) {
+
 				politico.setFoto(Imagens.getImageBitmap(String.valueOf(politico.getIdCadastro())));
 			}
 			return politicos;

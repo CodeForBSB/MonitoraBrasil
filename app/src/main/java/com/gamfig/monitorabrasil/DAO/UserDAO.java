@@ -1,14 +1,30 @@
 package com.gamfig.monitorabrasil.DAO;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+import android.view.View;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.crashlytics.android.Crashlytics;
+import com.gamfig.monitorabrasil.R;
+import com.gamfig.monitorabrasil.activitys.PrincipalActivity;
+import com.gamfig.monitorabrasil.application.CustomApplication;
+import com.gamfig.monitorabrasil.classes.Comentario;
+import com.gamfig.monitorabrasil.classes.Politico;
+import com.gamfig.monitorabrasil.classes.Projeto;
+import com.gamfig.monitorabrasil.classes.Twitter;
+import com.gamfig.monitorabrasil.classes.Usuario;
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -22,23 +38,21 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
-import com.crashlytics.android.Crashlytics;
-import com.gamfig.monitorabrasil.R;
-import com.gamfig.monitorabrasil.activitys.PrincipalActivity;
-import com.gamfig.monitorabrasil.classes.Comentario;
-import com.gamfig.monitorabrasil.classes.Politico;
-import com.gamfig.monitorabrasil.classes.Projeto;
-import com.gamfig.monitorabrasil.classes.Usuario;
-import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
+import io.fabric.sdk.android.services.common.Crash;
 
 @SuppressLint("UseSparseArrays")
 public class UserDAO {
@@ -419,9 +433,15 @@ public class UserDAO {
     }
 
     public int getIdUser() {
+        try{
+            SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.id_key_preferencias), Context.MODE_PRIVATE);
+            return sharedPref.getInt(context.getString(R.string.id_key_idcadastro_novo), 0);
 
-        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.id_key_preferencias), Context.MODE_PRIVATE);
-        return sharedPref.getInt(context.getString(R.string.id_key_idcadastro_novo), 0);
+        }catch (Exception e){
+            Crashlytics.logException(e);
+            Crashlytics.log("getIdUser()");
+        }
+        return 0;
     }
 
     public void atualizaGcm(String regid) {
@@ -538,6 +558,58 @@ public class UserDAO {
     }
 
     public JSONObject temAtualizacao() {
+        StringRequest request = new StringRequest(Request.Method.POST , CustomApplication.URL + "rest/get_configuracao.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+                        JSONObject json = null;
+                        try {
+                            json = new JSONObject(response);
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
+                        if (json != null) {
+                            try {
+                                Date dataAtualizacao = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(json.getString("dtAtualizacao"));
+                                String dt = getDtAtualiacao();
+                                if(null == dt){
+                                    //buscar lista atualizada de parlamentares
+
+                                }else{
+                                    Date dataUltimaAtualizacao = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(dt);
+                                    if (dataAtualizacao.after(dataUltimaAtualizacao)) {
+                                        //buscar lista atualizada de parlamentares
+
+                                    }
+                                }
+
+
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                                Crashlytics.logException(e);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Crashlytics.logException(e);
+                            }
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                }) {
+            @Override
+            public Map<String,String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String,String>();
+                return params;
+            }
+        };
+        request.setTag("tag");
+
+        ((CustomApplication) this.context.getApplicationContext()).getRq().add(request);
+
         List<NameValuePair> params = new ArrayList<NameValuePair>(1);
         String result = new Dispatcher(DeputadoDAO.url + "rest/get_configuracao.php", params).getInformacaoPOST();
         try {

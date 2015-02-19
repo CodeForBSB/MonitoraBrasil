@@ -1,35 +1,18 @@
 package com.gamfig.monitorabrasil.activitys;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ListActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.gamfig.monitorabrasil.DAO.UserDAO;
 import com.gamfig.monitorabrasil.R;
-import com.gamfig.monitorabrasil.adapter.RankAdapter;
 import com.gamfig.monitorabrasil.adapter.TwitterAdapter;
 import com.gamfig.monitorabrasil.classes.Usuario;
-import com.gamfig.monitorabrasil.classes.twitter.MyTwitterApiClient;
 import com.gamfig.monitorabrasil.classes.twitter.TwitterProxy;
-import com.gamfig.monitorabrasil.fragments.PontuacaoFragment;
-import com.google.gson.Gson;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.TweetViewAdapter;
 
 import java.util.ArrayList;
@@ -148,19 +131,12 @@ public class TwittterActivity extends ListActivity {
         }
 
         protected void onPostExecute(List<com.gamfig.monitorabrasil.classes.Twitter> tweets) {
-            //configurando o imageloader
-            DisplayImageOptions mDisplayImageOptions = new DisplayImageOptions.Builder().cacheInMemory(true).build();
-            ImageLoaderConfiguration conf = new ImageLoaderConfiguration.Builder(TwittterActivity.this)
-                    .defaultDisplayImageOptions(mDisplayImageOptions)
-                    .memoryCacheSize(50*1024*1024)
-                    .build();
-            ImageLoader mImagemLoader = ImageLoader.getInstance();
-            mImagemLoader.init(conf);
+
 
 
             try {
                 if (tweets != null) {
-                    TwitterAdapter adapt = new TwitterAdapter(mActivity,R.layout.listview_item_twitter,tweets,mImagemLoader);
+                    TwitterAdapter adapt = new TwitterAdapter(mActivity,R.layout.listview_item_twitter,tweets);
                     setListAdapter(adapt);
 
                     setProgressBarIndeterminateVisibility(false);

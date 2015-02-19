@@ -218,20 +218,21 @@ public final class PoliticoDetalheFragment extends Fragment {
                 case 1:
                     titulo = "Twitter";
                     break;
-			case 2:
+
+                case 2:
+                    titulo = "Cota Parlamentar";
+                    break;
+			case 3:
 				titulo = "Bens";
 				break;
-			case 3:
+			case 4:
 				titulo = "#Hashtag";
 				break;
-			case 4:
+			case 5:
 				titulo = "Presença";
 				break;
-			case 5:
-				titulo = "Projetos";
-				break;
 			case 6:
-				titulo = "Cota Parlamentar";
+				titulo = "Projetos";
 				break;
 			case 7:
 				titulo = "Doações de Campanha";
@@ -277,20 +278,20 @@ public final class PoliticoDetalheFragment extends Fragment {
                 case 1:
                     tab.criaTab(new TwitterFragment());
                     break;
-			case 2:
+                case 2:
+                    tab.criaTab(new CotaFichaFragment());
+                    break;
+			case 3:
 				tab.criaTab(new BensFragment());
 				break;
-			case 3:
+			case 4:
 				tab.criaTab(new HashtagFragment());
 				break;
-			case 4:
+			case 5:
 				tab.criaTab(new PresencaFragment());
 				break;
-			case 5:
-				tab.criaTab(new TabProjetos());
-				break;
 			case 6:
-				tab.criaTab(new CotaFichaFragment());
+				tab.criaTab(new TabProjetos());
 				break;
 			case 7:
 				tab.criaTab(new DoacaoFragment());
@@ -310,20 +311,21 @@ public final class PoliticoDetalheFragment extends Fragment {
                 case 1:
                     layout = R.layout.fragment_twitter;
                     break;
-			case 2:
+
+                case 2:
+                    layout = R.layout.fragment_cotas_parlamentar;
+                    break;
+			case 3:
 				layout = R.layout.fragment_ficha_bens;
 				break;
-			case 3:
+			case 4:
 				layout = R.layout.fragment_hashtag;
 				break;
-			case 4:
+			case 5:
 				layout = R.layout.fragment_ficha_presenca;
 				break;
-			case 5:
-				layout = R.layout.tab_projetos;
-				break;
 			case 6:
-				layout = R.layout.fragment_cotas_parlamentar;
+				layout = R.layout.tab_projetos;
 				break;
 			case 7:
 				layout = R.layout.fragment_doacao;
@@ -355,72 +357,6 @@ public final class PoliticoDetalheFragment extends Fragment {
 
 	}
 
-	/*
-	 * private void montaFichaSenador(Bundle bundle, ActionBar tabBar) { // Inicia a primeira tab FichaSenador fichaSenador = new FichaSenador(); fichaSenador.setArguments(bundle);
-	 * 
-	 * // tab de projetos ProjetosFragment projetosFragment = new ProjetosFragment(); bundle.putString("casa", "s"); projetosFragment.setArguments(bundle);
-	 * 
-	 * // tab dos hashes HashtagFragment hashtag = new HashtagFragment(); hashtag.setArguments(bundle);
-	 * 
-	 * // tab dos bens BensFragment bens = new BensFragment(); bens.setArguments(bundle);
-	 * 
-	 * // tab de cotas CotaFichaFragment cota = new CotaFichaFragment(); cota.setArguments(bundle);
-	 * 
-	 * tabBar.addTab(tabBar.newTab().setText("Dados").setTabListener(new TabListener(fichaSenador, fm))); tabBar.addTab(tabBar.newTab().setText("Bens").setTabListener(new
-	 * TabListener(bens, fm))); tabBar.addTab(tabBar.newTab().setText("Projetos").setTabListener(new TabListener(projetosFragment, fm))); // hashtag tab Tab tabHashtag =
-	 * tabBar.newTab(); tabHashtag.setText("#Hashtag").setTabListener(new TabListener(hashtag, fm)); tabBar.addTab(tabHashtag);
-	 * 
-	 * if (bundle.getString("hashtag") != null) tabBar.selectTab(tabHashtag); // Tab tab = tabBar.newTab(); // tab.setText("Cota Parlamentar").setTabListener(new TabListener(cota,
-	 * fm)); // tabBar.addTab(tab); // tabBar.addTab(tabBar.newTab().setText("Doa��es de Campanha").setTabListener(new TabListener(doacao, fm))); // if (bundle.getString("cota") !=
-	 * null) // tabBar.selectTab(tab); // tabBar.addTab(tabBar.newTab().setText("V�deos").setTabListener(new TabListener(fichaDeputado))); }
-	 * 
-	 * private void montaFichaDeputado(Bundle bundle, ActionBar tabBar) { // Inicia a primeira tab // FichaDeputado fichaDeputado = new FichaDeputado(); //
-	 * fichaDeputado.setArguments(bundle);// passando o position
-	 * 
-	 * // tab de presencas PresencaFragment presenca = new PresencaFragment(); presenca.setArguments(bundle);
-	 * 
-	 * // tab de projetos ProjetosFragment projetosFragment = new ProjetosFragment(); projetosFragment.setArguments(bundle);
-	 * 
-	 * // tab dos hashes HashtagFragment hashtag = new HashtagFragment(); hashtag.setArguments(bundle);
-	 * 
-	 * // tab de cotas CotaFichaFragment cota = new CotaFichaFragment(); cota.setArguments(bundle);
-	 * 
-	 * // tab doacoes parecido com cotas DoacaoFragment doacao = new DoacaoFragment(); doacao.setArguments(bundle); // tab videos a fazer
-	 * 
-	 * // tab dos bens BensFragment bens = new BensFragment(); bundle.putString("casa", "c"); bens.setArguments(bundle);
-	 * 
-	 * // tabBar.addTab(tabBar.newTab().setText("Dados").setTabListener(new TabListener(fichaDeputado, fm))); tabBar.addTab(tabBar.newTab().setText("Bens").setTabListener(new
-	 * TabListener(bens, fm)));
-	 * 
-	 * // hashtag tab Tab tabHashtag = tabBar.newTab(); tabHashtag.setText("#Hashtag").setTabListener(new TabListener(hashtag, fm)); tabBar.addTab(tabHashtag);
-	 * 
-	 * tabBar.addTab(tabBar.newTab().setText("Presen�a").setTabListener(new TabListener(presenca, fm))); tabBar.addTab(tabBar.newTab().setText("Projetos").setTabListener(new
-	 * TabListener(projetosFragment, fm)));
-	 * 
-	 * // cota tab Tab tab = tabBar.newTab(); tab.setText("Cota Parlamentar").setTabListener(new TabListener(cota, fm)); tabBar.addTab(tab);
-	 * 
-	 * tabBar.addTab(tabBar.newTab().setText("Doa��es de Campanha").setTabListener(new TabListener(doacao, fm))); if (bundle.getString("cota") != null) tabBar.selectTab(tab); if
-	 * (bundle.getString("hashtag") != null) tabBar.selectTab(tabHashtag); // tabBar.addTab(tabBar.newTab().setText("V�deos").setTabListener(new TabListener(fichaDeputado))); }
-	 * 
-	 * public static class TabListener implements ActionBar.TabListener { private final Fragment mFragment; private Fragment mFrangmentAnterior; FragmentManager fm;
-	 * 
-	 * public TabListener(Fragment fragment, FragmentManager fm) { mFragment = fragment; this.fm = fm; }
-	 * 
-	 * @Override public void onTabReselected(Tab arg0, android.app.FragmentTransaction arg1) { // TODO Auto-generated method stub
-	 * 
-	 * }
-	 * 
-	 * @Override public void onTabSelected(Tab arg0, android.app.FragmentTransaction arg1) { if (null != mFragment) { FragmentTransaction ft = fm.beginTransaction(); //
-	 * ft.replace(R.id.detalhe_politico, mFragment); // ft.addToBackStack(null); ft.commit();
-	 * 
-	 * }
-	 * 
-	 * }
-	 * 
-	 * @Override public void onTabUnselected(Tab arg0, android.app.FragmentTransaction arg1) { if (null != mFragment) { mFrangmentAnterior = mFragment; FragmentTransaction ft =
-	 * fm.beginTransaction(); ft.remove(mFragment); }
-	 * 
-	 * } }
-	 */
+
 
 }

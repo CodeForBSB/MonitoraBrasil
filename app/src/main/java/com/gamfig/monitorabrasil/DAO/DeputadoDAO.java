@@ -1,31 +1,6 @@
 
 package com.gamfig.monitorabrasil.DAO;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -50,6 +25,31 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class DeputadoDAO {
 	private Context context;
 	public final static String url = "http://www.gamfig.com/mbrasilwsdl/";
@@ -61,28 +61,7 @@ public class DeputadoDAO {
 	public DeputadoDAO() {
 	}
 
-	public Politico buscaPolitico(Politico politico) {
-		int casa = 0;
-		if (politico.getTipoParlamentar().equals("s")) {
-			casa = R.string.pref_listasenadores;
-		} else {
-			casa = R.string.pref_listadeputados;
-		}
-		List<Politico> politicos = buscaPoliticosSalvos(casa);
-		for (Politico politico2 : politicos) {
-			if (politico.getNome() != null)
-				if (politico.getNome().equals(politico2.getNome())) {
-					return politico2;
-				}
-			if (politico.getIdCadastro() == politico2.getIdCadastro())
-				return politico2;
-			if (politico.getTwitter() != null) {
-				if (politico.getTwitter().equals(politico2.getTwitter()))
-					return politico2;
-			}
-		}
-		return null;
-	}
+
 
 	/**
 	 * Busca os politicos salvos - Deputados ou Senadores

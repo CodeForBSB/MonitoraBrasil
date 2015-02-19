@@ -1,10 +1,7 @@
 
 package com.gamfig.monitorabrasil.adapter;
 
-import java.util.List;
-
 import android.content.Context;
-import android.graphics.Color;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
@@ -13,15 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.gamfig.monitorabrasil.R;
-import com.gamfig.monitorabrasil.classes.Imagens;
+import com.gamfig.monitorabrasil.application.CustomApplication;
 import com.gamfig.monitorabrasil.classes.Twitter;
-import com.gamfig.monitorabrasil.pojo.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.List;
 
 public class TwitterAdapter extends ArrayAdapter<Twitter> {
 	Context context;
@@ -29,12 +26,12 @@ public class TwitterAdapter extends ArrayAdapter<Twitter> {
 	List<Twitter> data = null;
     private ImageLoader mImagemLoader;
 
-	public TwitterAdapter(Context context, int layoutResourceId, List<Twitter> status, ImageLoader mImagemLoader) {
+	public TwitterAdapter(Context context, int layoutResourceId, List<Twitter> status) {
 		super(context, layoutResourceId, status);
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 		this.data = status;
-        this.mImagemLoader = mImagemLoader;
+        this.mImagemLoader = ((CustomApplication) context.getApplicationContext()).getmImagemLoader();
 	}
 
 	@Override

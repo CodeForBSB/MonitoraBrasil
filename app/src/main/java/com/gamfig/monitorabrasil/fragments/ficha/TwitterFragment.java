@@ -95,7 +95,7 @@ public class TwitterFragment extends TabFactory {
             try {
                 if (tweets != null) {
                     getActivity().setProgressBarIndeterminateVisibility(false);
-                    TwitterAdapter adapt = new TwitterAdapter(getActivity(),R.layout.listview_item_twitter,tweets, mImagemLoader);
+                    TwitterAdapter adapt = new TwitterAdapter(getActivity(),R.layout.listview_item_twitter,tweets);
                     ListView lvTwitter = (ListView) getActivity().findViewById(R.id.listTwitter);
                     lvTwitter.setVisibility(View.VISIBLE);
                     lvTwitter.setAdapter(adapt);

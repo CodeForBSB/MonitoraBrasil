@@ -66,10 +66,11 @@ public class CardHashtag extends CardFactory {
 		@Override
 		protected List<Hashtag> doInBackground(Void... params) {
 			List<Hashtag> hashtags = new MonitoraDAO().buscaHastags();
-			// busca fotos
-			for (Hashtag hashtag : hashtags) {
-				hashtag.getPolitico().setFoto(Imagens.getImageBitmap(String.valueOf(hashtag.getPolitico().getIdCadastro())));
-			}
+            if(hashtags!= null)
+                // busca fotos
+                for (Hashtag hashtag : hashtags) {
+                    hashtag.getPolitico().setFoto(Imagens.getImageBitmap(String.valueOf(hashtag.getPolitico().getIdCadastro())));
+                }
 
 			return hashtags;
 		}

@@ -5,23 +5,50 @@ import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName = "politico")
 public class Politico {
-	
+
+	@DatabaseField(uniqueIndex = true)
 	private int idCadastro;
+
 	private int idMatricula;
 	private int idParlamentar;
 	private int idTbrasil;
+
+    @DatabaseField
 	private String nome;
+
+    @DatabaseField
 	private String nomeParlamentar;
+
+
+    @DatabaseField
+    private String siglaPartido;
+
+    @DatabaseField
 	private String tipo;//senado ou camara
-	private Partido partido;
+
+    @DatabaseField
 	private String email;
+    @DatabaseField
 	private String uf;
+    @DatabaseField
 	private int gabinete;
+    @DatabaseField
 	private String anexo;
+
+    @DatabaseField
 	private String telefone;
+
+    @DatabaseField
 	private String twitter;
 	private String facebook;
+
+
 	private ArrayList<Presenca> presenca;
 	private ArrayList<Projeto> projetos;
 	private int nrProjetos;
@@ -33,6 +60,7 @@ public class Politico {
 	private Bitmap foto;
 	private boolean isMonitorado;
 	private int posicao;
+    @DatabaseField
 	private String endereco;
 	
 	
@@ -88,12 +116,6 @@ public class Politico {
 	}
 	public void setTipoParlamentar(String tipoParlamentar) {
 		this.tipo = tipoParlamentar;
-	}
-	public Partido getPartido() {
-		return partido;
-	}
-	public void setPartido(Partido partido) {
-		this.partido = partido;
 	}
 	public String getEmail() {
 		return email;
@@ -215,7 +237,13 @@ public class Politico {
 	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
-	
-	
 
+
+    public String getSiglaPartido() {
+        return siglaPartido;
+    }
+
+    public void setSiglaPartido(String siglaPartido) {
+        this.siglaPartido = siglaPartido;
+    }
 }

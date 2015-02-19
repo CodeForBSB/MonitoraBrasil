@@ -14,8 +14,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.gamfig.monitorabrasil.DAO.DataBaseHelper;
+import com.gamfig.monitorabrasil.DAO.PoliticoDAO;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.DAO.DeputadoDAO;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
@@ -23,10 +26,19 @@ import com.gamfig.monitorabrasil.classes.Politico;
 import com.gamfig.monitorabrasil.dialog.DialogComentario;
 import com.gamfig.monitorabrasil.fragments.ficha.PoliticoDetalheFragment;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static android.R.anim.fade_in;
+import static android.R.anim.fade_out;
+
 public class FichaActivity extends FragmentActivity {
 	private PoliticoDetalheFragment politicoFragment;
 	private int idPolitico;
 	private String nome;
+    private Politico p;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,34 +46,45 @@ public class FichaActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_cota_parlamentar);
 
-		// abre a ficha do poltico
-		politicoFragment = new PoliticoDetalheFragment();
-		Bundle bundle = getIntent().getExtras();
-		idPolitico = bundle.getInt("idPolitico");
-		if (bundle.getString("nome") == null) {
-			// buscar o politico
-			Politico p = new Politico(idPolitico);
-			p.setTipoParlamentar(bundle.getString("casa"));
-			Politico politico = new DeputadoDAO(getApplicationContext()).buscaPolitico(p);
-			nome = (politico.getNome()==null?politico.getNomeParlamentar():politico.getNome()) + " " + politico.getTwitter();
-		} else {
-			nome = bundle.getString("nome") + " " + bundle.getString("twitter");
-		}
+        // abre a ficha do poltico
+        politicoFragment = new PoliticoDetalheFragment();
+        Bundle bundle = getIntent().getExtras();
+        idPolitico = bundle.getInt("idPolitico");
+        p = new Politico(idPolitico);
+        try {
+            // buscar o politico
+            DataBaseHelper dbh = new DataBaseHelper(FichaActivity.this);
+            PoliticoDAO politicoDAO = new PoliticoDAO(dbh.getConnectionSource());
+            p=politicoDAO.getPolitico(idPolitico);
+            if(null!=p){
+                nome = p.getNome() + " " + p.getTwitter();
+                bundle.putString("twitter",p.getTwitter());
+                politicoFragment.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.container, politicoFragment, "listaPoliticoMonitora");
+                fragmentTransaction.commit();
+            }else{
+                Toast.makeText(FichaActivity.this,"Politico nao encontrado",Toast.LENGTH_SHORT);
+            }
 
-		politicoFragment.setArguments(bundle);
-		FragmentManager fragmentManager = getFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		fragmentTransaction.add(R.id.container, politicoFragment, "listaPoliticoMonitora");
-		fragmentTransaction.commit();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
 
 	}
 
 	public void abreGrafico(View v) {
 		Button btn = (Button) v;
-		ViewFlipper mVf = (ViewFlipper) findViewById(R.id.viewFlipper1);
+		ViewFlipper mVf = (ViewFlipper) findViewById(R.id.flipper_cotas_ficha);
 
-		mVf.setInAnimation(this, android.R.anim.fade_in);
-		mVf.setOutAnimation(this, android.R.anim.fade_out);
+		mVf.setInAnimation(this, fade_in);
+		mVf.setOutAnimation(this, fade_out);
 
 		if (mVf.getDisplayedChild() == 0) {
 			mVf.showNext();

@@ -1,11 +1,5 @@
 package com.gamfig.monitorabrasil.fragments.ficha;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -17,35 +11,28 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
-import com.gamfig.monitorabrasil.R;
+import com.gamfig.monitorabrasil.DAO.DataBaseHelper;
 import com.gamfig.monitorabrasil.DAO.DeputadoDAO;
+import com.gamfig.monitorabrasil.DAO.PoliticoDAO;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
+import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.activitys.PrincipalActivity;
-import com.gamfig.monitorabrasil.activitys.TwittterActivity;
-import com.gamfig.monitorabrasil.adapter.TwitterAdapter;
 import com.gamfig.monitorabrasil.classes.Imagens;
 import com.gamfig.monitorabrasil.classes.Politico;
 import com.gamfig.monitorabrasil.classes.Presenca;
-import com.twitter.sdk.android.Twitter;
 import com.gamfig.monitorabrasil.dialog.DialogAvaliacao;
 import com.gamfig.monitorabrasil.pojo.PreferenciasUtil;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.models.Search;
-import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.services.SearchService;
-import com.twitter.sdk.android.core.services.StatusesService;
-import com.twitter.sdk.android.tweetui.TweetViewAdapter;
+
+import org.json.JSONObject;
+
+import java.sql.SQLException;
+import java.text.DecimalFormat;
 
 public class FichaDeputado extends TabFactory {
 	private RelativeLayout rlPb;
@@ -81,9 +68,15 @@ public class FichaDeputado extends TabFactory {
 				Politico pol = new Politico();
 				pol.setIdCadastro(idPolitico);
 				pol.setTipoParlamentar("c");
-				pol = new DeputadoDAO(getActivity()).buscaPolitico(pol);
+                DataBaseHelper dbh = new DataBaseHelper(getActivity());
+
+                try {
+                    PoliticoDAO politicoDAO = new PoliticoDAO(dbh.getConnectionSource());
+                    pol = politicoDAO.getPolitico(idPolitico);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
 				UserDAO userdao = new UserDAO(getActivity().getApplicationContext());
-				pol = new DeputadoDAO(getActivity().getApplicationContext()).buscaPolitico(pol);
 				boolean monitorado = false;
 				if (btnMonitorar.getText().toString().equals("Monitorar")) {
 					btnMonitorar.setText("Monitorando");
@@ -184,7 +177,7 @@ public class FichaDeputado extends TabFactory {
 
 					// partido
 					TextView txtPartido = (TextView) mActivity.findViewById(R.id.txtPartidoFicha);
-					txtPartido.setText(politico.getPartido().getSigla() + "-" + politico.getUf());
+					txtPartido.setText(politico.getSiglaPartido() + "-" + politico.getUf());
 					if (politico.getLider().length() > 0) {
 						txtPartido.setText(txtPartido.getText() + " (" + politico.getLider() + ")");
 					}

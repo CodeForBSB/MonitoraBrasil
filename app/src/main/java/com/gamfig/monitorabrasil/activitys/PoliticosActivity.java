@@ -1,5 +1,6 @@
 package com.gamfig.monitorabrasil.activitys;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,8 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.crashlytics.android.Crashlytics;
+import com.gamfig.monitorabrasil.DAO.DataBaseHelper;
+import com.gamfig.monitorabrasil.DAO.PoliticoDAO;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
 import com.gamfig.monitorabrasil.adapter.PoliticoAdapter;
@@ -165,12 +168,6 @@ public class PoliticosActivity extends Activity implements PoliticosFragment.Sel
 		bundle.putString("uf", uf);
 		bundle.putString("partido", partido);
 
-		// mPoliticosFragment.atualizaAdapter(bundle);
-
-		// mPoliticosFragment = new PoliticosFragment();
-		// mPoliticosFragment.setArguments(bundle);
-
-		// TODO 1 - add the FriendsFragment to the fragment_container
 		mFragmentManager = getFragmentManager();
 		mPoliticosFragment.setmBundle(bundle);
 		FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
@@ -285,11 +282,27 @@ public class PoliticosActivity extends Activity implements PoliticosFragment.Sel
 			Intent sendIntent = new Intent();
 			sendIntent.setAction(Intent.ACTION_SEND);
 
-			String mensagem = "Ficha Dep. " + politico.getNomeParlamentar() + "\n";
-			mensagem = mensagem + getString(R.string.url_share) + String.valueOf(politico.getIdCadastro()) + " #monitoraBrasil";
-			sendIntent.putExtra(Intent.EXTRA_TEXT, mensagem);
-			sendIntent.setType("text/plain");
-			startActivity(sendIntent);
+            //busca politico
+            DataBaseHelper dbh = new DataBaseHelper(PoliticosActivity.this);
+            PoliticoDAO politicoDAO = null;
+            try {
+                politicoDAO = new PoliticoDAO(dbh.getConnectionSource());
+                politico=politicoDAO.getPolitico(politico.getIdCadastro());
+                String tipo;
+                tipo = (politico.getTipoParlamentar().equals("d")?"Dep. ":"Sen. ");
+                String twitter;
+                twitter = (politico.getTwitter().isEmpty()?"":politico.getTwitter());
+                String mensagem = "Ficha " + tipo+politico.getNome() +" "+ twitter+"\n";
+                mensagem = mensagem + getString(R.string.url_share) + String.valueOf(politico.getIdCadastro()) + " #monitoraBrasil";
+                sendIntent.putExtra(Intent.EXTRA_TEXT, mensagem);
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
+
 			break;
 		case R.id.ic_comment:
 			DialogFragment dialog = new DialogComentario(new UserDAO(getApplicationContext()).getIdUser(), politico.getIdCadastro(), "Comente", 1);
@@ -336,9 +349,14 @@ public class PoliticosActivity extends Activity implements PoliticosFragment.Sel
 
 	}
 
-	public void compartilharBio(View v) {
+	public void compartilharBio(View v) throws SQLException {
 		Intent sendIntent = new Intent();
 		sendIntent.setAction(Intent.ACTION_SEND);
+        //busca politico
+        DataBaseHelper dbh = new DataBaseHelper(PoliticosActivity.this);
+        PoliticoDAO politicoDAO = new PoliticoDAO(dbh.getConnectionSource());
+        politico=politicoDAO.getPolitico(politico.getIdCadastro());
+
 		TextView txtBio = (TextView) findViewById(R.id.txtBiografia);
 		// pega nome
 		TextView txtNome = (TextView) findViewById(R.id.txtNome);

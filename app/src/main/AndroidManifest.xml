@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gamfig.monitorabrasil"
-    android:versionCode="47"
-    android:versionName="3.7" >
+    package="com.gamfig.monitorabrasil">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -12,13 +10,12 @@
         android:name="com.gamfig.monitorabrasil.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.gamfig.monitorabrasil.permission.C2D_MESSAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <!--<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />-->
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
@@ -41,6 +38,7 @@
         android:required="true" />
 
     <application
+        android:name=".application.CustomApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -67,7 +65,8 @@
 
         <activity
             android:name=".activitys.PrincipalActivity"
-            android:label="@string/title_activity_pricipal" >
+            android:label="@string/title_activity_pricipal"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -78,7 +77,8 @@
             android:name=".activitys.PoliticosActivity"
             android:label="@string/title_activity_politicos"
             android:parentActivityName=".activitys.PrincipalActivity"
-            android:theme="@android:style/Theme.Holo.Light" >
+            android:theme="@android:style/Theme.Holo.Light"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gamfig.monitorabrasil.activitys.PrincipalActivity" />
@@ -90,7 +90,8 @@
         <activity
             android:name=".activitys.FichaActivity"
             android:label="@string/title_activity_cota_parlamentar"
-            android:theme="@android:style/Theme.Holo.Light" >
+            android:theme="@android:style/Theme.Holo.Light"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
         </activity>
         <activity
             android:name=".activitys.SobreActivity"
@@ -122,7 +123,8 @@
             android:name=".activitys.ProjetosActivity"
             android:label="@string/title_activity_lista_projetos"
             android:parentActivityName=".activitys.PrincipalActivity"
-            android:theme="@android:style/Theme.Holo.Light" >
+            android:theme="@android:style/Theme.Holo.Light"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gamfig.monitorabrasil.activitys.PrincipalActivity" />
@@ -140,7 +142,8 @@
             android:name=".activitys.CotaActivity"
             android:label="@string/title_activity_cota"
             android:parentActivityName=".activitys.PrincipalActivity"
-            android:theme="@android:style/Theme.Holo.Light" >
+            android:theme="@android:style/Theme.Holo.Light"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gamfig.monitorabrasil.activitys.PrincipalActivity" />
@@ -159,7 +162,8 @@
             android:name=".activitys.TwittterActivity"
             android:label="@string/title_activity_twittter"
             android:theme="@android:style/Theme.Holo.Light"
-            android:parentActivityName=".activitys.PrincipalActivity" >
+            android:parentActivityName=".activitys.PrincipalActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.gamfig.monitorabrasil.activitys.PrincipalActivity" />

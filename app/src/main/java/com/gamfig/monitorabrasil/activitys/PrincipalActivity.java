@@ -8,8 +8,6 @@
  */
 package com.gamfig.monitorabrasil.activitys;
 
-import java.io.IOException;
-
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -30,12 +28,18 @@ import android.widget.ListView;
 import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
-
-import com.crashlytics.android.Crashlytics;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.gamfig.monitorabrasil.DAO.DataBaseHelper;
+import com.gamfig.monitorabrasil.DAO.PoliticoDAO;
+import com.gamfig.monitorabrasil.DAO.UserDAO;
 import com.gamfig.monitorabrasil.NavigationDrawerFragment;
 import com.gamfig.monitorabrasil.R;
-import com.gamfig.monitorabrasil.DAO.UserDAO;
 import com.gamfig.monitorabrasil.adapter.PoliticoMonitoradoAdapter;
+import com.gamfig.monitorabrasil.application.CustomApplication;
+import com.gamfig.monitorabrasil.classes.Politico;
 import com.gamfig.monitorabrasil.classes.Projeto;
 import com.gamfig.monitorabrasil.dialog.DialogComentario;
 import com.gamfig.monitorabrasil.fragments.PontuacaoFragment;
@@ -46,8 +50,12 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import io.fabric.sdk.android.Fabric;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrincipalActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, PoliticosFragment.SelectionListener {
 	public static final String TAG = "MonitoraBrasil";
@@ -61,6 +69,7 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
 	 * Used to store the last screen title. For use in {@link #restoreActionBar()}.
 	 */
 	private CharSequence mTitle;
+    private PoliticoDAO politicoDAO;
 
 	GoogleCloudMessaging gcm;
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -71,7 +80,7 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
+
 		if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 			StrictMode.setThreadPolicy(policy);
@@ -84,6 +93,9 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
 
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        //verifica se eh o primeiro acesso e baixa os politicos
+        verificaAcesso();
 
 		// busca o gcm
 		salvaGCM();
@@ -124,6 +136,53 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
 
 
 	}
+
+    public void verificaAcesso(){
+        //buscar lista de parlamentares
+        DataBaseHelper dbh= new DataBaseHelper(PrincipalActivity.this);
+
+        try {
+            politicoDAO = new PoliticoDAO(dbh.getConnectionSource());
+            if(politicoDAO.queryForAll().isEmpty()) {
+                buscaParlamentares();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void buscaParlamentares(){
+        Log.i("monitora", "PrincipalActivity buscaParlamentares()");
+        StringRequest request = new StringRequest(Request.Method.POST , CustomApplication.URL + "rest/politico_getall.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+                        List<Politico> politicos = gson.fromJson(response, new TypeToken<ArrayList<Politico>>() {
+                        }.getType());
+                        for(Politico p : politicos){
+                            try {
+                                politicoDAO.create(p);
+
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }) {
+
+        };
+        request.setTag("tag");
+        ((CustomApplication) getApplicationContext()).getRq().add(request);
+    }
 
 	public void comentar(View v) {
 
@@ -182,9 +241,7 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
 		switch (position) {
 
 		case 11:
-
-
-			intent = new Intent();
+            intent = new Intent();
 			intent.setClass(this, CotaActivity.class);
 			startActivity(intent);
 			break;
@@ -266,6 +323,12 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
 		}
 
 	}
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        ((CustomApplication) context.getApplicationContext()).getRq().cancelAll("tag");
+    }
 
 	private void abreFragment(Fragment fragment2open) {
 		FragmentManager fragmentManager = getFragmentManager();

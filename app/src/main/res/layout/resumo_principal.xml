@@ -65,7 +65,8 @@
                         android:layout_weight="1"
                         android:background="@color/fruit_laranja"
                         android:drawableLeft="@drawable/ic_action_cotas_white"
-                        android:text="COTAS" />
+                        android:text="COTAS"
+                        android:visibility="visible"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -83,6 +84,12 @@
                     android:layout_margin="5dp"
                     android:text="#MonitoraBrasil"
                     android:textStyle="bold" />
+                <ProgressBar
+                    android:id="@+id/pbTwitter"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal" />
                 </LinearLayout>
 
 
@@ -130,7 +137,8 @@
                 android:layout_height="0dp"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <RelativeLayout
                     android:layout_width="match_parent"

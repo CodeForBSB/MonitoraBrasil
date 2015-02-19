@@ -1,14 +1,24 @@
 
 package com.gamfig.monitorabrasil.classes;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.text.DecimalFormat;
 
+@DatabaseTable(tableName = "presenca")
 public class Presenca {
+    @DatabaseField
 	private int ano;
+    @DatabaseField
 	private int nrPresenca;
+    @DatabaseField
 	private int nrAusenciaJustificada;
+    @DatabaseField
 	private int nrAusenciaNaoJustificada;
+    @DatabaseField
 	private int total;
+    private Politico politico;
 	
 	public int getAno() {
 		return ano;

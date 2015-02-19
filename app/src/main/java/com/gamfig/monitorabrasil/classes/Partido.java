@@ -1,9 +1,11 @@
 
 package com.gamfig.monitorabrasil.classes;
 
+
 public class Partido {
 	private String nome;
 	private String sigla;
+
 	public String getSigla() {
 		return sigla;
 	}

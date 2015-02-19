@@ -1,24 +1,25 @@
 package com.gamfig.monitorabrasil.fragments.listviews;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ListFragment;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
+import com.gamfig.monitorabrasil.DAO.DataBaseHelper;
+import com.gamfig.monitorabrasil.DAO.PoliticoDAO;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.adapter.PoliticoAdapter;
 import com.gamfig.monitorabrasil.classes.Politico;
-import com.gamfig.monitorabrasil.classes.politico.PoliticoFactory;
 import com.google.gson.Gson;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PoliticosFragment extends ListFragment {
 
@@ -31,6 +32,8 @@ public class PoliticosFragment extends ListFragment {
 	private Bundle data;
 	private Bundle mBundle;
 	int position;
+    private DataBaseHelper dbh;
+    private PoliticoDAO politicoDAO;
 
 	public interface SelectionListener {
 		public void onItemSelected(int position, ListView l, View view);
@@ -53,14 +56,39 @@ public class PoliticosFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+        dbh = new DataBaseHelper(getActivity());
+        data = getArguments();
+        if (mBundle == null) {
+            mBundle = data;
+            setListShown(false);
+        }
 
-		// Check for previously saved state
-		if (savedInstanceState == null) {
-			Log.e("DEBUG", "onActivityCreated saved is null");
-			// if (adapterPoliticos == null)
-			// montar de acordo com a casa
+        try {
+            politicoDAO = new PoliticoDAO(dbh.getConnectionSource());
+            Map<String,Object> values = new HashMap<String,Object>();
+            values.put("tipo",mBundle.getString("casa"));
+            if(mBundle.get("uf")!= null)
+                if(!mBundle.getString("uf").equals("Brasil")){
+                    values.put("uf",mBundle.getString("uf"));
+                }
+            if(mBundle.get("partido")!= null)
+                if(!mBundle.getString("partido").equals("Todos os Partidos")){
+                    values.put("siglaPartido",mBundle.getString("partido"));
+                }
 
-		}
+            politicos = politicoDAO.queryForFieldValues(values);
+            adapterPoliticos = new PoliticoAdapter(getActivity(), R.layout.listview_item_politico, politicos);
+
+            getListView().setAdapter(adapterPoliticos);
+            setListShown(true);
+
+        }
+        catch (SQLException e){
+
+        }
+
+        /*
+
 		data = getArguments();
 		if (mBundle == null) {
 			mBundle = data;
@@ -72,7 +100,7 @@ public class PoliticosFragment extends ListFragment {
 				setListShown(false);
 			}
 		}
-
+*/
 		// When using two-pane layout, configure the ListView to highlight the
 		// selected list item
 
@@ -94,7 +122,7 @@ public class PoliticosFragment extends ListFragment {
 	public void onResume() {
 		super.onResume();
 		String casa = this.data.getString("casa");
-		if (casa.equals("senado")) {
+		if (casa.equals("s")) {
 
 			getActivity().getActionBar().setTitle("Senadores");
 		} else getActivity().getActionBar().setTitle("Deputados Federais");
@@ -102,27 +130,8 @@ public class PoliticosFragment extends ListFragment {
 		if (adapterPoliticos != null) {
 			setListAdapter(adapterPoliticos);
 			getListView().setSelection(this.position);
-			Log.e("DEBUG", "onResume adapter not null");
 		}
 	}
-
-	public void atualizaAdapter(Bundle bundle) {
-		this.data = bundle;
-		new BuscaPoliticos(data, this).execute();
-
-	}
-
-	private void mudaTitulo() {
-		String casa = this.data.getString("casa");
-		if (casa.equals("senado")) {
-
-			getActivity().setTitle("Senadores");
-		} else {
-
-			getActivity().setTitle("Deputados Federais");
-		}
-	}
-
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		Gson gson = new Gson();
@@ -167,51 +176,11 @@ public class PoliticosFragment extends ListFragment {
 
 	}
 
-	public Bundle getmBundle() {
-		return mBundle;
-	}
 
 	public void setmBundle(Bundle mBundle) {
 		this.mBundle = mBundle;
 	}
 
-	public class BuscaPoliticos extends AsyncTask<Void, Void, List<Politico>> {
 
-		private PoliticosFragment mActivity;
-		ProgressBar pbar;
-		PoliticoFactory politicoFactory;
-
-		public BuscaPoliticos(Bundle data, PoliticosFragment politicosFragment) {
-			mActivity = politicosFragment;
-			politicoFactory = new PoliticoFactory(data, getActivity());
-		}
-
-		protected void onPreExecute() {
-		}
-
-		@Override
-		protected List<Politico> doInBackground(Void... params) {
-
-			return politicoFactory.buscaPoliticos();
-		}
-
-		protected void onPostExecute(List<Politico> results) {
-			try {
-				if (results != null) {
-
-					setListShown(true);
-					politicos = results;
-					adapterPoliticos = new PoliticoAdapter(mActivity.getActivity(), R.layout.listview_item_politico, politicos);
-
-					mActivity.getListView().setAdapter(adapterPoliticos);
-					mudaTitulo();
-
-				}
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-
-		}
-	}
 
 }

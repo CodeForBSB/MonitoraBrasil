@@ -1,18 +1,5 @@
 package com.gamfig.monitorabrasil.fragments.ficha;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.achartengine.ChartFactory;
-import org.achartengine.GraphicalView;
-import org.achartengine.model.CategorySeries;
-import org.achartengine.renderer.DefaultRenderer;
-import org.achartengine.renderer.SimpleSeriesRenderer;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.text.Html;
@@ -24,14 +11,30 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.gamfig.monitorabrasil.R;
+import com.gamfig.monitorabrasil.DAO.DataBaseHelper;
 import com.gamfig.monitorabrasil.DAO.DeputadoDAO;
+import com.gamfig.monitorabrasil.DAO.PoliticoDAO;
+import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.adapter.CotaAdapter;
 import com.gamfig.monitorabrasil.adapter.ProjetoVotoAdapter;
 import com.gamfig.monitorabrasil.classes.Beneficiario;
 import com.gamfig.monitorabrasil.classes.Cota;
 import com.gamfig.monitorabrasil.classes.Politico;
 import com.gamfig.monitorabrasil.pojo.Util;
+
+import org.achartengine.ChartFactory;
+import org.achartengine.GraphicalView;
+import org.achartengine.model.CategorySeries;
+import org.achartengine.renderer.DefaultRenderer;
+import org.achartengine.renderer.SimpleSeriesRenderer;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class CotaFichaFragment extends TabFactory {
 	private static int[] COLORS = new int[] { Color.GREEN, Color.BLUE, Color.MAGENTA, Color.CYAN, Color.DKGRAY, Color.RED, Color.YELLOW };
@@ -59,14 +62,16 @@ public class CotaFichaFragment extends TabFactory {
 		casa = getBundle().getString("casa");
 
 		// busca politico
-		Politico politico = new Politico();
-		politico.setIdCadastro(idPolitico);
-		politico.setTipoParlamentar(casa);
-		politico = new DeputadoDAO(getActivity()).buscaPolitico(politico);
+        DataBaseHelper dbh = new DataBaseHelper(getActivity());
 
-		new buscaCota(politico).execute();
-
-		// montar o grafico
+        Politico politico= null;
+        try {
+            PoliticoDAO politicoDAO = new PoliticoDAO(dbh.getConnectionSource());
+            politico = politicoDAO.getPolitico(idPolitico);
+            new buscaCota(politico).execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
 	}
 

@@ -86,7 +86,7 @@ public class HashtagFragment extends TabFactory {
 					HashtagAdapter adapter = new HashtagAdapter(getActivity(), R.layout.listview_item_hashtag, results);
 					lv.setAdapter(adapter);
 				} else {
-					Toast.makeText(getActivity(), "Nenhuma # encontrada", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(getActivity(), "Nenhuma # encontrada", Toast.LENGTH_SHORT).show();
 				}
 				lv.setVisibility(View.VISIBLE);
 

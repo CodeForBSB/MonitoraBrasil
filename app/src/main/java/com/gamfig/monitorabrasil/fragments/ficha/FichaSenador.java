@@ -174,7 +174,7 @@ public class FichaSenador extends TabFactory {
 
 					// partido
 					TextView txtPartido = (TextView) mActivity.findViewById(R.id.txtPartidoFicha);
-					txtPartido.setText(politico.getPartido().getSigla() + "-" + politico.getUf());
+					txtPartido.setText(politico.getSiglaPartido() + "-" + politico.getUf());
 					if (politico.getLider().length() > 0) {
 						txtPartido.setText(txtPartido.getText() + " (" + politico.getLider() + ")");
 					}
