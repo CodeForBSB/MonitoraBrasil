@@ -27,87 +27,9 @@ public class MonitoraDAO {
 	public MonitoraDAO() {
 	}
 
-	/**
-	 * Busca os ultimos eventos
-	 */
-	public List<Evento> buscaEventos() {
-		HttpClient httpclient = new DefaultHttpClient();
 
-		HttpPost httppost = new HttpPost(DeputadoDAO.url + "rest/getlog.php");
 
-		// Request parameters and other properties.
 
-		HttpResponse response;
-		List<NameValuePair> params = new ArrayList<NameValuePair>(1);
-		try {
-			httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-			response = httpclient.execute(httppost);
-			HttpEntity entity = response.getEntity();
-			if (entity != null) {
-				InputStream instream = entity.getContent();
-
-				String result = DeputadoDAO.convertStreamToString(instream);
-				Gson gson = new Gson();
-
-				// retorna o id criado
-				List<Evento> pontos = gson.fromJson(result, new TypeToken<ArrayList<Evento>>() {
-				}.getType());
-
-				return pontos;
-			}
-
-		} catch (ClientProtocolException e) {
-		} catch (IOException e) {
-
-			e.printStackTrace();
-			e.printStackTrace();
-		} catch (JsonParseException e) {
-		}
-		return null;
-
-	}
-
-	/**
-	 * busca as #
-	 * 
-	 * @return
-	 */
-	public List<Hashtag> buscaHastags() {
-		HttpClient httpclient = new DefaultHttpClient();
-
-		HttpPost httppost = new HttpPost(DeputadoDAO.url + "rest/getinfomain.php?acao=hashmaisvotadas");
-
-		// Request parameters and other properties.
-
-		HttpResponse response;
-		List<NameValuePair> params = new ArrayList<NameValuePair>(1);
-		try {
-			httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-			response = httpclient.execute(httppost);
-			HttpEntity entity = response.getEntity();
-			if (entity != null) {
-				InputStream instream = entity.getContent();
-
-				String result = DeputadoDAO.convertStreamToString(instream);
-				Gson gson = new Gson();
-
-				// retorna o id criado
-				List<Hashtag> hashtags = gson.fromJson(result, new TypeToken<ArrayList<Hashtag>>() {
-				}.getType());
-
-				return hashtags;
-			}
-
-		} catch (ClientProtocolException e) {
-		} catch (IOException e) {
-
-			e.printStackTrace();
-			e.printStackTrace();
-		} catch (JsonParseException e) {
-		}
-		return null;
-
-	}
 
 	/**
 	 * busca os projetos mais votados ou mais comentados

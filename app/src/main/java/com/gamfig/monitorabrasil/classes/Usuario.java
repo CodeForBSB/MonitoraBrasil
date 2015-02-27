@@ -1,6 +1,17 @@
 
 package com.gamfig.monitorabrasil.classes;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.gamfig.monitorabrasil.R;
+import com.gamfig.monitorabrasil.application.AppController;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+
 import java.util.ArrayList;
 
 public class Usuario {
@@ -32,6 +43,46 @@ public class Usuario {
 	private int ptsAvaliacaoPolitico;
 	private int posicao;
 	private String receberNotificacao;
+
+
+    public void carregaFoto(ImageView imageView,String tamanho){
+        String url=null;
+        //verificar se tem login no facebook
+        String idFacebook = AppController.getInstance().getSharedPref().getString("idfacebook",null);
+        if(idFacebook!=null){
+            url="http://graph.facebook.com/"+idFacebook+"/picture?type="+tamanho;
+        }
+        if(url != null){
+            AppController.getInstance().getmImagemLoader().displayImage(url,imageView,new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String imageUri, View view) {
+
+                }
+
+                @Override
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+                }
+
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    ImageView v = (ImageView) view;
+                    v.setImageBitmap(Imagens.getCroppedBitmap(((BitmapDrawable) v.getDrawable()).getBitmap()));
+
+                }
+
+                @Override
+                public void onLoadingCancelled(String imageUri, View view) {
+
+                }
+            });
+
+        }else{
+            Bitmap bitmap = BitmapFactory.decodeResource(AppController.getInstance().getResources(), R.drawable.ic_action_person);
+            imageView.setImageBitmap(Imagens.getCroppedBitmap(bitmap));
+        }
+
+    }
 
 	public int getNrPoliticosMonitorados() {
 		return ptsPoliticosMonitorados;

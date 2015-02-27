@@ -21,8 +21,7 @@ import com.crashlytics.android.Crashlytics;
 import com.gamfig.monitorabrasil.DAO.DeputadoDAO;
 import com.gamfig.monitorabrasil.DAO.Dispatcher;
 import com.gamfig.monitorabrasil.R;
-import com.gamfig.monitorabrasil.application.CustomApplication;
-import com.gamfig.monitorabrasil.classes.Imagens;
+import com.gamfig.monitorabrasil.application.AppController;
 import com.gamfig.monitorabrasil.classes.Twitter;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -62,7 +61,7 @@ public class TwitterProxy extends TwitterFabric{
 
     public void getTwitterHashtag(){
 
-        StringRequest request = new StringRequest(Request.Method.POST , CustomApplication.URL + "proxytwitter/gethashtag.php",
+        StringRequest request = new StringRequest(Request.Method.POST , AppController.URL + "proxytwitter/gethashtag.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -84,9 +83,7 @@ public class TwitterProxy extends TwitterFabric{
             }
 
         };
-
-        request.setTag("tag");
-        ((CustomApplication) this.activity.getApplicationContext()).getRq().add(request);
+        AppController.getInstance().addToRequestQueue(request,"tag");
     }
 
     private void montaTwitter(Twitter t) {
@@ -106,7 +103,7 @@ public class TwitterProxy extends TwitterFabric{
             txtId.setMovementMethod(LinkMovementMethod.getInstance());
             txtTempo.setText(" . " + t.getData());
             try {
-                ((CustomApplication) this.activity.getApplicationContext()).getmImagemLoader().displayImage(t.getUrlFoto(),foto);
+                ((AppController) this.activity.getApplicationContext()).getmImagemLoader().displayImage(t.getUrlFoto(),foto);
                 foto.setVisibility(View.VISIBLE);
             } catch (Exception e) {
                 Crashlytics.logException(e);

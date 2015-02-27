@@ -1,8 +1,5 @@
 package com.gamfig.monitorabrasil.fragments.ficha;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -16,30 +13,20 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.DAO.DeputadoDAO;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
 import com.gamfig.monitorabrasil.activitys.PrincipalActivity;
-import com.gamfig.monitorabrasil.adapter.TwitterAdapter;
 import com.gamfig.monitorabrasil.classes.Imagens;
 import com.gamfig.monitorabrasil.classes.Politico;
-import com.gamfig.monitorabrasil.classes.Twitter;
 import com.gamfig.monitorabrasil.dialog.DialogAvaliacao;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.services.StatusesService;
-import com.twitter.sdk.android.tweetui.TweetViewAdapter;
 
 public class FichaSenador extends TabFactory {
 	private RelativeLayout rlPb;
@@ -84,7 +71,7 @@ public class FichaSenador extends TabFactory {
 				} else {
 					btnMonitorar.setText("Monitorar");
 				}
-				mPolitico.setTipoParlamentar("s");
+				mPolitico.setTipo("s");
 				userdao.salvaMonitorado(mPolitico, monitorado);
 
 			}
@@ -141,6 +128,8 @@ public class FichaSenador extends TabFactory {
 			try {
 				if (politico != null) {
 					mPolitico = politico;
+                    LinearLayout llTopoFicha = (LinearLayout) mActivity.findViewById(R.id.llTopoFicha);
+                    llTopoFicha.setBackgroundResource(R.drawable.gradient_fundo_azul);
 					// popula dados do deputado
 					// fillForm(politico);
 					rlPb.setVisibility(View.GONE);

@@ -10,10 +10,9 @@ package com.gamfig.monitorabrasil.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,15 +20,24 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.gamfig.monitorabrasil.R;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.model.GraphUser;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
+import com.gamfig.monitorabrasil.R;
+import com.gamfig.monitorabrasil.adapter.RankAdapter;
+import com.gamfig.monitorabrasil.application.AppController;
 import com.gamfig.monitorabrasil.classes.Imagens;
 import com.gamfig.monitorabrasil.classes.Usuario;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class PontuacaoFragment extends Fragment {
 
-	FragmentManager mFragmentManager;
 	private Usuario user;
 	private Activity activity;
 
@@ -53,9 +61,20 @@ public class PontuacaoFragment extends Fragment {
 		}
 
 		activity = getActivity();
+        Session session = Session.getActiveSession();
+        if(session==null){
+            // try to restore from cache
+            session = Session.openActiveSessionFromCache(getActivity());
+        }
+        if(session != null && ( session.isOpened())){
+            //buscar a lista de amgigos
+           // getFriends(session);
+        }
 
 		return rootView;
 	}
+
+
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -70,14 +89,12 @@ public class PontuacaoFragment extends Fragment {
 		TextView nome = (TextView) getActivity().findViewById(R.id.txtNome);
 		nome.setText(user.getNome());
 		Bundle bundle = getArguments();
-		if (null == bundle) {
-			Bitmap foto = new UserDAO(getActivity()).buscaFotoCache(0);
-			if (foto != null) {
-				ImageView imgFoto = (ImageView) getActivity().findViewById(R.id.imgFoto);
-				imgFoto.setImageBitmap(Imagens.getCroppedBitmap(foto));
-			}
-		}
-
+        // busca a foto
+        ImageView imgFoto = (ImageView) getActivity().findViewById(R.id.imgFoto);
+        if(user.getId()== AppController.getInstance().getSharedPref().getInt(getString(R.string.id_key_idcadastro_novo),0))
+            user.carregaFoto(imgFoto,"large");
+        else
+            Imagens.carregaImagemFacebook(user.getIdFacebook(),imgFoto,"large");
 	}
 
 	@Override

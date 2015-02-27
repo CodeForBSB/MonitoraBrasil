@@ -67,7 +67,7 @@ public class FichaDeputado extends TabFactory {
 			public void onClick(View v) {
 				Politico pol = new Politico();
 				pol.setIdCadastro(idPolitico);
-				pol.setTipoParlamentar("c");
+				pol.setTipo("c");
                 DataBaseHelper dbh = new DataBaseHelper(getActivity());
 
                 try {

@@ -15,24 +15,25 @@
 
     <ImageView
         android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/posicao"
-        android:src="@drawable/ic_action_person" />
+        android:src="@drawable/ic_action_person"
+        android:layout_marginLeft="5dp" />
 
     <TextView
         android:id="@+id/posicao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageView1"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="7dp"
         android:background="@drawable/fundo_borda_redonda"
-        android:text="1" />
+        android:text="1"
+        android:layout_alignBottom="@+id/pontos"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/pontos"

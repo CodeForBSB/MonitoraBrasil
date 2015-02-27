@@ -6,6 +6,8 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,8 @@ import android.widget.TextView;
 
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
+import com.gamfig.monitorabrasil.application.AppController;
+import com.gamfig.monitorabrasil.classes.Imagens;
 import com.gamfig.monitorabrasil.classes.Politico;
 import com.gamfig.monitorabrasil.classes.Usuario;
 
@@ -65,6 +69,13 @@ public class RankAdapter extends ArrayAdapter<Usuario> {
 		holder.txtNomeRow.setText(user.getNome());
 		holder.txtPontos.setText(String.valueOf(user.getPontos())+" pontos");
 		holder.txtPosicao.setText(String.valueOf(user.getPosicao()));
+
+        if(user.getIdFacebook() != null && !user.getIdFacebook().equals("0")){
+            Imagens.carregaImagemFacebook(user.getIdFacebook(),holder.foto,"square");
+        }else{
+            Bitmap bitmap = BitmapFactory.decodeResource(AppController.getInstance().getResources(), R.drawable.ic_action_person);
+            holder.foto.setImageBitmap(Imagens.getCroppedBitmap(bitmap));
+        }
 
 		return row;
 	}

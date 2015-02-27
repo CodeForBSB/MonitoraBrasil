@@ -34,10 +34,7 @@ public class ImageAdapter extends BaseAdapter {
 		this.activity = activity;		
 		this.politicos = politicoFavoritos;
 		// add
-		Politico pAdd = new Politico();
-		pAdd.setNome("");
-		pAdd.setIdCadastro(0);
-		this.politicos.add(pAdd);
+
 	}
 
 	@Override
@@ -82,7 +79,7 @@ public class ImageAdapter extends BaseAdapter {
 		}
 
 		if (politicos.get(position).getIdCadastro() == 0) {
-			holder.imageView.setImageResource(R.drawable.ic_action_add);
+		//	holder.imageView.setImageResource(R.drawable.ic_action_add);
 			
 		} else {
 			// get Congresmans photo

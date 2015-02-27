@@ -8,6 +8,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ViewFlipper;
 
 import com.gamfig.monitorabrasil.R;
+import com.gamfig.monitorabrasil.classes.Projeto;
+
+import java.util.List;
 
 public class CardFactory {
 	private ViewFlipper viewFlipper;
@@ -37,20 +40,25 @@ public class CardFactory {
 		if (tpCartao.equals("hashtags")) {
 			new CardHashtag(fragmentActivity, rootView, fragmentManager).buscaInfos();
 		}
-		if (tpCartao.equals("+comentados")) {
-			new CardProjetosMaisComentados(fragmentActivity, rootView, fragmentManager).buscaInfos();
-		}
-		if (tpCartao.equals("+votados")) {
-			new CardProjetosMaisVotados(fragmentActivity, rootView, fragmentManager).buscaInfos();
-		}
+
 		if (tpCartao.equals("+gastam")) {
 			new CardMaisGastam(fragmentActivity, rootView, fragmentManager).buscaInfos();
 		}
-		if (tpCartao.equals("projetosNovos")) {
-			new CardProjetosRecentes(fragmentActivity, rootView, fragmentManager).buscaInfos();
-		}
+
 
 	}
+
+    public void makeCard(String tpCartao, List<Projeto> projetos) {
+        if (tpCartao.equals("projetosNovos")) {
+            new CardProjetosRecentes(fragmentActivity, rootView, fragmentManager,projetos).buscaInfos();
+        }
+        if (tpCartao.equals("projetosComentados")) {
+            new CardProjetosMaisComentados(fragmentActivity, rootView, fragmentManager,projetos).buscaInfos();
+        }
+        if (tpCartao.equals("projetosVotados")) {
+            new CardProjetosMaisVotados(fragmentActivity, rootView, fragmentManager,projetos).buscaInfos();
+        }
+    }
 
 	public void montaViewFlipper(int viewflipper1) {
 		viewFlipper = (ViewFlipper) rootView.findViewById(viewflipper1);
@@ -109,5 +117,6 @@ public class CardFactory {
 	public void setFragmentManager(FragmentManager fragmentManager) {
 		this.fragmentManager = fragmentManager;
 	}
+
 
 }

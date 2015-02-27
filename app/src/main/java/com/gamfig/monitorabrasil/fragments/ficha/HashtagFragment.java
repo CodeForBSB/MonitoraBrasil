@@ -14,6 +14,7 @@ import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.DAO.DeputadoDAO;
 import com.gamfig.monitorabrasil.adapter.HashtagAdapter;
 import com.gamfig.monitorabrasil.adapter.ProjetoVotoAdapter;
+import com.gamfig.monitorabrasil.application.AppController;
 import com.gamfig.monitorabrasil.classes.Hashtag;
 
 public class HashtagFragment extends TabFactory {
@@ -40,15 +41,14 @@ public class HashtagFragment extends TabFactory {
 		OnClickListener click = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO mudar o id do usuario
 				if (txtHashtag.getText().toString().trim().replace(" ", "").length() > 1) {
-					new DeputadoDAO().insereHashtagPolitico(1, txtHashtag.getText().toString().trim().replace(" ", ""), idPolitico);
+                    int idUsuario = AppController.getInstance().getIdUsuario();
+					new DeputadoDAO().insereHashtagPolitico(idUsuario, txtHashtag.getText().toString().trim().replace(" ", ""), idPolitico);
 
 					// limpar o edttex
 					txtHashtag.setText("#");
 					Toast.makeText(getActivity().getApplicationContext(), "Hashtag enviada com sucesso!", Toast.LENGTH_SHORT).show();
 
-					// TODO atualizar o listview
 					new buscaHashes().execute();
 				} else {
 					Toast.makeText(getActivity().getApplicationContext(), "Escreva algo!", Toast.LENGTH_SHORT).show();

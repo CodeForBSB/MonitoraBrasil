@@ -1,79 +1,100 @@
 package com.gamfig.monitorabrasil.activitys;
 
-import java.util.RandomAccess;
-
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.fragments.listviews.RankUsersFragment;
 
-public class RankUserActivity extends Activity {
+import it.neokree.materialtabs.MaterialTab;
+import it.neokree.materialtabs.MaterialTabHost;
+import it.neokree.materialtabs.MaterialTabListener;
 
-	private RankUsersFragment mListFragment; // fragment que carrega a lista de politicos
+    public class RankUserActivity extends ActionBarActivity implements MaterialTabListener {
+
+//	private RankUsersFragment mListFragment; // fragment que carrega a lista de politicos
 	private FragmentManager mFragmentManager;
 	boolean hideMenu = false;
 	boolean showMenuPolitico = false;
+    MaterialTabHost tabHost;
+    ViewPager pager;
+    ViewPagerAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_lista_politicos);
-		setTitle("Ranking Monitora, Brasil!");
-		if (!isInTwoPaneMode()) {
 
-			mListFragment = new RankUsersFragment();
+        setContentView(R.layout.activity_rank_user);
 
-			// TODO 1 - add the FriendsFragment to the fragment_container
-			mFragmentManager = getFragmentManager();
-			FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-			fragmentTransaction.add(R.id.fragment_container, mListFragment);
-			fragmentTransaction.commit();
+        Toolbar toolbar = (android.support.v7.widget.Toolbar) this.findViewById(R.id.toolbar);
+        this.setSupportActionBar(toolbar);
+        tabHost = (MaterialTabHost) this.findViewById(R.id.tabHost);
+        pager = (ViewPager) this.findViewById(R.id.pager );
+// init view pager
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(adapter);
+        pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+// when user do a swipe the selected tab change
+                tabHost.setSelectedNavigationItem(position);
+            }
+        });
+// insert all tabs from pagerAdapter data
+        for (int i = 0; i < adapter.getCount(); i++) {
+            tabHost.addTab(
+                    tabHost.newTab()
+                            .setText(adapter.getPageTitle(i))
+                            .setTabListener(this)
+            );
+        }
+    }
+    @Override
+    public void onTabSelected(MaterialTab tab) {
+        pager.setCurrentItem(tab.getPosition());
+    }
+    @Override
+    public void onTabReselected(MaterialTab tab) {
 
-		} else {
-
-			// Otherwise, save a reference to the FeedFragment for later use
-
-			// mFichaFragment = (PoliticoDetalheFragment) getFragmentManager().findFragmentById(R.id.politico_frag);
-		}
-
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		Log.i(PrincipalActivity.TAG, "Activity - onResume");
-	}
-
-	private boolean isInTwoPaneMode() {
-
-		return findViewById(R.id.fragment_container) == null;
-
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState) {
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// getMenuInflater().inflate(R.menu.lista_politicos, menu);
-
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		return super.onOptionsItemSelected(item);
-
-	}
-
+    }
+    @Override
+    public void onTabUnselected(MaterialTab tab) {
+    }
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+        public Fragment getItem(int num) {
+            RankUsersFragment fragment = new RankUsersFragment();
+            if(num==0){
+                fragment.setTipo("todos");
+            }else{
+                fragment.setTipo("amigos");
+            }
+            return fragment;
+        }
+        @Override
+        public int getCount() {
+            return 2;
+        }
+        @Override
+        public CharSequence getPageTitle(int position) {
+            CharSequence titulo=null;
+            switch (position){
+                case 0:
+                    titulo = "Ranking Geral";
+                    break;
+                case 1:
+                    titulo = "Ranking Amigos";
+                    break;
+            }
+            return titulo;
+        }
+    }
 }

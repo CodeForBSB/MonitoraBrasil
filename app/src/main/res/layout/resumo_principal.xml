@@ -304,7 +304,8 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
                         android:gravity="center_vertical|center_horizontal"
-                        android:text="MAIS" />
+                        android:text="MAIS"
+                        android:visibility="invisible"/>
 
                     <TextView
                         android:id="@+id/TextView23"

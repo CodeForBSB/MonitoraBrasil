@@ -289,7 +289,7 @@ public class PoliticosActivity extends Activity implements PoliticosFragment.Sel
                 politicoDAO = new PoliticoDAO(dbh.getConnectionSource());
                 politico=politicoDAO.getPolitico(politico.getIdCadastro());
                 String tipo;
-                tipo = (politico.getTipoParlamentar().equals("d")?"Dep. ":"Sen. ");
+                tipo = (politico.getTipo().equals("c")?"Dep. ":"Sen. ");
                 String twitter;
                 twitter = (politico.getTwitter().isEmpty()?"":politico.getTwitter());
                 String mensagem = "Ficha " + tipo+politico.getNome() +" "+ twitter+"\n";

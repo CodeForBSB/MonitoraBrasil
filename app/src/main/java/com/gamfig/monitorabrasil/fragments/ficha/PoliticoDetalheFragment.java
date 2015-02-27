@@ -70,7 +70,7 @@ public final class PoliticoDetalheFragment extends Fragment {
 		 */
 		@Override
 		public int getCount() {
-			return 5;
+			return 6;
 		}
 
 		@Override
@@ -89,15 +89,20 @@ public final class PoliticoDetalheFragment extends Fragment {
              case 1:
                  titulo = "Twitter";
                   break;
-			case 2:
+                case 2:
+                    titulo = "Vídeos";
+                    break;
+			case 3:
 				titulo = "Bens";
 				break;
-			case 3:
+			case 4:
 				titulo = "#Hashtag";
 				break;
-			case 4:
-				titulo = "Projetos";
-				break;
+                case 5:
+                    titulo = "Projetos";
+                    break;
+
+
 
 			default:
 				break;
@@ -132,15 +137,20 @@ public final class PoliticoDetalheFragment extends Fragment {
             case 1:
                 tab.criaTab(new TwitterFragment());
                 break;
-			case 2:
+                case 2:
+                    tab.criaTab(new TabVideos());
+                    break;
+			case 3:
 				tab.criaTab(new BensFragment());
 				break;
-			case 3:
+			case 4:
 				tab.criaTab(new HashtagFragment());
 				break;
-			case 4:
+			case 5:
 				tab.criaTab(new TabProjetos());
 				break;
+
+
 
 			default:
 				break;
@@ -157,15 +167,20 @@ public final class PoliticoDetalheFragment extends Fragment {
             case 1:
                 layout = R.layout.fragment_twitter;
                 break;
-			case 2:
+
+                case 2:
+                    layout = R.layout.tab_videos;
+                    break;
+			case 3:
 				layout = R.layout.fragment_ficha_bens;
 				break;
-			case 3:
+			case 4:
 				layout = R.layout.fragment_hashtag;
 				break;
-			case 4:
+			case 5:
 				layout = R.layout.tab_projetos;
 				break;
+
 
 			default:
 				break;

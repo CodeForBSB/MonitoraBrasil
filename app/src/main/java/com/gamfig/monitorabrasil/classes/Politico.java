@@ -111,11 +111,11 @@ public class Politico {
 	public void setNomeParlamentar(String nomeParlamentar) {
 		this.nomeParlamentar = nomeParlamentar;
 	}
-	public String getTipoParlamentar() {
+	public String getTipo() {
 		return tipo;
 	}
-	public void setTipoParlamentar(String tipoParlamentar) {
-		this.tipo = tipoParlamentar;
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 	public String getEmail() {
 		return email;

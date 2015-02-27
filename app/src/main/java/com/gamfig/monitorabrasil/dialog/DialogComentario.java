@@ -134,7 +134,7 @@ public class DialogComentario extends DialogFragment {
 					txtComentario.setText("");
 
 				} else {
-					Toast.makeText(view.getContext(), "Insira um coment�rio", Toast.LENGTH_SHORT).show();
+					Toast.makeText(view.getContext(), "Insira um comentário", Toast.LENGTH_SHORT).show();
 				}
 			}
 		});

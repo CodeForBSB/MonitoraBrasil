@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.gamfig.monitorabrasil.R;
-import com.gamfig.monitorabrasil.application.CustomApplication;
+import com.gamfig.monitorabrasil.application.AppController;
 import com.gamfig.monitorabrasil.classes.Twitter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -31,7 +31,7 @@ public class TwitterAdapter extends ArrayAdapter<Twitter> {
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 		this.data = status;
-        this.mImagemLoader = ((CustomApplication) context.getApplicationContext()).getmImagemLoader();
+        this.mImagemLoader = ((AppController) context.getApplicationContext()).getmImagemLoader();
 	}
 
 	@Override

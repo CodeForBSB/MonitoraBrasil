@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.view.View;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -16,11 +15,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.crashlytics.android.Crashlytics;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.activitys.PrincipalActivity;
-import com.gamfig.monitorabrasil.application.CustomApplication;
+import com.gamfig.monitorabrasil.application.AppController;
 import com.gamfig.monitorabrasil.classes.Comentario;
 import com.gamfig.monitorabrasil.classes.Politico;
 import com.gamfig.monitorabrasil.classes.Projeto;
-import com.gamfig.monitorabrasil.classes.Twitter;
 import com.gamfig.monitorabrasil.classes.Usuario;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -43,6 +41,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,8 +50,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import io.fabric.sdk.android.services.common.Crash;
 
 @SuppressLint("UseSparseArrays")
 public class UserDAO {
@@ -133,7 +130,7 @@ public class UserDAO {
         p.setNome(pol.getNome());
         p.setIdCadastro(pol.getIdCadastro());
         p.setTwitter(pol.getTwitter());
-        p.setTipoParlamentar(pol.getTipoParlamentar());
+        p.setTipo(pol.getTipo());
 
         if (isChecked) {
             if (politicosFav.get(pol.getIdCadastro()) == null)
@@ -164,12 +161,9 @@ public class UserDAO {
     }
 
     private void salvaInSharedPreferences(String objeto, int key) {
-
-        context.getApplicationContext();
-        SharedPreferences sharedPref = context.getApplicationContext().getSharedPreferences(context.getApplicationContext().getString(R.string.id_key_preferencias),
-                Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(context.getApplicationContext().getString(key), objeto);
+        AppController appController = AppController.getInstance();
+        SharedPreferences.Editor editor = appController.getSharedPref().edit();
+        editor.putString(appController.getString(key), objeto);
         editor.commit();
     }
 
@@ -314,11 +308,47 @@ public class UserDAO {
                     new TypeToken<Map<Integer, Politico>>() {
                     }.getType());
 
+
+            //veriricar se tem politico que nao esta mais no cargo
+            if(politicosFav.size()>0){
+                limpaFavoritos(politicosFav);
+            }
+
+
         } catch (Exception e) {
             // TODO: handle exception
         }
 
         return politicosFav;
+    }
+
+    private void limpaFavoritos( Map<Integer, Politico> politicosFav){
+        int size = politicosFav.size();
+
+        try {
+            PoliticoDAO politicoDAO = new PoliticoDAO(AppController.getInstance().getDbh().getConnectionSource());
+
+            for (Map.Entry<Integer, Politico> entry : politicosFav.entrySet())
+            {
+                int id = entry.getKey();
+                if(null == politicoDAO.getPolitico(id)){
+                    //retirar do sharedPreferences
+                    politicosFav.remove(id);
+                }
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(size > politicosFav.size()){
+            Gson gson = new Gson();
+            String polFav = gson.toJson(politicosFav);
+            salvaInSharedPreferences(polFav, R.string.id_key_favoritos);
+        }
+
+
+
     }
 
     private File cacheDir;
@@ -386,11 +416,7 @@ public class UserDAO {
         return listaPoliticos;
     }
 
-    public boolean isPrimeiraVez() {
-        if (new DeputadoDAO(context).buscaPoliticosSalvos(R.string.pref_listadeputados) == null)
-            return true;
-        return false;
-    }
+
 
     public Usuario salvaUsuarioNovo() {
 
@@ -434,8 +460,7 @@ public class UserDAO {
 
     public int getIdUser() {
         try{
-            SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.id_key_preferencias), Context.MODE_PRIVATE);
-            return sharedPref.getInt(context.getString(R.string.id_key_idcadastro_novo), 0);
+            return AppController.getInstance().getSharedPref().getInt(context.getString(R.string.id_key_idcadastro_novo), 0);
 
         }catch (Exception e){
             Crashlytics.logException(e);
@@ -482,7 +507,7 @@ public class UserDAO {
         HttpPost httppost = new HttpPost(DeputadoDAO.url + "rest/user_atualiza.php");
 
         // Request parameters and other properties.
-        List<NameValuePair> params = new ArrayList<NameValuePair>(8);
+        List<NameValuePair> params = new ArrayList<NameValuePair>(9);
         params.add(new BasicNameValuePair("id", String.valueOf(getIdUser())));
         params.add(new BasicNameValuePair("nome", user.getNome()));
         params.add(new BasicNameValuePair("email", user.getEmail()));
@@ -490,6 +515,7 @@ public class UserDAO {
         params.add(new BasicNameValuePair("sexo", String.valueOf(user.getSexo())));
         params.add(new BasicNameValuePair("uf", user.getUf()));
         params.add(new BasicNameValuePair("idgoogle", user.getIdGoogle()));
+        params.add(new BasicNameValuePair("idfacebook", user.getIdFacebook()));
         params.add(new BasicNameValuePair("gcm", user.getReceberNotificacao()));
 
         Log.i(PrincipalActivity.TAG, user.getReceberNotificacao());
@@ -558,7 +584,7 @@ public class UserDAO {
     }
 
     public JSONObject temAtualizacao() {
-        StringRequest request = new StringRequest(Request.Method.POST , CustomApplication.URL + "rest/get_configuracao.php",
+        StringRequest request = new StringRequest(Request.Method.POST , AppController.URL + "rest/get_configuracao.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -608,7 +634,7 @@ public class UserDAO {
         };
         request.setTag("tag");
 
-        ((CustomApplication) this.context.getApplicationContext()).getRq().add(request);
+        ((AppController) this.context.getApplicationContext()).getRq().add(request);
 
         List<NameValuePair> params = new ArrayList<NameValuePair>(1);
         String result = new Dispatcher(DeputadoDAO.url + "rest/get_configuracao.php", params).getInformacaoPOST();

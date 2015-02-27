@@ -38,7 +38,7 @@ import com.gamfig.monitorabrasil.DAO.UserDAO;
 import com.gamfig.monitorabrasil.NavigationDrawerFragment;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.adapter.PoliticoMonitoradoAdapter;
-import com.gamfig.monitorabrasil.application.CustomApplication;
+import com.gamfig.monitorabrasil.application.AppController;
 import com.gamfig.monitorabrasil.classes.Politico;
 import com.gamfig.monitorabrasil.classes.Projeto;
 import com.gamfig.monitorabrasil.dialog.DialogComentario;
@@ -154,7 +154,7 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
 
     public void buscaParlamentares(){
         Log.i("monitora", "PrincipalActivity buscaParlamentares()");
-        StringRequest request = new StringRequest(Request.Method.POST , CustomApplication.URL + "rest/politico_getall.php",
+        StringRequest request = new StringRequest(Request.Method.POST , AppController.URL + "rest/politico_getall.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -181,7 +181,7 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
 
         };
         request.setTag("tag");
-        ((CustomApplication) getApplicationContext()).getRq().add(request);
+        ((AppController) getApplicationContext()).getRq().add(request);
     }
 
 	public void comentar(View v) {
@@ -194,9 +194,9 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
 		if (checkPlayServices()) {
 			gcm = GoogleCloudMessaging.getInstance(this);
 			regid = new PreferenciasUtil().getRegistrationId(context);
-			if (regid.isEmpty()) {
+
 				new RegisterInBackground().execute();
-			}
+
 		} else {
 			Log.i(TAG, "No valid Google Play Services APK found.");
 		}
@@ -327,7 +327,7 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
     @Override
     public void onStop(){
         super.onStop();
-        ((CustomApplication) context.getApplicationContext()).getRq().cancelAll("tag");
+        ((AppController) context.getApplicationContext()).getRq().cancelAll("tag");
     }
 
 	private void abreFragment(Fragment fragment2open) {
@@ -421,7 +421,7 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
 		case R.id.action_perfil:
 
 			intent = new Intent();
-			intent.setClass(this, LoginActivity.class);
+			intent.setClass(this, LoginRedeActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.action_sobre:
@@ -491,22 +491,29 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
 				if (gcm == null) {
 					gcm = GoogleCloudMessaging.getInstance(context);
 				}
-				regid = gcm.register(SENDER_ID);
-				msg = "Device registered, registration ID=" + regid;
+                String regidAtual = new PreferenciasUtil().getRegistrationId(context);
+                if(regidAtual != null){
+                    regid = gcm.register(SENDER_ID);
+                    if(!regid.equals(regidAtual)){
+                        msg = "Device registered, registration ID=" + regid;
 
-				// You should send the registration ID to your server over HTTP,
-				// so it can use GCM/HTTP or CCS to send messages to your app.
-				// The request to your server should be authenticated if your
-				// app
-				// is using accounts.
-				sendRegistrationIdToBackend();
+                        // You should send the registration ID to your server over HTTP,
+                        // so it can use GCM/HTTP or CCS to send messages to your app.
+                        // The request to your server should be authenticated if your
+                        // app
+                        // is using accounts.
+                        sendRegistrationIdToBackend();
 
-				// For this demo: we don't need to send it because the device
-				// will send upstream messages to a server that echo back the
-				// message using the 'from' address in the message.
+                        // For this demo: we don't need to send it because the device
+                        // will send upstream messages to a server that echo back the
+                        // message using the 'from' address in the message.
 
-				// Persist the regID - no need to register again.
-				new PreferenciasUtil().storeRegistrationId(context, regid);
+                        // Persist the regID - no need to register again.
+                        new PreferenciasUtil().storeRegistrationId(context, regid);
+                    }
+
+                }
+
 
 			} catch (IOException ex) {
 				msg = "Error :" + ex.getMessage();

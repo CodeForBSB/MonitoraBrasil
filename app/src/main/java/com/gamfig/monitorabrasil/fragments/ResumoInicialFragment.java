@@ -24,27 +24,42 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.activitys.CotaActivity;
 import com.gamfig.monitorabrasil.activitys.FichaActivity;
 import com.gamfig.monitorabrasil.activitys.PoliticosActivity;
 import com.gamfig.monitorabrasil.activitys.PrincipalActivity;
+import com.gamfig.monitorabrasil.activitys.ProjetoDetalheActivity;
 import com.gamfig.monitorabrasil.activitys.ProjetosActivity;
 import com.gamfig.monitorabrasil.adapter.ImageAdapter;
+import com.gamfig.monitorabrasil.application.AppController;
 import com.gamfig.monitorabrasil.classes.Politico;
+import com.gamfig.monitorabrasil.classes.Projeto;
 import com.gamfig.monitorabrasil.classes.cards.CardFactory;
 import com.gamfig.monitorabrasil.classes.twitter.TwitterProxy;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class ResumoInicialFragment extends Fragment {
 	/**
 	 * The fragment argument representing the section number for this fragment.
 	 */
 	private static final String ARG_SECTION_NUMBER = "section_number";
+    private CardFactory cardFactory;
 
 	FragmentManager mFragmentManager;
 
@@ -79,6 +94,7 @@ public class ResumoInicialFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.resumo_principal, container, false);
         //monta os flippers
         montaFlippers(rootView);
+
 
 
 
@@ -225,18 +241,50 @@ public class ResumoInicialFragment extends Fragment {
 
 	}
 
+    public void buscaInfosProjetos() {
+        StringRequest request = new StringRequest(Request.Method.POST , AppController.URL + "rest/getinfomain.php?acao=projetos",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            montaCardsProjetos(jsonObject);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // pb.setVisibility(View.GONE);
+                    }
+                });
+        AppController.getInstance().addToRequestQueue(request, "tag");
+    }
+
+    private void montaCardsProjetos(JSONObject jsonObject) throws JSONException {
+        Gson gson = new Gson();
+        List<Projeto> projetosRecentes = gson.fromJson(jsonObject.getString("recentes"), new TypeToken<ArrayList<Projeto>>() {}.getType());
+        cardFactory.makeCard("projetosNovos",projetosRecentes);
+        List<Projeto> projetosComentados = gson.fromJson(jsonObject.getString("comentados"), new TypeToken<ArrayList<Projeto>>() {}.getType());
+        cardFactory.makeCard("projetosComentados",projetosComentados);
+        List<Projeto> projetosVotados = gson.fromJson(jsonObject.getString("votados"), new TypeToken<ArrayList<Projeto>>() {}.getType());
+        cardFactory.makeCard("projetosVotados",projetosVotados);
+    }
+
 	private void montaFlippers(View rootView) {
 		// buscar ultimas atividades
 
-		CardFactory cardFactory = new CardFactory(getActivity().getApplicationContext(), rootView, getFragmentManager());
+		cardFactory = new CardFactory(getActivity().getApplicationContext(), rootView, getFragmentManager());
 		cardFactory.makeCard("eventos");
 		cardFactory.makeCard("hashtags");
-		cardFactory.makeCard("+comentados");
-		cardFactory.makeCard("+votados");
-		// novos projetos
-		cardFactory.makeCard("projetosNovos");
 //		// os que mais gastam
 		cardFactory.makeCard("+gastam");
+
+        buscaInfosProjetos();
+
 
 		// monitorados
 		final ArrayList<Politico> politicoFavoritos = new ArrayList<Politico>(new UserDAO(getActivity()).getPoliticosFavoritos().values());
@@ -246,19 +294,7 @@ public class ResumoInicialFragment extends Fragment {
 		gridview.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				int ultimaFoto = politicoFavoritos.size() - 1;
-				// ir para o fragment para add politicoMonitorado
-				if (position == ultimaFoto) {
-					// mostrar procura
-//					getActivity().invalidateOptionsMenu();
-					ListaPoliticoMonitoraFragment listaPoliticoMonitora = new ListaPoliticoMonitoraFragment();
-					FragmentManager fragmentManager = getActivity().getFragmentManager();
-					FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-					fragmentTransaction.replace(R.id.container, listaPoliticoMonitora, "listaPoliticoMonitora");
-					fragmentTransaction.addToBackStack("1");
-					fragmentTransaction.commit();
 
-				} else {
 					// go to congressman�s profile
 
 					Politico politicoSelecionado = politicoFavoritos.get(position);
@@ -275,19 +311,17 @@ public class ResumoInicialFragment extends Fragment {
 						intent.putExtra("twitter", politicoSelecionado.getTwitter());
 						intent.putExtra("nome", politicoSelecionado.getNome());
 
-						if (politicoSelecionado.getTipoParlamentar() != null) {
-							intent.putExtra("casa", politicoSelecionado.getTipoParlamentar());
+						if (politicoSelecionado.getTipo() != null) {
+							intent.putExtra("casa", politicoSelecionado.getTipo());
 						}
 						startActivity(intent);
 					}
 
-				}
-				// execute transaction now
-				// TODO ERRO
-				// getFragmentManager().executePendingTransactions();
+							// execute transaction now
+
 			}
 		});
-		// TODO o que estao falando
+
 
 	}
 

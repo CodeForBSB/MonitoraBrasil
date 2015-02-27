@@ -20,16 +20,12 @@ import android.widget.ViewFlipper;
 import com.gamfig.monitorabrasil.DAO.DataBaseHelper;
 import com.gamfig.monitorabrasil.DAO.PoliticoDAO;
 import com.gamfig.monitorabrasil.R;
-import com.gamfig.monitorabrasil.DAO.DeputadoDAO;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
 import com.gamfig.monitorabrasil.classes.Politico;
 import com.gamfig.monitorabrasil.dialog.DialogComentario;
 import com.gamfig.monitorabrasil.fragments.ficha.PoliticoDetalheFragment;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static android.R.anim.fade_in;
 import static android.R.anim.fade_out;
@@ -156,13 +152,24 @@ public class FichaActivity extends FragmentActivity {
 		case R.id.ic_share:
 			Intent sendIntent = new Intent();
 			sendIntent.setAction(Intent.ACTION_SEND);
-
-
-			String mensagem = "Ficha Dep. " + nome + "\n";
-			mensagem = mensagem + getString(R.string.url_share) + String.valueOf(idPolitico) + " #monitoraBrasil";
-			sendIntent.putExtra(Intent.EXTRA_TEXT, mensagem);
-			sendIntent.setType("text/plain");
-			startActivity(sendIntent);
+            //busca politico
+            DataBaseHelper dbh = new DataBaseHelper(FichaActivity.this);
+            PoliticoDAO politicoDAO = null;
+            try {
+                politicoDAO = new PoliticoDAO(dbh.getConnectionSource());
+                Politico politico=politicoDAO.getPolitico(idPolitico);
+                String tipo;
+                tipo = ("c".equals(politico.getTipo()) ?"Dep. ":"Sen. ");
+                String twitter;
+                twitter = (politico.getTwitter().isEmpty()?"":politico.getTwitter());
+                String mensagem = "Ficha " + tipo+politico.getNome() +" "+ twitter+"\n";
+                mensagem = mensagem + getString(R.string.url_share) + String.valueOf(politico.getIdCadastro()) + " #monitoraBrasil";
+                sendIntent.putExtra(Intent.EXTRA_TEXT, mensagem);
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 			break;
 		case R.id.ic_comment:
 			DialogFragment dialog = new DialogComentario(new UserDAO(getApplicationContext()).getIdUser(), idPolitico, "Comente", 1);

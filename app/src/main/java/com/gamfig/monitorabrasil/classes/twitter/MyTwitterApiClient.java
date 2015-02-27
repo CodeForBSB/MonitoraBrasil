@@ -6,6 +6,7 @@ import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.models.Search;
 import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.models.User;
 
 import java.util.List;
 
@@ -29,6 +30,34 @@ public class MyTwitterApiClient extends TwitterApiClient {
         void getTweets(@Query("slug") String slug,
                        @Query("owner_screen_name") String owner_screen_name,
                        Callback<List<Tweet>> cb);
+
+    }
+
+    /**
+     * PROVIDE GETUSERSERVICE
+     * @return
+     */
+    public CustomService getUser() {
+        return getService(CustomService.class);
+    }
+
+    interface CustomService {
+        @GET("/1.1/users/show.json")
+        void mostrar(@Query("user_id") long id, Callback<User> cb);
+
+
+    }
+    /**
+     * Provide ListTweets
+     */
+    public UserService getListService2() {
+        return getService(UserService.class);
+    }
+
+    public interface UserService {
+        @GET("/1.1/users/show.json")
+        void show(@Query("user_id") long id,
+                       Callback<User> cb);
 
     }
 

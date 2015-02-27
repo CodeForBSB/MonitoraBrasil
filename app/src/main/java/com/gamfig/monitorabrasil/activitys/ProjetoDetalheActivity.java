@@ -2,6 +2,7 @@ package com.gamfig.monitorabrasil.activitys;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -9,6 +10,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,13 +26,25 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.crashlytics.android.Crashlytics;
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.DAO.DeputadoDAO;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
+import com.gamfig.monitorabrasil.application.AppController;
 import com.gamfig.monitorabrasil.classes.Projeto;
+import com.gamfig.monitorabrasil.classes.Usuario;
 import com.gamfig.monitorabrasil.dialog.DialogComentario;
 import com.gamfig.monitorabrasil.fragments.listviews.ComentariosFragment;
 import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static com.android.volley.Request.Method.GET;
 
 public class ProjetoDetalheActivity extends Activity {
 
@@ -58,13 +72,22 @@ public class ProjetoDetalheActivity extends Activity {
 			//busca o projeto que foi salvo. Isso pq foi recebido um push para abrir o projeto
 			projeto = new UserDAO(getApplicationContext()).buscaProjetoSalvo(projeto);
 		}
-		casa = projeto.getTipo();
-		if(casa == null)
-			casa = receiveBundle.getString("casa");
-		new BuscaProjeto().execute();
+        if(projeto == null){
+            //so tem o id
+            projeto = gson.fromJson(receiveBundle.getString("projeto"), Projeto.class);
+            projeto.setTipo("c");
+            casa="c";
+            buscaProjeto(projeto);
+        }else{
+            casa = projeto.getTipo();
+            if(casa == null)
+                casa = receiveBundle.getString("casa");
+            new BuscaProjeto().execute();
 
-		montaFormIncial();
-		montaBotoes();
+            montaFormIncial();
+            montaBotoes();
+        }
+
 
 		Switch swtAcompanhamento = (Switch) findViewById(R.id.switch1);
 		if (new UserDAO(getApplicationContext()).estaMonitorado(projeto.getId())) {
@@ -100,6 +123,40 @@ public class ProjetoDetalheActivity extends Activity {
 		fragmentTransaction.commit();
 
 	}
+
+    private void buscaProjeto(final Projeto projeto){
+        String url;
+        if(projeto.getTipo().equals("c"))
+            url="rest/proposicao_getbyid.php?id="+String.valueOf(projeto.getId());
+        else{
+            url="rest/senado/get_projeto_id.php?id="+String.valueOf(projeto.getId());
+        }
+        StringRequest request = new StringRequest(GET , AppController.URL + url,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+                        Projeto p = gson.fromJson(response, Projeto.class);
+                        setProjeto(p);
+                        montaFormIncial();
+                        montaVotos();
+                        montaFormulario();
+                    }
+                },
+                new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Crashlytics.log(error.toString());
+                    }
+                }){
+           };
+        request.setTag("tag");
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    private void setProjeto(Projeto p){
+        this.projeto=p;
+    }
 
 	private void montaBotoes() {
 		final Button btnNao = (Button) findViewById(R.id.btnNao);
@@ -290,42 +347,8 @@ public class ProjetoDetalheActivity extends Activity {
 				}
 				//
 				// // montar formulario com os dados recebidos
-				//
-				// link
-				TextView tx = (TextView) findViewById(R.id.txtLinkInteiroTeor);
-				if (!casa.equals("s")) {
-					tx.setText(projeto.getLink());
-				} else {
-					tx.setText("http://www.senado.leg.br/atividade/materia/detalhes.asp?p_cod_mate=" + String.valueOf(projeto.getId()));
-				}
-				// so tem para camara
-				if (!casa.equals("s")) {
-					// forma
-					tx = (TextView) findViewById(R.id.txtForma);
-					tx.setText(projeto.getFormaApreciacao());
 
-					// regime
-					tx = (TextView) findViewById(R.id.txtRegime);
-					tx.setText(projeto.getRegime());
-				} else {
-					tx = (TextView) findViewById(R.id.TextView11);
-					tx.setVisibility(View.GONE);
-					tx = (TextView) findViewById(R.id.txtForma);
-					tx.setVisibility(View.GONE);
-					tx = (TextView) findViewById(R.id.TextView14);
-					tx.setVisibility(View.GONE);
-					tx = (TextView) findViewById(R.id.txtRegime);
-					tx.setVisibility(View.GONE);
-				}
-
-				// despacho
-				tx = (TextView) findViewById(R.id.txtDespacho);
-				tx.setText(projeto.getUltimoDespacho());
-
-				// situaacao
-				tx = (TextView) findViewById(R.id.txtSituacao);
-				tx.setText(projeto.getSituacao());
-				pb.setVisibility(View.INVISIBLE);
+				montaFormulario();
 
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -333,6 +356,42 @@ public class ProjetoDetalheActivity extends Activity {
 
 		}
 	}
+    private void montaFormulario(){
+        TextView tx = (TextView) findViewById(R.id.txtLinkInteiroTeor);
+        if (!casa.equals("s")) {
+            tx.setText(projeto.getLink());
+        } else {
+            tx.setText("http://www.senado.leg.br/atividade/materia/detalhes.asp?p_cod_mate=" + String.valueOf(projeto.getId()));
+        }
+        // so tem para camara
+        if (!casa.equals("s")) {
+            // forma
+            tx = (TextView) findViewById(R.id.txtForma);
+            tx.setText(projeto.getFormaApreciacao());
+
+            // regime
+            tx = (TextView) findViewById(R.id.txtRegime);
+            tx.setText(projeto.getRegime());
+        } else {
+            tx = (TextView) findViewById(R.id.TextView11);
+            tx.setVisibility(View.GONE);
+            tx = (TextView) findViewById(R.id.txtForma);
+            tx.setVisibility(View.GONE);
+            tx = (TextView) findViewById(R.id.TextView14);
+            tx.setVisibility(View.GONE);
+            tx = (TextView) findViewById(R.id.txtRegime);
+            tx.setVisibility(View.GONE);
+        }
+
+        // despacho
+        tx = (TextView) findViewById(R.id.txtDespacho);
+        tx.setText(projeto.getUltimoDespacho());
+
+        // situaacao
+        tx = (TextView) findViewById(R.id.txtSituacao);
+        tx.setText(projeto.getSituacao());
+        pb.setVisibility(View.INVISIBLE);
+    }
 
 	/**
 	 * Insere o voto

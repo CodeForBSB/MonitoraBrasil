@@ -9,8 +9,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -33,9 +31,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gamfig.monitorabrasil.DAO.UserDAO;
-import com.gamfig.monitorabrasil.activitys.LoginActivity;
+import com.gamfig.monitorabrasil.activitys.LoginRedeActivity;
 import com.gamfig.monitorabrasil.adapter.DrawerAdapter;
-import com.gamfig.monitorabrasil.classes.Imagens;
 import com.gamfig.monitorabrasil.classes.ItemDrawer;
 import com.gamfig.monitorabrasil.classes.Usuario;
 import com.gamfig.monitorabrasil.dialog.DialogGostou;
@@ -206,8 +203,10 @@ public class NavigationDrawerFragment extends Fragment {
 				if (position == 0) {
 
 					Intent intent = new Intent();
-					intent.setClass(view.getContext(), LoginActivity.class);
+					intent.setClass(view.getContext(), LoginRedeActivity.class);
 					startActivity(intent);
+
+
 				}
 			}
 		});
@@ -241,21 +240,9 @@ public class NavigationDrawerFragment extends Fragment {
 		TextView txtComentarios = (TextView) headerView.findViewById(R.id.txtComentarios);
 		txtComentarios.setText("Comentários: " + String.valueOf(user.getNrComentarios()) + " Votos: " + String.valueOf(user.getNrVotos()));
 
-		// busca a foto
-		ImageView foto = (ImageView) headerView.findViewById(R.id.foto);
-		Bitmap bitmap;
-		if (user.getUrlFoto() != null) {
-			bitmap = Imagens.getCroppedBitmap(Imagens.getImageBitmap(user.getUrlFoto()));
-		} else {
-			if (new UserDAO(getActivity().getApplicationContext()).buscaFotoCache(0) != null) {
-				bitmap = new UserDAO(getActivity().getApplicationContext()).buscaFotoCache(0);
-			} else {
-				bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_person);
-			}
-
-		}
-		new Imagens();
-		foto.setImageBitmap(Imagens.getCroppedBitmap(bitmap));
+        // busca a foto
+        ImageView foto = (ImageView) headerView.findViewById(R.id.foto);
+        user.carregaFoto(foto,"square");
 		return headerView;
 	}
 
@@ -277,19 +264,8 @@ public class NavigationDrawerFragment extends Fragment {
 
 		// busca a foto
 		ImageView foto = (ImageView) headerView.findViewById(R.id.foto);
-		Bitmap bitmap;
-		if (user.getUrlFoto() != null) {
-			bitmap = Imagens.getCroppedBitmap(Imagens.getImageBitmap(user.getUrlFoto()));
-		} else {
-			if (new UserDAO(getActivity().getApplicationContext()).buscaFotoCache(0) != null) {
-				bitmap = new UserDAO(getActivity().getApplicationContext()).buscaFotoCache(0);
-			} else {
-				bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_person);
-			}
+        user.carregaFoto(foto, "square");
 
-		}
-		new Imagens();
-		foto.setImageBitmap(Imagens.getCroppedBitmap(bitmap));
 		return;
 	}
 

@@ -13,8 +13,12 @@ package com.gamfig.monitorabrasil.activitys;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -28,7 +32,7 @@ import com.gamfig.monitorabrasil.DAO.DataBaseHelper;
 import com.gamfig.monitorabrasil.DAO.PoliticoDAO;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
 import com.gamfig.monitorabrasil.R;
-import com.gamfig.monitorabrasil.application.CustomApplication;
+import com.gamfig.monitorabrasil.application.AppController;
 import com.gamfig.monitorabrasil.classes.Politico;
 import com.gamfig.monitorabrasil.classes.Usuario;
 import com.google.gson.Gson;
@@ -37,6 +41,8 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,6 +61,7 @@ public class SplashActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        //printKeyHash(SplashActivity.this);
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -93,7 +100,8 @@ public class SplashActivity extends Activity {
     }
 
     public void verificaAtualizacao(){
-        StringRequest request = new StringRequest(Request.Method.POST , CustomApplication.URL + "rest/get_configuracao.php",
+        AppController.getInstance().setIdUsuario();
+        StringRequest request = new StringRequest(Request.Method.POST , AppController.URL + "rest/get_configuracao.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -151,20 +159,20 @@ public class SplashActivity extends Activity {
 
         };
         request.setTag("tag");
-        ((CustomApplication) getApplicationContext()).getRq().add(request);
+        ((AppController) getApplicationContext()).getRq().add(request);
 
     }
 
     public void salvaData(String data){
 
         Log.i("monitora", "salvaData()"+data);
-        SharedPreferences.Editor editor = ((CustomApplication) getApplicationContext()).getSharedPref().edit();
+        SharedPreferences.Editor editor = ((AppController) getApplicationContext()).getSharedPref().edit();
         editor.putString(getString(R.string.id_key_dt_atualicao), data);
         editor.commit();
     }
 
     public String getDtAtualiacao() {
-        String dt = ((CustomApplication) getApplicationContext()).getSharedPref().
+        String dt = ((AppController) getApplicationContext()).getSharedPref().
                 getString(getString(R.string.id_key_dt_atualicao), null);
         return dt;
     }
@@ -179,7 +187,7 @@ public class SplashActivity extends Activity {
     }
 
     public boolean isPrimeiraVez(){
-        int id = ((CustomApplication) getApplicationContext()).getSharedPref().
+        int id = ((AppController) getApplicationContext()).getSharedPref().
                 getInt(getString(R.string.id_key_idcadastro_novo), 0);
 
         if(id>0)
@@ -191,17 +199,18 @@ public class SplashActivity extends Activity {
     public void salvaUsuario(){
         Log.i("monitora", "salvaUsuario()");
         Usuario user = new UserDAO(getApplicationContext()).salvaUsuarioNovo();
-        SharedPreferences.Editor editor = ((CustomApplication) getApplicationContext()).getSharedPref().edit();
+        SharedPreferences.Editor editor = AppController.getInstance().getSharedPref().edit();
         editor.putInt(getString(R.string.id_key_idcadastro_novo), user.getId());
         Gson gson = new Gson();
         editor.putString(getString(R.string.id_key_user), gson.toJson(user));
         editor.commit();
         salvaData(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+        AppController.getInstance().setIdUsuario();
         inicializaApp();
     }
 
     public void buscaParlamentares(){
-        StringRequest request = new StringRequest(Request.Method.POST , CustomApplication.URL + "rest/politico_getall.php",
+        StringRequest request = new StringRequest(Request.Method.POST , AppController.URL + "rest/politico_getall.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -229,6 +238,39 @@ public class SplashActivity extends Activity {
 
         };
         request.setTag("tag");
-        ((CustomApplication) getApplicationContext()).getRq().add(request);
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    public static String printKeyHash(Activity context) {
+        PackageInfo packageInfo;
+        String key = null;
+        try {
+            //getting application package name, as defined in manifest
+            String packageName = context.getApplicationContext().getPackageName();
+
+            //Retriving package info
+            packageInfo = context.getPackageManager().getPackageInfo(packageName,
+                    PackageManager.GET_SIGNATURES);
+
+            Log.e("Package Name=", context.getApplicationContext().getPackageName());
+
+            for (Signature signature : packageInfo.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                key = new String(Base64.encode(md.digest(), 0));
+
+                // String key = new String(Base64.encodeBytes(md.digest()));
+                Log.e("Key Hash=", key);
+            }
+        } catch (PackageManager.NameNotFoundException e1) {
+            Log.e("Name not found", e1.toString());
+        }
+        catch (NoSuchAlgorithmException e) {
+            Log.e("No such an algorithm", e.toString());
+        } catch (Exception e) {
+            Log.e("Exception", e.toString());
+        }
+
+        return key;
     }
 }

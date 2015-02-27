@@ -169,6 +169,7 @@ Versão 1.3\n
 - Links de email e telefone dos Deputados</string>
     <string name="title_activity_login_rede">LoginRedeActivity</string>
     <string name="title_activity_twittter">O que estão falando - Twitter</string>
+    <string name="title_activity_ranking">Ranking usuários</string>
     <string name="sem_twitter">O parlamentar não tem conta no Twitter.\nQue tal pedirmos para ele criar uma? \nCaso você saiba a conta dele, nos informe por favor.</string>
 
 </resources>

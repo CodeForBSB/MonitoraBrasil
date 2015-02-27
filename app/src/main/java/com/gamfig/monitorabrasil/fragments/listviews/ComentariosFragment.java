@@ -55,7 +55,8 @@ public class ComentariosFragment extends ListFragment {
 
 		// When using two-pane layout, configure the ListView to highlight the
 		// selected list item
-		new BuscaComentarios(data.getInt("idProposta")).execute();
+        if(data != null)
+		    new BuscaComentarios(data.getInt("idProposta")).execute();
 
 	}
 

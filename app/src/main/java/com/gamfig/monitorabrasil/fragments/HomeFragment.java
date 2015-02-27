@@ -91,20 +91,8 @@ public class HomeFragment extends Fragment {
 			gridview.setOnItemClickListener(new OnItemClickListener() {
 
 				public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-					int ultimaFoto = politicoFavoritos.size() - 1;
-					// ir para o fragment para add politicoMonitorado
-					if (position == ultimaFoto) {
-						// mostrar procura
-						getActivity().invalidateOptionsMenu();
-						ListaPoliticoMonitoraFragment listaPoliticoMonitora = new ListaPoliticoMonitoraFragment();
-						FragmentManager fragmentManager = getActivity().getFragmentManager();
-						FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-						fragmentTransaction.replace(R.id.container, listaPoliticoMonitora, "listaPoliticoMonitora");
-						fragmentTransaction.addToBackStack(null);
-						fragmentTransaction.commit();
 
-					} else {
-						// go to congressman�s profile
+
 
 						Politico politicoSelecionado = politicoFavoritos.get(position);
 						if (null != politicoSelecionado) {
@@ -120,8 +108,8 @@ public class HomeFragment extends Fragment {
 							intent.putExtra("twitter", politicoSelecionado.getTwitter());
 							intent.putExtra("nome", politicoSelecionado.getNome());
 
-							if (politicoSelecionado.getTipoParlamentar() != null) {
-								intent.putExtra("casa", politicoSelecionado.getTipoParlamentar());
+							if (politicoSelecionado.getTipo() != null) {
+								intent.putExtra("casa", politicoSelecionado.getTipo());
 							}
 							startActivity(intent);
 						}
@@ -130,7 +118,7 @@ public class HomeFragment extends Fragment {
 					// execute transaction now
 					// TODO ERRO
 					// getFragmentManager().executePendingTransactions();
-				}
+
 			});
 
 		}

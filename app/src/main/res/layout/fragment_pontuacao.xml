@@ -266,6 +266,27 @@
                 android:textStyle="bold"
                 android:visibility="invisible" />
 
+            <TextView
+                android:id="@+id/txtAmigos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/fruit_grape"
+                android:gravity="center_horizontal"
+                android:text="Amigos"
+                android:textColor="@color/white"
+                android:visibility="invisible"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Encontre seus amigos"
+                android:visibility="invisible"
+                android:id="@+id/button"
+                android:layout_gravity="center_horizontal" />
+
+
         </LinearLayout>
     </LinearLayout>
 
