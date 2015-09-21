@@ -292,8 +292,14 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
 			intent = new Intent();
 			intent.putExtra("casa", "s");
 			intent.setClass(this, ProjetosActivity.class);
-			startActivity(intent);
-			break;
+            startActivity(intent);
+            break;
+
+        case 22:
+            intent = new Intent();
+            intent.setClass(this, TvSenadoActivity.class);
+            startActivity(intent);
+            break;
 
 		// tela o que estao falando
 		case 3:
@@ -327,7 +333,7 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
     @Override
     public void onStop(){
         super.onStop();
-        ((AppController) context.getApplicationContext()).getRq().cancelAll("tag");
+
     }
 
 	private void abreFragment(Fragment fragment2open) {
@@ -397,13 +403,13 @@ public class PrincipalActivity extends ActionBarActivity implements NavigationDr
 	public void enviarSugestao() {
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("text/plain");
-		i.putExtra(Intent.EXTRA_EMAIL, new String[] { "fale@monitorabrasil.com" });
+		i.putExtra(Intent.EXTRA_EMAIL, new String[] { "falemonitora@gmail.com" });
 		i.putExtra(Intent.EXTRA_SUBJECT, "Fale Conosco");
 		i.putExtra(Intent.EXTRA_TEXT, "");
 		try {
 			startActivity(Intent.createChooser(i, "Enviar email..."));
 		} catch (android.content.ActivityNotFoundException ex) {
-			Toast.makeText(PrincipalActivity.this, "N�o h� email configurado no dispositivo.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(PrincipalActivity.this, "Nao há email configurado no dispositivo.", Toast.LENGTH_SHORT).show();
 		}
 	}
 

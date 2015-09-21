@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -17,7 +18,6 @@ import com.gamfig.monitorabrasil.activitys.SplashActivity;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class GCMIntentService extends IntentService {
-	public static final int NOTIFICATION_ID = 1;
 	private NotificationManager mNotificationManager;
 	NotificationCompat.Builder builder;
 
@@ -70,11 +70,18 @@ public class GCMIntentService extends IntentService {
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
 		
 		String msg = bundle.getString("message");	
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_launcher).setContentTitle(getString(R.string.app_name))
-				.setStyle(new NotificationCompat.BigTextStyle().bigText(msg)).setContentText(msg).setDefaults(Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL)
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher))
+                .setContentTitle(getString(R.string.app_name))
+				.setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
+                .setTicker("Nova mensagem do Monitora, Brasil!")
+                .setContentText(msg)
 				.setOngoing(false);
 		mBuilder.setContentIntent(contentIntent);
-		mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        Notification n = mBuilder.build();
+        n.flags= Notification.FLAG_AUTO_CANCEL;
+		mNotificationManager.notify(R.drawable.ic_launcher, n);
 
 		// NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_launcher)
 		// .setContentTitle(getString(R.string.app_name)).setStyle(new NotificationCompat.BigTextStyle().bigText(msg)).setOngoing(true)

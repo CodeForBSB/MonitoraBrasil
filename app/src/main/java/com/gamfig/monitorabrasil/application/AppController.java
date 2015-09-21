@@ -14,9 +14,9 @@ import com.gamfig.monitorabrasil.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -28,7 +28,7 @@ public class AppController extends Application{
     private static final String TWITTER_KEY = "ttP35uLXOxJSJBQYyJKeqaDqv";
     private static final String TWITTER_SECRET = "lDQ5GWzFa9sqx2Hj4aV90dOnKkaRk0UhVD3K7tBFY7hDtzd1Qm";
 
-    public final static String URL = "http://www.gamfig.com/mbrasilwsdl/";
+    public final static String URL = "http://52.27.220.189/monitorabrasil.com/gamfig.com/mbrasilwsdl/";
 
     private ImageLoader mImagemLoader;
 
@@ -71,6 +71,12 @@ public class AppController extends Application{
     public void onCreate(){
         super.onCreate();
         mInstance = this;
+
+//        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+//                        .setDefaultFontPath("fonts/DK Crayon Crumble.ttf")
+//                        .setFontAttrId(R.attr.fontPath)
+//                        .build()
+//        );
 
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);Fabric.with(this, new Crashlytics(), new Twitter(authConfig));
         //configurando o imageloader

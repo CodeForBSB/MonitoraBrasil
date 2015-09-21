@@ -51,4 +51,10 @@ limitations under the License.
 	<color name="fruit_amarelo">#F3C530</color>
 	<color name="fruit_grape">#131D3F</color>
 	<color name="fruit_cherry">#D9200A</color>
+    <color name="fruit_laranja2">#FF9800</color>
+
+    <color name="politico1">#FFFFFF</color>
+    <color name="politico2">#FFFFFF</color>
+    <color name="colunaMeio">#FFEB3B</color>
+    <color name="comparator_fundo">#131D3F</color>
 </resources>

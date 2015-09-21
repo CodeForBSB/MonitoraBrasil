@@ -108,4 +108,11 @@
     <dimen name="mopub_ad_text_margin_bottom">@dimen/mopub_element_spacing</dimen>
     <dimen name="mopub_ad_text_size">17sp</dimen>
     <dimen name="mopub_ad_main_image_margin">10dp</dimen>
+
+    <dimen name="fab_button_diameter">56dp</dimen>
+    <dimen name="fab_button_margin_bottom">16dp</dimen>
+    <dimen name="fab_button_margin_right">16dp</dimen>
+    <dimen name="elevation_low">1dp</dimen>
+    <dimen name="elevation_high">8dp</dimen>
+    <dimen name="font_comparator">14sp</dimen>
 </resources>

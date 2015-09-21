@@ -133,7 +133,8 @@ public class NavigationDrawerFragment extends Fragment {
 		List<ItemDrawer> itensSenado = new ArrayList<ItemDrawer>();
 		itensSenado.add(new ItemDrawer("Senadores", R.drawable.urna));
 		// itensSenado.add(new ItemDrawer("Cota Parlamentar", R.drawable.urna));
-		itensSenado.add(new ItemDrawer("Vote nos Projetos", R.drawable.urna));
+        itensSenado.add(new ItemDrawer("Vote nos Projetos", R.drawable.urna));
+        itensSenado.add(new ItemDrawer("Tv Senado", R.drawable.urna));
 
 		listDataChild.put(itemSenado, itensSenado);
 
@@ -203,7 +204,7 @@ public class NavigationDrawerFragment extends Fragment {
 				if (position == 0) {
 
 					Intent intent = new Intent();
-					intent.setClass(view.getContext(), LoginRedeActivity.class);
+					intent.setClass(getActivity(), LoginRedeActivity.class);
 					startActivity(intent);
 
 

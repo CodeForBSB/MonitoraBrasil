@@ -19,11 +19,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.crashlytics.android.Crashlytics;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -33,15 +33,13 @@ import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.activitys.LoginRedeActivity;
 import com.gamfig.monitorabrasil.adapter.RankAdapter;
 import com.gamfig.monitorabrasil.application.AppController;
-import com.gamfig.monitorabrasil.classes.Politico;
 import com.gamfig.monitorabrasil.classes.Usuario;
 import com.gamfig.monitorabrasil.dialog.DialogPontuacao;
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,7 +73,7 @@ public class RankUsersFragment extends ListFragment implements OnScrollListener 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-        if(tipo.equals("amigos")){
+        if(tipo != null && tipo.equals("amigos")){
             Session session = Session.getActiveSession();
             if(session==null){
                 // try to restore from cache
@@ -146,23 +144,28 @@ public class RankUsersFragment extends ListFragment implements OnScrollListener 
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Gson gson = new Gson();
-                        List<Usuario> usuarios = gson.fromJson(response, new TypeToken<ArrayList<Usuario>>() {
-                        }.getType());
-                        RankAdapter adapter = new RankAdapter(getActivity(), R.layout.listview_item_usuario, usuarios);
-                        setListAdapter(adapter);
-                        getListView().setOnItemClickListener(new OnItemClickListener() {
+                        try {
+                            Gson gson = new Gson();
+                            List<Usuario> usuarios = gson.fromJson(response, new TypeToken<ArrayList<Usuario>>() {
+                            }.getType());
+                            RankAdapter adapter = new RankAdapter(getActivity(), R.layout.listview_item_usuario, usuarios);
+                            setListAdapter(adapter);
+                            getListView().setOnItemClickListener(new OnItemClickListener() {
 
-                            @Override
-                            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                                Usuario userSelecionado = (Usuario)getListAdapter().getItem(arg2);
-                                DialogFragment dialog = new DialogPontuacao(userSelecionado);
-                                dialog.show(getActivity().getFragmentManager(), "Pontuação");
+                                @Override
+                                public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                                    Usuario userSelecionado = (Usuario)getListAdapter().getItem(arg2);
+                                    DialogFragment dialog = new DialogPontuacao(userSelecionado);
+                                    dialog.show(getActivity().getFragmentManager(), "Pontuação");
 
 
 
-                            }
-                        });
+                                }
+                            });
+                        }catch (JsonParseException e) {
+                            Crashlytics.logException(e);
+                        }
+
                     }
                 },
                 new com.android.volley.Response.ErrorListener() {

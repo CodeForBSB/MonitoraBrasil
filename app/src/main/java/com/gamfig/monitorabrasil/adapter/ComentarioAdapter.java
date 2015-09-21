@@ -11,6 +11,7 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +68,8 @@ public class ComentarioAdapter extends ArrayAdapter<Comentario> {
 					UserDAO userDao = new UserDAO(getContext());
 					userDao.likeComentario(holder.id, userDao.getIdUser(), 1);
 					int like = Integer.parseInt(holder.btnLike.getText().toString());
-					holder.btnLike.setText(String.valueOf(like+1));
+                    like++;
+					holder.btnLike.setText(String.valueOf(like));
 					holder.btnLike.setEnabled(false);
 					if (!holder.btnUnlike.isEnabled()) {
 						holder.btnUnlike.setEnabled(true);
@@ -82,7 +84,8 @@ public class ComentarioAdapter extends ArrayAdapter<Comentario> {
 					UserDAO userDao = new UserDAO(getContext());
 					userDao.likeComentario(holder.id, userDao.getIdUser(), -1);
 					int like = Integer.parseInt(holder.btnUnlike.getText().toString());
-					holder.btnUnlike.setText(String.valueOf(like+1));
+                    like++;
+					holder.btnUnlike.setText(String.valueOf(like));
 					holder.btnUnlike.setEnabled(false);
 					if (!holder.btnLike.isEnabled()) {
 						holder.btnLike.setEnabled(true);
@@ -115,6 +118,8 @@ public class ComentarioAdapter extends ArrayAdapter<Comentario> {
 		}
 		holder.txtComentNome.setText(comentario.getUser().getNome());
 		holder.txtComentTexto.setText(unescape(comentario.getComentario()));
+
+        Linkify.addLinks(holder.txtComentTexto, Linkify.WEB_URLS);
 
 		// calcula tempo
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

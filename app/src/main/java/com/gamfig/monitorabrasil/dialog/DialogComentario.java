@@ -242,7 +242,7 @@ public class DialogComentario extends DialogFragment {
 				if (comentarios != null) {
 					ListView lv = (ListView) view.findViewById(R.id.listView1);
 
-					ComentarioAdapter adapter = new ComentarioAdapter(getActivity().getApplicationContext(), R.layout.listview_item_comentario, comentarios, new UserDAO(
+					ComentarioAdapter adapter = new ComentarioAdapter(getActivity(), R.layout.listview_item_comentario, comentarios, new UserDAO(
 							getActivity()).buscaLikes());
 					lv.setAdapter(adapter);
 					lv.setSelection(adapter.getCount() - 1);

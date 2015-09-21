@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.application.AppController;
-import com.gamfig.monitorabrasil.classes.Video;
+import com.gamfig.monitorabrasil.classes.youtube.Video;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;

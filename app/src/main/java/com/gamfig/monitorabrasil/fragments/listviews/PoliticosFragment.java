@@ -84,7 +84,7 @@ public class PoliticosFragment extends ListFragment {
 
         }
         catch (SQLException e){
-
+			System.out.println(e.toString());
         }
 
         /*

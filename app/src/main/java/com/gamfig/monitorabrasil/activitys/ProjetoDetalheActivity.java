@@ -85,8 +85,9 @@ public class ProjetoDetalheActivity extends Activity {
             new BuscaProjeto().execute();
 
             montaFormIncial();
-            montaBotoes();
+
         }
+        montaBotoes();
 
 
 		Switch swtAcompanhamento = (Switch) findViewById(R.id.switch1);

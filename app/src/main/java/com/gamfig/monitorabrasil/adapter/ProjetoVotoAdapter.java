@@ -11,9 +11,6 @@
  ******************************************************************************/
 package com.gamfig.monitorabrasil.adapter;
 
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
@@ -33,13 +30,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.DAO.DeputadoDAO;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
+import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.activitys.ProjetoDetalheActivity;
 import com.gamfig.monitorabrasil.classes.Projeto;
 import com.gamfig.monitorabrasil.dialog.DialogComentario;
 import com.google.gson.Gson;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class ProjetoVotoAdapter extends ArrayAdapter<Projeto> {
 	Context context;
@@ -117,9 +117,27 @@ public class ProjetoVotoAdapter extends ArrayAdapter<Projeto> {
 		protected void onPostExecute(String results) {
 
 			Toast.makeText(getContext(), "Voto registrado", Toast.LENGTH_SHORT).show();
-			new UserDAO(getContext()).buscaPontuacao();
+            new buscaPontuacao().execute();
 		}
 	}
+
+    public class buscaPontuacao extends AsyncTask<Void, Void, Void> {
+
+
+        public buscaPontuacao() {
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            new UserDAO(getContext()).buscaPontuacao();
+            return null;
+        }
+
+        protected void onPostExecute() {
+
+
+        }
+    }
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {

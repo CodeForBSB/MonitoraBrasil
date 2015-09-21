@@ -1,13 +1,22 @@
-package com.gamfig.monitorabrasil.classes;
+package com.gamfig.monitorabrasil.classes.youtube;
 
 /**
- * Created by geral_000 on 26/02/2015.
+ * Created by geral_000 on 02/03/2015.
  */
-public class Video {
+public class PlayList {
     private String id;
-    private String titulo;
+    private String data;
     private String desc;
     private String thumb;
+    private String titulo;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getData() {
         return data;
@@ -17,12 +26,12 @@ public class Video {
         this.data = data;
     }
 
-    public String getId() {
-        return id;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getDesc() {
@@ -41,16 +50,4 @@ public class Video {
         this.thumb = thumb;
     }
 
-    private String data;
-
-    public Video() {
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
 }

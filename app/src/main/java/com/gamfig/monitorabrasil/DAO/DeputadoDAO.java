@@ -52,7 +52,7 @@ import java.util.Map;
 
 public class DeputadoDAO {
 	private Context context;
-	public final static String url = "http://www.gamfig.com/mbrasilwsdl/";
+	public final static String url = "http://52.27.220.189/monitorabrasil.com/gamfig.com/mbrasilwsdl/";
 
 	public DeputadoDAO(Context context) {
 		this.context = context;
@@ -1138,9 +1138,7 @@ public class DeputadoDAO {
 
 	/**
 	 * busca os bens da api da tbrasil de um politico
-	 * 
-	 * @param idCadastro
-	 * @param idTipo
+	 *
 	 * @return List<Bem>
 	 */
 	public static List<Bem> buscaBens(int idTbrasil) {

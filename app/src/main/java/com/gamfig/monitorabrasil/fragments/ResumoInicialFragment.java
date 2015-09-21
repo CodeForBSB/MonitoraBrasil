@@ -24,7 +24,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -32,12 +31,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.gamfig.monitorabrasil.DAO.UserDAO;
 import com.gamfig.monitorabrasil.R;
+import com.gamfig.monitorabrasil.activitys.ComparatorActivity;
 import com.gamfig.monitorabrasil.activitys.CotaActivity;
 import com.gamfig.monitorabrasil.activitys.FichaActivity;
 import com.gamfig.monitorabrasil.activitys.PoliticosActivity;
 import com.gamfig.monitorabrasil.activitys.PrincipalActivity;
-import com.gamfig.monitorabrasil.activitys.ProjetoDetalheActivity;
 import com.gamfig.monitorabrasil.activitys.ProjetosActivity;
+import com.gamfig.monitorabrasil.activitys.TvSenadoActivity;
 import com.gamfig.monitorabrasil.adapter.ImageAdapter;
 import com.gamfig.monitorabrasil.application.AppController;
 import com.gamfig.monitorabrasil.classes.Politico;
@@ -158,6 +158,30 @@ public class ResumoInicialFragment extends Fragment {
 			}
 
 		});
+
+        //btn tv senado
+        Button btnSenado = (Button) rootView.findViewById(R.id.btnTv);
+        btnSenado.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), TvSenadoActivity.class);
+                startActivity(intent);;
+            }
+
+        });
+
+        //btn comparator
+        Button btnComparator = (Button) rootView.findViewById(R.id.btnComparator);
+        btnComparator.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), ComparatorActivity.class);
+                startActivity(intent);;
+            }
+
+        });
 
 		Button btnMaisComentados = (Button) rootView.findViewById(R.id.btnMaisComentados);
 		btnMaisComentados.setOnClickListener(new OnClickListener() {
@@ -325,47 +349,8 @@ public class ResumoInicialFragment extends Fragment {
 
 	}
 
-	public void abreEvento() {
-
-	}
-
-    public class BuscaTweet extends AsyncTask<Void, Void, View> {
-
-        View rootView;
-
-        public BuscaTweet(View rootView) {
-            this.rootView = rootView;
-
-        }
-
-        @Override
-        protected View doInBackground(Void... params) {
 
 
-            try{
-                LinearLayout myLayout
-                        = (LinearLayout) rootView.findViewById(R.id.twitter_resumo);
-                return new TwitterProxy().getTweetTelaInicial(myLayout, getActivity());
-            }catch (Exception e){
 
-            }
-            return null;
-        }
-
-        protected void onPostExecute(View view) {
-
-            try {
-                if (view != null) {
-                    LinearLayout myLayout
-                            = (LinearLayout) getActivity().findViewById(R.id.twitter_resumo);
-                    myLayout.addView(view);
-                }
-
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
-
-        }
-    }
 
 }

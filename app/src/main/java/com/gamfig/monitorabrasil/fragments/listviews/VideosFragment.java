@@ -26,7 +26,7 @@ import com.gamfig.monitorabrasil.R;
 import com.gamfig.monitorabrasil.adapter.YouTubeItemAdapter;
 import com.gamfig.monitorabrasil.application.AppController;
 import com.gamfig.monitorabrasil.classes.Politico;
-import com.gamfig.monitorabrasil.classes.Video;
+import com.gamfig.monitorabrasil.classes.youtube.Video;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -54,10 +54,15 @@ public class VideosFragment extends ListFragment implements OnScrollListener{
 		// buscar as infos do deputado
 		Bundle bundle = this.getArguments();
 		try {
-			int idPolitico = bundle.getInt("idPolitico");
-            //busca politico
-            Politico p = new PoliticoDAO(AppController.getInstance().getDbh().getConnectionSource()).getPolitico(idPolitico);
-            getVideos(p.getNome());
+            if(bundle.getString("idPlaylist")!=null){
+                abrePlaylist(bundle.getString("idPlaylist"));
+            }else{
+                int idPolitico = bundle.getInt("idPolitico");
+                //busca politico
+                Politico p = new PoliticoDAO(AppController.getInstance().getDbh().getConnectionSource()).getPolitico(idPolitico);
+                getVideos(p.getNome());
+            }
+
 
 
 		} catch (Exception e) {
@@ -74,6 +79,29 @@ public class VideosFragment extends ListFragment implements OnScrollListener{
 		//getListView().setOnScrollListener(this);
 
 	}
+
+    private void abrePlaylist(String idPlaylist) {
+
+        StringRequest request = new StringRequest(Request.Method.POST , AppController.URL + "rest/youtube/getplaylistitem.php?id="+ idPlaylist,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+                        list = gson.fromJson(response, new TypeToken<ArrayList<Video>>() {}.getType());
+                        YouTubeItemAdapter adapter = new YouTubeItemAdapter(getActivity(),R.layout.listview_item_youtube,list);
+                        setListAdapter(adapter);
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // pb.setVisibility(View.GONE);
+                    }
+                });
+        AppController.getInstance().addToRequestQueue(request,"tag");
+    }
 
     private void getVideos(String nome) {
 

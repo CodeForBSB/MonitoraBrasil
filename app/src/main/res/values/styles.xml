@@ -79,6 +79,21 @@
         <item name="android:textSize">18dp</item>
     </style>
 
+    <style name="textoComparatorVerde" parent="textoComparator">
+        <item name="android:textColor">#FFEB3B</item>
+    </style>
+
+    <style name="textoComparatorAzul" parent="textoComparator">
+        <item name="android:textColor">#FF5722</item>
+    </style>
+
+    <style name="textoComparator">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">17dp</item>
+       <!-- <item name="fontPath">fonts/Roboto-ThinItalic.ttf</item>-->
+        <item name="android:textColor">#ffffffff</item>
+    </style>
+
     <style name="btn_menor2">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

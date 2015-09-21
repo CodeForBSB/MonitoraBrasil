@@ -62,6 +62,42 @@ public class Politico {
 	private int posicao;
     @DatabaseField
 	private String endereco;
+    @DatabaseField
+    private int nrSeguidoresTwitter;
+
+    private int nrProjetosAprovados;
+    @DatabaseField
+    private int nrVotos;
+
+    public int getNrVotos() {
+        return nrVotos;
+    }
+
+    public void setNrVotos(int nrVotos) {
+        this.nrVotos = nrVotos;
+    }
+
+
+
+    public int getNrProjetosAprovados() {
+        return nrProjetosAprovados;
+    }
+
+    public void setNrProjetosAprovados(int nrProjetosAprovados) {
+        this.nrProjetosAprovados = nrProjetosAprovados;
+    }
+
+
+
+    public int getNrSeguidoresTwitter() {
+        return nrSeguidoresTwitter;
+    }
+
+    public void setNrSeguidoresTwitter(int nrSeguidoresTwitter) {
+        this.nrSeguidoresTwitter = nrSeguidoresTwitter;
+    }
+
+
 	
 	
 	public Politico(){

@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 public class DataBaseHelper extends OrmLiteSqliteOpenHelper{
     private static final String dbName="monitora.db";
-    private static final int dbVersion = 11;
+    private static final int dbVersion = 14;
 
     public DataBaseHelper(Context context){
         super(context,dbName,null,dbVersion );

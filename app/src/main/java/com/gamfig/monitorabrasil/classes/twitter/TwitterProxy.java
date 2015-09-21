@@ -43,6 +43,7 @@ public class TwitterProxy extends TwitterFabric{
     private View tl;
     private ProgressBar pb;
     private LinearLayout ll;
+    private boolean zoomOut;
 
     public View getTweetTelaInicial(LinearLayout myLayout, final Activity activity){
         this.activity=activity;
@@ -92,7 +93,7 @@ public class TwitterProxy extends TwitterFabric{
         TextView txtTempo = (TextView) tl.findViewById(R.id.txtTwitterTempo);
         TextView txtId = (TextView) tl.findViewById(R.id.txtTwitterId);
         ImageView foto = (ImageView) tl.findViewById(R.id.imgTwitter);
-        ImageView imagem = (ImageView) tl.findViewById(R.id.imageView);
+        final ImageView imagem = (ImageView) tl.findViewById(R.id.imageView);
         imagem.setVisibility(View.GONE);
         if(t != null) {
             txtNome.setText(t.getNome());
@@ -108,6 +109,21 @@ public class TwitterProxy extends TwitterFabric{
             } catch (Exception e) {
                 Crashlytics.logException(e);
             }
+            if(t.getMedia()!=null){
+                try {
+
+                    ((AppController) this.activity.getApplicationContext()).getmImagemLoader().displayImage(t.getMedia(), imagem);
+                    imagem.setVisibility(View.VISIBLE);
+                    imagem.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    imagem.setAdjustViewBounds(true);
+
+
+
+                } catch (Exception e) {
+                    Crashlytics.logException(e);
+                }
+            }
+
             this.ll.addView(tl);
         }
     }

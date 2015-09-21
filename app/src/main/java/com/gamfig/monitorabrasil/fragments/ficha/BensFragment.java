@@ -140,7 +140,7 @@ public class BensFragment extends TabFactory {
 				// textoCompartilhar = textoCompartilhar+"\nhttp://www.gamfig.com/mbrasilwsdl/rest/grafico/bens.php?param=" +
 				// parametrosUrl+"\n#monitoraBrasil";
 				try {
-					grafico.loadUrl("http://www.gamfig.com/mbrasilwsdl/rest/grafico/bens.php?param=" + parametrosUrl);
+					grafico.loadUrl("http://52.27.220.189/monitorabrasil.com/gamfig.com/mbrasilwsdl/rest/grafico/bens.php?param=" + parametrosUrl);
 
 					float variacao = ((montantes.get(ultimoAno) * 100) / montantes.get(primeiroAno)) - 100;
 					String textoVariacao = "";
