@@ -1,4 +1,6 @@
 # MonitoraBrasil_android
+
+[![Join the chat at https://gitter.im/geraugu/MonitoraBrasil_android](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/geraugu/MonitoraBrasil_android?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Projeto Monitora, Brasil!
 
 Esse projeto tem o objetivo de criar uma ferramenta para monitorar os parlamentares do Brasil. 
