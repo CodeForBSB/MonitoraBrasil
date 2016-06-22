@@ -49,8 +49,8 @@ public class Politico {
 	private String facebook;
 
 
-	private ArrayList<Presenca> presenca;
-	private ArrayList<Projeto> projetos;
+	private ArrayList<Presenca> presencas = new ArrayList<Presenca>();
+	private ArrayList<Projeto> projetos = new ArrayList<Projeto>();
 	private int nrProjetos;
 	private Float notaAvaliacao;
 	private String lider;
@@ -68,6 +68,14 @@ public class Politico {
     private int nrProjetosAprovados;
     @DatabaseField
     private int nrVotos;
+	
+	public adicionarPresenca(Presenca presenca){
+		presencas.add(presenca);
+	}
+	
+	public adicionarProjeto(Projeto projeto){
+		projetos.add(projeto);
+	}
 
     public int getNrVotos() {
         return nrVotos;
