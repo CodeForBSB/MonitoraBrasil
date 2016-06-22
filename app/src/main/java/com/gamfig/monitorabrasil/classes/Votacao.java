@@ -9,8 +9,11 @@ public class Votacao {
 	private String data;
 	private String objetivo;
 	private Projeto projeto;
-	private ArrayList<Politico> politicos;
+	private ArrayList<Politico> politicos = new ArrayList<Politico>();
 	
+	public void adicionarPolitico(Politico politico){
+		politicos.add(Politico politico);
+	}
 	
 	public int getId() {
 		return id;
