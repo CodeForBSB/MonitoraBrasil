@@ -11,6 +11,8 @@ Qualquer ajuda sempre será bemvinda.
 Se tiverem alguma dúvida é só falar. 
 Vamos juntos desenvolver uma ferramenta para ser referência na politica do Brasil!
 
+Criei um board para colocar o backlog do projeto, segue o link https://trello.com/b/7LL1F21F/monitora-brasil
+
 www.monitorabrasil.com
 
 https://play.google.com/store/apps/details?id=com.gamfig.monitorabrasil
