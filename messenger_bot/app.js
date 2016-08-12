@@ -225,11 +225,11 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
-  console.log("");
-  console.log("Received message for user %d and page %d at %d with message:", 
-    senderID, recipientID, timeOfMessage);
-  console.log(JSON.stringify(message));
-  console.log("");
+  //console.log("");
+  //console.log("Received message for user %d and page %d at %d with message:", 
+    //senderID, recipientID, timeOfMessage);
+  //console.log(JSON.stringify(message));
+  //console.log("");
   var isEcho = message.is_echo;
   var messageId = message.mid;
   var appId = message.app_id;
@@ -241,25 +241,25 @@ function receivedMessage(event) {
   var quickReply = message.quick_reply;
   
   if (isEcho) {
-	  console.log("---isEcho---");
+	 // console.log("---isEcho---");
     // Just logging message echoes to console
-    console.log("Received echo for message %s and app %d with metadata %s", 
-      messageId, appId, metadata);
-	  console.log("-----");
+   // console.log("Received echo for message %s and app %d with metadata %s", 
+    //  messageId, appId, metadata);
+	//  console.log("-----");
     return;
   } else if (quickReply) {
-	  console.log("---quickReply---");
+	 // console.log("---quickReply---");
     var quickReplyPayload = quickReply.payload;
-    console.log("Quick reply for message %s with payload %s",
-      messageId, quickReplyPayload);
-	  console.log("-----");
+   // console.log("Quick reply for message %s with payload %s",
+    //  messageId, quickReplyPayload);
+	//  console.log("-----");
 
     sendTextMessage(senderID, "Voto registrado!");
     return;
   }
 
   if (messageText) {
-	console.log("---messageText---");
+	//console.log("---messageText---");
 	var isFunction = false;
 	var par = messageText.split(" ");
 	switch (par[0].substring(0,3).toLocaleLowerCase()) {
@@ -268,6 +268,7 @@ function receivedMessage(event) {
 			
 			getPolitico(messageText.substring(3,messageText.length).toLocaleUpperCase().trim(), null, senderID)
 			isFunction = true;
+			break;
 		case 'pro':
 			var keys = [];
 			for(var i =1; i < par.length; i++){
@@ -320,12 +321,12 @@ function receivedDeliveryConfirmation(event) {
 
   if (messageIDs) {
     messageIDs.forEach(function(messageID) {
-      console.log("Received delivery confirmation for message ID: %s", 
-        messageID);
+     // console.log("Received delivery confirmation for message ID: %s", 
+    //    messageID);
     });
   }
 
-  console.log("All message before %d were delivered.", watermark);
+  //console.log("All message before %d were delivered.", watermark);
 }
 
 
@@ -365,8 +366,30 @@ function receivedPostback(event) {
 			getProjects(politico, senderID);
 		break;
 	   case "project_ementa":	
-			sendTextMessage(senderID, json.nome+"\n"+json.ementa);
-			setTimeout(function(){ sendQuickReply(senderID); }, 3000);
+			var PP = Parse.Object.extend("Proposicao");
+			var query = new Parse.Query(PP);
+			query.get(json.id_project, {
+			  success: function(project) {
+				var message = 
+							project.get("tx_nome")+"\nAutor: "+
+							project.get("nome_autor")+"\n"+project.get("txt_ementa").replace(/["]/g,'\'');
+				if(project.get("tx_ultimo_despacho").trim().length > 0){
+					setTimeout(function(){ sendTextMessage(senderID, "Último despacho: "+
+							project.get("tx_ultimo_despacho")); }, 2000);
+					
+				}
+				if(project.get("tx_link").trim().length > 0){
+					setTimeout(function(){ sendTextMessage(senderID, "Link para o projeto: "+
+							project.get("tx_link")); }, 2000);
+				}
+				sendTextMessage(senderID, message);
+				setTimeout(function(){ sendQuickReply(senderID); }, 3000);
+			  },
+			  error: function(object, error) {
+				
+			  }
+			});
+			
 			
 		break;
 		
@@ -390,10 +413,10 @@ function receivedMessageRead(event) {
   // All messages before watermark (a timestamp) or sequence have been seen.
   var watermark = event.read.watermark;
   var sequenceNumber = event.read.seq;
-  console.log("");
-  console.log("Received message read event for watermark %d and sequence " +
-    "number %d", watermark, sequenceNumber);
-  console.log("");
+ // console.log("");
+//  console.log("Received message read event for watermark %d and sequence " +
+ //   "number %d", watermark, sequenceNumber);
+ // console.log("");
 	
 }
 
@@ -412,8 +435,8 @@ function receivedAccountLink(event) {
   var status = event.account_linking.status;
   var authCode = event.account_linking.authorization_code;
 
-  console.log("Received account link event with for user %d with status %s " +
-    "and auth code %s ", senderID, status, authCode);
+  //console.log("Received account link event with for user %d with status %s " +
+  //  "and auth code %s ", senderID, status, authCode);
 }
 
 
@@ -511,7 +534,7 @@ function sendReadReceipt(recipientId) {
  *
  */
 function sendTypingOn(recipientId) {
-  console.log("Turning typing indicator on");
+ // console.log("Turning typing indicator on");
 
   var messageData = {
     recipient: {
@@ -584,13 +607,13 @@ function callSendAPI(messageData) {
       var recipientId = body.recipient_id;
       var messageId = body.message_id;
 
-      if (messageId) {
+    /*  if (messageId) {
         console.log("Successfully sent message with id %s to recipient %s", 
           messageId, recipientId);
       } else {
       console.log("Successfully called Send API for recipient %s", 
         recipientId);
-      }
+      }*/
     } else {
      
       console.error(response.body.error.message);
@@ -628,9 +651,7 @@ function buildElements (congressman){
   Build element for project
 */
 function buildElementProject (project){
-	var ementa = project.get("txt_ementa");
-	if(ementa.length > 500)
-		ementa = ementa.substring(0,497)+"...";
+	
 	var mReturn = {
             title: project.get("tx_nome"),
             subtitle: project.get("nome_autor")+"\n"+project.get("txt_ementa"),
@@ -639,7 +660,7 @@ function buildElementProject (project){
             buttons: [ {
               type: "postback",
               title: "Ver ementa",
-              payload: "{\"id_project\": \""+project.id+"\",\"nome\": \""+project.get("tx_nome")+"\",\"ementa\": \""+ementa+"\", \"type\": \"project_ementa\"}",
+              payload: "{\"id_project\": \""+project.id+"\",\"nome\": \""+project.get("tx_nome")+"\", \"type\": \"project_ementa\"}",
             }],
           };
 		  return mReturn;
@@ -751,7 +772,7 @@ function getGastos(qPolitico, nome, senderID){
 		//console.log(objects.length);
 		for (var i = 0; i < objects.length; i++) {
 			  var object = objects[i];
-			 mensagem = mensagem + object.get("ano") +": R$ "+object.get("total").formatMoney(2, ',', '.')+"\n";
+			 mensagem = mensagem + "Ano "+object.get("ano") +": R$ "+object.get("total").formatMoney(2, ',', '.')+"\n";
 		}
 		sendTextMessage(senderID, mensagem);
 		
@@ -779,7 +800,7 @@ function getPresenca(qPolitico, nome, senderID){
 		//console.log(objects.length);
 		for (var i = 0; i < objects.length; i++) {
 			  var object = objects[i];
-			 mensagem = mensagem + "##Ano: "+object.get("nr_ano") +"\n     ->Faltas "+
+			 mensagem = mensagem + "Ano: "+object.get("nr_ano") +"\n     ->Faltas "+
 			 (object.get("nr_ausencia_justificada")+object.get("nr_ausencia_nao_justificada"))+"\n"+
 			 "     ->Presença:"+object.get("nr_presenca")+"\n";
 		}
