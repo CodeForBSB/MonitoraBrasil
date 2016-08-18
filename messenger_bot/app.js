@@ -17,6 +17,9 @@ const
   express = require('express'),
   https = require('https'),  
   request = require('request');
+  
+ var Monitora = require('./Monitora');
+  
 
 var Parse = require('parse/node');
 
@@ -277,6 +280,24 @@ function receivedMessage(event) {
 			searchProjects(keys, senderID);
 			isFunction = true;
         break;
+		case 'ran':
+			var uf = null;
+			var siglaPartido = null;
+			if(par[1] && par[2]){
+				var param = par[1].trim().toLocaleLowerCase();
+				var value =  par[2].trim().toLocaleUpperCase();
+				if(param === "uf"){
+					uf = value;
+				}else{
+					if(param === "partido"){
+						siglaPartido = value;
+					}
+				}
+				
+			}
+			getRanking(uf, siglaPartido, senderID);
+			isFunction = true;
+        break;
 	}
 	
 	if (messageText.substring(0,2).toLocaleLowerCase() === "uf"){
@@ -290,10 +311,13 @@ function receivedMessage(event) {
 		// the text we received.	
 		switch (messageText) {	  	
 		  default:
-			messageText = "Olá! Quer saber informações de algum deputado? \n\n"+
-			"Digite o pol <nome de um político> \nEx: pol Tiririca\n\n"+ 
-			"Ou vc pode digitar uf <estado> para ver todos os deputados de um estado\nEx: uf SP\n\n"+
-			"Vc tbm pode pesquisar projetos por palavra chave. \nEx: pro corrupção";
+			messageText = "Olá! Quer saber informações de algum deputado? Tem as seguintes opções \n"+
+			"pol <nome de um político> \nEx: pol Tiririca\n\n"+ 
+			"uf <UF>\nEx: uf SP\n\n"+
+			"rank \n"+
+			"rank uf <UF> \n"+
+			"rank partido <PARTIDO>\n\n"+
+			"pro <palavra-chave> - para pesquisar projetos";
 			sendTextMessage(senderID, messageText);
 		}
 	}
@@ -380,7 +404,7 @@ function receivedPostback(event) {
 				}
 				if(project.get("tx_link").trim().length > 0){
 					setTimeout(function(){ sendTextMessage(senderID, "Link para o projeto: "+
-							project.get("tx_link")); }, 2000);
+							project.get("tx_link")); }, 2500);
 				}
 				sendTextMessage(senderID, message);
 				setTimeout(function(){ sendQuickReply(senderID); }, 3000);
@@ -621,50 +645,7 @@ function callSendAPI(messageData) {
   });  
 }
 
-/*
-  Build element for congressman with options: Spends, assiduity and projects
-*/
-function buildElements (congressman){
-	var mReturn = {
-            title: congressman.get("nome"),
-            subtitle: congressman.get("siglaPartido")+" - "+congressman.get("uf")+"\n"+congressman.get("telefone"),
-            //item_url: "https://www.oculus.com/en-us/rift/",               
-            image_url: "http://www.camara.gov.br/internet/deputado/bandep/"+congressman.get("idCadastro")+".jpg",
-            buttons: [ {
-              type: "postback",
-              title: "Gastos - cota parlamentar",
-              payload: "{\"id_politico\": \""+congressman.id+"\",\"nome\": \""+congressman.get("nome")+"\", \"type\": \"gastos_cota\"}",
-            },{
-              type: "postback",
-              title: "Presença",
-              payload: "{\"id_politico\": \""+congressman.id+"\",\"nome\": \""+congressman.get("nome")+"\", \"type\": \"presenca\"}",
-            },{
-              type: "postback",
-              title: "Projetos",
-              payload: "{\"id_politico\": \""+congressman.id+"\",\"nome\": \""+congressman.get("nome")+"\", \"type\": \"projetos\"}",
-            }],
-          };
-		  return mReturn;
-}
 
-/*
-  Build element for project
-*/
-function buildElementProject (project){
-	
-	var mReturn = {
-            title: project.get("tx_nome"),
-            subtitle: project.get("nome_autor")+"\n"+project.get("txt_ementa"),
-            //item_url: "https://www.oculus.com/en-us/rift/",               
-            //image_url: "http://www.camara.gov.br/internet/deputado/bandep/"+congressman.get("idCadastro")+".jpg",
-            buttons: [ {
-              type: "postback",
-              title: "Ver ementa",
-              payload: "{\"id_project\": \""+project.id+"\",\"nome\": \""+project.get("tx_nome")+"\", \"type\": \"project_ementa\"}",
-            }],
-          };
-		  return mReturn;
-}
 
 /*
 
@@ -674,86 +655,58 @@ Search a congressman by name
 
 function getPolitico (nome, uf, senderID){
 	sendTypingOn(senderID);
-	console.log("Buscando ... "+ nome);
-	var Politico = Parse.Object.extend("Politico");
-	var query = new Parse.Query(Politico);
-	query.equalTo("tipo", "c");
-	query.limit(10);
-	if(nome)
-		query.startsWith("nome", nome);
-	else{
-		if(uf){
-			query.equalTo("uf", uf);
-		}
-	}
-	query.find({
-	  success: function(objects) {
-		// Successfully retrieved the object.
-		var cards = [];
-		for (var i = 0; i < objects.length; i++) {
-			  var object = objects[i];
-			  cards.push(buildElements(object));
-		}
-		//console.log(cards);
-		sendFileCongressman(cards, senderID);
-	  },
-	  error: function(error) {
-		console.log("Error: " + error.code + " " + error.message);
-	  }
-	});
 	
-	
+	var params = {};
+	params.nome = nome;
+	params.uf = uf;
+	Monitora.getPolitico(params, function(ret){		
+		sendFileCongressman(ret, senderID);
+	});	
 }
 
 /*
 
-Search congressman projects
+get congressman spending´s rank 
+params 
+	uf - state of congressman
+	siglaPartido - parties
+	senderID - sender id 
+
+*/
+
+function getRanking ( uf, siglaPartido, senderID){
+	
+	sendTypingOn(senderID);
+	var params = {};
+	params.uf = uf;
+	params.siglaPartido = siglaPartido;
+	Monitora.getRanking(params, function(ret){		
+		sendTextMessage(senderID, ret[0]);
+	});
+}
+
+/*
+
+Get congressman projects
 
 */
 
 function getProjects (qPolitico, senderID){
 	//console.log(qPolitico);
 	sendTypingOn(senderID);
-	var Politico = Parse.Object.extend("Proposicao");
-	var query = new Parse.Query(Politico);
-	query.equalTo("autor", "Politico$"+qPolitico.id);	
-	query.limit(10);	
-	query.find({
-	  success: function(objects) {
-		  if(objects.length == 0){
+	var params = {};
+	params.politicoId = qPolitico.id;
+	Monitora.getProjects(params, function(ret){		
+		if(ret.length == 0){
 			  sendTextMessage(senderID, "Nenhum projeto encontrado!");
-		  }else{
-			  // Successfully retrieved the object.
-				var cards = [];
-				
-				for (var i = 0; i < objects.length; i++) {
-					  var object = objects[i];
-					  cards.push(buildElementProject(object));
-				}
-				//console.log(cards);
-				sendFileCongressman(cards, senderID);
+		  }else{			  
+				sendFileCongressman(ret, senderID);
 		  }
-		
-	  },
-	  error: function(error) {
-		console.log("Error: " + error.code + " " + error.message);
-	  }
 	});
 	
 	
 }
 
-
-Number.prototype.formatMoney = function(c, d, t){
-var n = this, 
-    c = isNaN(c = Math.abs(c)) ? 2 : c, 
-    d = d == undefined ? "." : d, 
-    t = t == undefined ? "," : t, 
-    s = n < 0 ? "-" : "", 
-    i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", 
-    j = (j = i.length) > 3 ? j % 3 : 0;
-   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
- };
 
  /*
  
@@ -761,26 +714,14 @@ var n = this,
  */
 function getGastos(qPolitico, nome, senderID){
 	sendTypingOn(senderID);
-	var Politico = Parse.Object.extend("CotaPorAno");
-	var query = new Parse.Query(Politico);
-	query.equalTo("politico", "Politico$"+qPolitico.id);	
-	//console.log(qPolitico);
-	query.find({
-	  success: function(objects) {
-		// Successfully retrieved the object.
-		var mensagem = "O deputado "+nome+" gastou:\n";
-		//console.log(objects.length);
-		for (var i = 0; i < objects.length; i++) {
-			  var object = objects[i];
-			 mensagem = mensagem + "Ano "+object.get("ano") +": R$ "+object.get("total").formatMoney(2, ',', '.')+"\n";
-		}
-		sendTextMessage(senderID, mensagem);
-		
-	  },
-	  error: function(error) {
-		console.log("Error: " + error.code + " " + error.message);
-	  }
-	});
+	var json = {};
+	json.politicoId = qPolitico.id;
+	json.nome=nome;
+	var params = [json];
+	//console.log(params);
+	Monitora.getGastos(params, function(ret){	
+		sendTextMessage(senderID,ret[0]);
+	});	
 }
 
  /*
@@ -789,27 +730,13 @@ function getGastos(qPolitico, nome, senderID){
  */
 function getPresenca(qPolitico, nome, senderID){
 	sendTypingOn(senderID);
-	var Politico = Parse.Object.extend("Presenca");
-	var query = new Parse.Query(Politico);
-	query.equalTo("politico", "Politico$"+qPolitico.id);	
-	//console.log(qPolitico);
-	query.find({
-	  success: function(objects) {
-		// Successfully retrieved the object.
-		var mensagem = "Presença do(a) deputado(a) "+nome+" :\n";
-		//console.log(objects.length);
-		for (var i = 0; i < objects.length; i++) {
-			  var object = objects[i];
-			 mensagem = mensagem + "Ano: "+object.get("nr_ano") +"\n     ->Faltas "+
-			 (object.get("nr_ausencia_justificada")+object.get("nr_ausencia_nao_justificada"))+"\n"+
-			 "     ->Presença:"+object.get("nr_presenca")+"\n";
-		}
-		sendTextMessage(senderID, mensagem);
-		
-	  },
-	  error: function(error) {
-		console.log("Error: " + error.code + " " + error.message);
-	  }
+	var json = {};
+	json.politicoId = qPolitico.id;
+	json.nome=nome;
+	var params = [json];
+	//console.log(params);
+	Monitora.getPresenca(params, function(ret){	
+		sendTextMessage(senderID,ret[0]);
 	});
 }
 
@@ -820,31 +747,14 @@ function getPresenca(qPolitico, nome, senderID){
  */
 function searchProjects(keys,  senderID){
 	sendTypingOn(senderID);
-	var Politico = Parse.Object.extend("Proposicao");
-	var query = new Parse.Query(Politico);
-	query.containsAll("words", keys);	
-	query.limit(10);	
-	//console.log(qPolitico);
-	query.find({
-	  success: function(objects) {
-		if(objects.length == 0){
+	var params = {};
+	params.keys = keys;	
+	Monitora.searchProjects(params, function(ret){		
+		if(ret.length == 0){
 			  sendTextMessage(senderID, "Nenhum projeto encontrado!");
-		  }else{
-			  // Successfully retrieved the object.
-				var cards = [];
-				
-				for (var i = 0; i < objects.length; i++) {
-					  var object = objects[i];
-					  cards.push(buildElementProject(object));
-				}
-				//console.log(cards);
-				sendFileCongressman(cards, senderID);
+		  }else{			  
+				sendFileCongressman(ret, senderID);
 		  }
-		
-	  },
-	  error: function(error) {
-		console.log("Error: " + error.code + " " + error.message);
-	  }
 	});
 }
 // Start server
