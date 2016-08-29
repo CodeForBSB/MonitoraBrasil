@@ -8,9 +8,9 @@ O REST do Monitora, Brasil! permite a consulta de dados contidos na plataforma.
 ###getPoliticos
 
  Parâmetros:
-	- casa (c ou s)
-	- limit (limite de resultados)
-	- pg (paginação)
+- casa (c ou s)
+- limit (limite de resultados)
+- pg (paginação)
 	
 Ex: [https://monitorabrasil.com/monitorarest/getPoliticos/s?limit=2&pg=0](https://monitorabrasil.com/monitorarest/getPoliticos/s?limit=2&pg=0)
 
