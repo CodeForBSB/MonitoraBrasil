@@ -5,63 +5,11 @@ var format=require('format-number');
 
 
 var Monitora = {
-	/*
-	Build element for project
-	*/
-	buildElementProject: function(project){
-		var mReturn = {
-            title: project.get("tx_nome"),
-            subtitle: project.get("nome_autor")+"\n"+project.get("txt_ementa"),
-            //item_url: "https://www.oculus.com/en-us/rift/",               
-            //image_url: "http://www.camara.gov.br/internet/deputado/bandep/"+congressman.get("idCadastro")+".jpg",
-            buttons: [ {
-              type: "postback",
-              title: "Ver ementa",
-              payload: "{\"id_project\": \""+project.id+"\",\"nome\": \""+project.get("tx_nome")+"\", \"type\": \"project_ementa\"}",
-            }],
-          };
-		  return mReturn;
-	},
-	
-	/*
-	  Build element for congressman with options: Spends, assiduity and projects
-	*/
-	buildElements:  function(congressman){
-		var mReturn = {
-				title: congressman.get("nome"),
-				subtitle: congressman.get("siglaPartido")+" - "+congressman.get("uf")+"\n"+congressman.get("telefone"),
-				//item_url: "https://www.oculus.com/en-us/rift/",               
-				image_url: "http://www.camara.gov.br/internet/deputado/bandep/"+congressman.get("idCadastro")+".jpg",
-				buttons: [ {
-				  type: "postback",
-				  title: "Gastos - cota parlamentar",
-				  payload: "{\"id_politico\": \""+congressman.id+"\","+
-					"\"nome\": \""+congressman.get("nome")+"\","+
-					"\"gender\": \""+congressman.get("sexo")+"\","+
-					"\"type\": \"gastos_cota\"}",
-				},{
-				  type: "postback",
-				  title: "Presença",
-				  payload: "{\"id_politico\": \""+congressman.id+"\","+
-					"\"nome\": \""+congressman.get("nome")+"\","+
-					"\"gender\": \""+congressman.get("sexo")+"\","+ 
-					"\"type\": \"presenca\"}",
-				},{
-				  type: "postback",
-				  title: "Projetos",
-				  payload: "{\"id_politico\": \""+congressman.id+"\","+
-					"\"nome\": \""+congressman.get("nome")+"\","+
-					"\"gender\": \""+congressman.get("sexo")+"\","+ 
-					"\"type\": \"projetos\"}",
-				}],
-			  };
-			  return mReturn;
-	}, 
 	
 	/*
 	Search a congressman by name
 	*/
-	getPolitico: function(params, callback){
+	getPoliticos: function(params, callback){
 		var Politico = Parse.Object.extend("Politico");
 		var query = new Parse.Query(Politico);
 		query.equalTo("tipo", params.casa);

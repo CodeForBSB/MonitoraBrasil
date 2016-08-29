@@ -25,10 +25,12 @@ app.set('view engine', 'ejs');
 //app.use(parseApiPath, api);
 
 
-app.get('/monitorarest/getPoliticos/:casa/:ativo/:limit', function(req, res) {	
+app.get('/monitorarest/getPoliticos/:casa', function(req, res) {	
 	var pg = req.param('pg'); 
+	var limit = req.param('limit');
 	req.params.pg=pg;
-	Monitora.getPolitico(req.params, function(ret){	
+	req.params.limit=limit;
+	Monitora.getPoliticos(req.params, function(ret){	
 		res.send(ret);
 		
 	});	
