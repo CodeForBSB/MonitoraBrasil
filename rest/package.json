@@ -1,0 +1,28 @@
+{
+  "name": "monitora-brasil-rest",
+  "version": "1.0.0",
+  "description": "Rest para utilização da base de dados do Monitora Brasil",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "lint": "jshint --exclude node_modules .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HackersAtivistas/MonitoraBrasil"
+  },
+  "author": "Geraldo Augusto de Morais Figueiredo",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "config": "^1.20.4",
+    "ejs": "^2.4.2",
+    "express": "^4.13.4",
+    "parse": "^1.9.1",
+    "request": "^2.72.0"
+  },
+  "engines": {
+    "node": "~4.1.2"
+  }
+}

@@ -6,3 +6,4 @@
 /build
 /.idea
 /messenger_bot/node_modules/*
+/rest/node_modules/*
