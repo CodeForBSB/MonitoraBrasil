@@ -24,13 +24,57 @@ app.set('view engine', 'ejs');
 //var parseApiPath = '/monitorarest';
 //app.use(parseApiPath, api);
 
+var path = config.get('path');
 
-app.get('/monitorarest/getPoliticos/:casa', function(req, res) {	
+app.get(path+'/getPoliticos/:casa', function(req, res) {	
 	var pg = req.param('pg'); 
 	var limit = req.param('limit');
 	req.params.pg=pg;
 	req.params.limit=limit;
+	if(uf)
+		req.params.uf=uf.toUpperCase();
+	if(partido)
+		req.params.siglaPartido=partido.toUpperCase();
 	Monitora.getPoliticos(req.params, function(ret){	
+		res.send(ret);
+		
+	});	
+});
+
+app.get(path+'/getRanking/:casa', function(req, res) {	
+	var pg = req.param('pg'); 
+	var limit = req.param('limit');
+	var uf = req.param('uf');
+	var partido = req.param('partido');
+	req.params.pg=pg;
+	req.params.limit=limit;
+	if(uf)
+		req.params.uf=uf.toUpperCase();
+	if(partido)
+		req.params.siglaPartido=partido.toUpperCase();
+	Monitora.getRanking(req.params, function(ret){	
+		res.send(ret);
+		
+	});	
+});
+
+app.get(path+'/searchprojeto/', function(req, res) {	
+	var keys = req.param('keys'); 
+	if(keys){
+		req.params.keys= keys.split(',');
+	}
+	Monitora.searchProjects(req.params, function(ret){	
+		res.send(ret);
+		
+	});	
+});
+
+app.get(path+'/getpolitico/', function(req, res) {	
+	var objectId = req.param('id'); 
+	if(objectId){
+		req.params.objectId = objectId;
+	}
+	Monitora.getPolitico(req.params, function(ret){	
 		res.send(ret);
 		
 	});	

@@ -20,8 +20,12 @@ var Monitora = {
 			query.startsWith("nome", params.firstName);
 		}			
 		else{
-			if(params.uf){
-				query.equalTo("uf", params.uf);
+			if(params.uf)
+			query.equalTo("uf", params.uf);
+			if(params.siglaPartido){
+				if(params.siglaPartido === "PCDOB")
+					params.siglaPartido = "PCdoB";
+				query.equalTo("siglaPartido", params.siglaPartido);
 			}
 		}
 		query.find({
@@ -32,12 +36,11 @@ var Monitora = {
 				
 				json.success = false;
 				json.message = "Não encontrei nenhum parlamentar com esse nome";
-				
-				
 			  }else{
 				// Successfully retrieved the object.										
 				json.success = true;
-				json.objects = objects;
+				json.qtd = objects.length;
+				json.politicos = objects;
 				
 			  }
 			  ret.push(json);
@@ -51,6 +54,26 @@ var Monitora = {
 	},
 	
 	/*
+	Search a congressman by id
+	*/
+	getPolitico: function(params, callback){
+		var Politico = Parse.Object.extend("Politico");
+		var query = new Parse.Query(Politico);
+		var ret = [];
+		query.get(params.objectId, {
+		  success: function(politico) {
+			ret.push(politico);
+			callback(ret);
+		  },
+		  error: function(object, error) {
+			ret.push(error);
+			callback(ret);
+		  }
+		});
+
+	},
+	
+	/*
 	get congressman spending´s rank 
 	params 
 		uf - state of congressman
@@ -60,8 +83,9 @@ var Monitora = {
 	getRanking: function(params, callback){
 		var Politico = Parse.Object.extend("Politico");
 		var query = new Parse.Query(Politico);
-		query.equalTo("tipo", "c");
-		query.limit(params.limit);
+		query.equalTo("tipo", params.casa);
+		query.limit(parseInt(params.limit));
+		query.skip(parseInt(params.pg));
 		if(params.uf)
 			query.equalTo("uf", params.uf);
 		if(params.siglaPartido){
@@ -70,23 +94,29 @@ var Monitora = {
 			query.equalTo("siglaPartido", params.siglaPartido);
 		}
 		query.descending("gastos");
+		var ret = [];
+		var json = {};
 		query.find({
 		  success: function(objects) {
 			// Successfully retrieved the object.
-			//var cards = [];
-			var mensagem = "Ranking dos "+params.limit+" que mais gastaram:\n"
-			for (var i = 0; i < objects.length; i++) {
-				var object = objects[i];
-				var formattedNumber = format({prefix: 'R$ ',integerSeparator : '.', decimal: ',', round : 2})
-					(object.get("gastos"), {noSeparator: false});
-				mensagem = mensagem + (i+1)+"º "+object.get("nome")+" ("+object.get("siglaPartido")+"-"+
-										object.get("uf")+") "+formattedNumber+"\n";
-			}
-			var ret = [];
-			ret.push(mensagem);
-			callback( ret);
+			
+			if(objects.length === 0){		
+				json.success = false;
+				json.message = "Sem resultado";	
+			  }else{
+				// Successfully retrieved the object.										
+				json.success = true;
+				json.qtd = objects.length;
+				json.politicos = objects;
+			  }
+			  ret.push(json);
+			  callback( ret);			
 		  },
 		  error: function(error) {
+			json.success = false;
+			json.message = "Sem resultado";	
+			ret.push(json);
+			callback( ret);
 			console.log("Error: " + error.code + " " + error.message);
 		  }
 		});
@@ -100,22 +130,46 @@ var Monitora = {
 	searchProjects : function (params, callback){
 		var Politico = Parse.Object.extend("Proposicao");
 		var query = new Parse.Query(Politico);
+		console.log(params.keys);
 		query.containsAll("words", params.keys);	
-		query.limit(10);	
+		//query.limit(10);	
+		var ret = [];
+		var json = {};
 		query.find({
 		  success: function(objects) {
-			var cards = [];
-			if(objects.length > 0){
-				  // Successfully retrieved the object.
-					for (var i = 0; i < objects.length; i++) {
-						  var object = objects[i];
-						  cards.push(Monitora.buildElementProject(object));
-					}
+			if(objects.length === 0){		
+				json.success = false;
+				json.message = "Sem resultado";	
+			  }else{
+				// Successfully retrieved the object.										
+				json.success = true;
+				json.qtd = objects.length;
+				json.projetos = [];
+				for (var i = 0; i < objects.length; i++) {
+					var projeto = objects[i];
 					
-					//console.log(cards);
-					
+					json.projetos.push({"dt_apresentacao":projeto.get("dt_apresentacao"),
+							"id_proposicao":projeto.get("id_proposicao"),
+							"tx_ultimo_despacho":projeto.get("tx_ultimo_despacho"),
+							"updatedAt":projeto.get("updatedAt"),
+							"tx_orgao":projeto.get("tx_orgao"),
+							"id_autor":projeto.get("id_autor"),
+							"tp_casa":projeto.get("tp_casa"),
+							"tx_orgao_estado":projeto.get("tx_orgao_estado"),
+							"tx_link":projeto.get("tx_link"),
+							"id_situacao":projeto.get("id_situacao"),
+							"nr_ano":projeto.get("nr_ano"),
+							"bl_votou":projeto.get("bl_votou"),
+							"tp_proposicao":projeto.get("tp_proposicao"),
+							"tx_nome":projeto.get("tx_nome"),
+							"txt_ementa":projeto.get("txt_ementa"),
+							"dt_ultimo_despacho":projeto.get("dt_ultimo_despacho"),
+							"nome_autor":projeto.get("nome_autor"),
+							"objectId":projeto.get("objectId")})
+				}				
 			  }
-			  callback(cards);
+			  ret.push(json);
+			  callback( ret);	
 			
 		  },
 		  error: function(error) {

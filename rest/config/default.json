@@ -3,5 +3,6 @@
     "parse_id_app": "JMzpiMhkL1z5hvuGzLhYPppNJPJpoaTAdIp3oNmh",
     "parse_js_key": "mtyHx7hxS1zvPz5FnWq94w4GHzchvb44HJiZOZj2",
     "serverURL": "https://monitorabrasil.com/monitorarest/",
-    "port": 5013
+    "port": 5013,
+	"path": "/monitorarest"
 }
