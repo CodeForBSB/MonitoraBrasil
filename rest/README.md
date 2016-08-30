@@ -8,6 +8,8 @@ O REST do Monitora, Brasil! permite a consulta de dados contidos na plataforma.
 ###getPoliticos
  Parâmetros:
 - casa (c ou s)
+- uf (uf do Brasil) - opcional
+- partido (partidos do Brasil) - opcional
 - limit (limite de resultados)
 - pg (paginação)
 

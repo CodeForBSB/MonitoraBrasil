@@ -1,0 +1,30 @@
+{
+  "name": "monitora-brasil",
+  "version": "0.2.3",
+  "description": "Pacote para acessar os serviços do Monitora, Brasil!",
+  "main": "Monitora.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HackersAtivistas/MonitoraBrasil.git"
+  },
+  "keywords": [
+    "politica",
+    "brasil",
+    "monitora-brasil",
+    "corrupção",
+    "deputados",
+    "senadores"
+  ],
+  "author": "Geraldo A M Figueiredo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HackersAtivistas/MonitoraBrasil/issues"
+  },
+  "homepage": "https://github.com/HackersAtivistas/MonitoraBrasil#readme",
+  "dependencies": {
+    "parse": "^1.9.1"
+  }
+}

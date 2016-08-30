@@ -7,3 +7,4 @@
 /.idea
 /messenger_bot/node_modules/*
 /rest/node_modules/*
+/package/node_modules/*

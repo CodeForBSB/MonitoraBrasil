@@ -8,11 +8,10 @@ const
   https = require('https'),  
   request = require('request');
   
-var Parse = require('parse/node');
-var Monitora = require('./Monitora');
+  
+  var Monitora = require('monitora-brasil');
+  
 
-Parse.initialize(config.get('parse_id_app'), config.get('parse_js_key'));
-Parse.serverURL = config.get('parse_url');
 
 var app = express();
 app.set('port',  config.get('port'));
@@ -29,6 +28,8 @@ var path = config.get('path');
 app.get(path+'/getPoliticos/:casa', function(req, res) {	
 	var pg = req.param('pg'); 
 	var limit = req.param('limit');
+	var uf = req.param('uf');
+	var partido = req.param('partido');
 	req.params.pg=pg;
 	req.params.limit=limit;
 	if(uf)
