@@ -1,6 +1,6 @@
 {
   "name": "monitora-brasil",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Pacote para acessar os serviços do Monitora, Brasil!",
   "main": "Monitora.js",
   "scripts": {

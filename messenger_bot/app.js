@@ -10,16 +10,16 @@
 /* jshint node: true, devel: true */
 'use strict';
 
-const 
+const
   bodyParser = require('body-parser'),
   config = require('config'),
   crypto = require('crypto'),
   express = require('express'),
-  https = require('https'),  
+  https = require('https'),
   request = require('request');
-  
+
  var Monitora = require('./Monitora');
-  
+
 
 var Parse = require('parse/node');
 
@@ -33,13 +33,13 @@ app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
 
 /*
- * Be sure to setup your config values before running this code. You can 
+ * Be sure to setup your config values before running this code. You can
  * set them using environment variables or modifying the config file in /config.
  *
  */
 
 // App Secret can be retrieved from the App Dashboard
-const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ? 
+const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ?
   process.env.MESSENGER_APP_SECRET :
   config.get('appSecret');
 
@@ -53,8 +53,8 @@ const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
   (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
   config.get('pageAccessToken');
 
-// URL where the app is running (include protocol). Used to point to scripts and 
-// assets located at this address. 
+// URL where the app is running (include protocol). Used to point to scripts and
+// assets located at this address.
 const SERVER_URL = (process.env.SERVER_URL) ?
   (process.env.SERVER_URL) :
   config.get('serverURL');
@@ -65,7 +65,7 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 }
 
 /*
- * Use your own validation token. Check that the token used in the Webhook 
+ * Use your own validation token. Check that the token used in the Webhook
  * setup is the same token used here.
  *
  */
@@ -76,15 +76,15 @@ app.get('/messengerbot/webhook', function(req, res) {
     res.status(200).send(req.query['hub.challenge']);
   } else {
     console.error("Failed validation. Make sure the validation tokens match.");
-    res.sendStatus(403);          
-  }  
+    res.sendStatus(403);
+  }
 });
 
 
 /*
  * All callbacks for Messenger are POST-ed. They will be sent to the same
  * webhook. Be sure to subscribe your app to your page to receive callbacks
- * for your page. 
+ * for your page.
  * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
  *
  */
@@ -121,7 +121,7 @@ app.post('/messengerbot/webhook', function (req, res) {
 
     // Assume all went well.
     //
-    // You must send back a 200, within 20 seconds, to let us know you've 
+    // You must send back a 200, within 20 seconds, to let us know you've
     // successfully received the callback. Otherwise, the request will time out.
     res.sendStatus(200);
   }
@@ -129,14 +129,14 @@ app.post('/messengerbot/webhook', function (req, res) {
 
 /*
  * This path is used for account linking. The account linking call-to-action
- * (sendAccountLinking) is pointed to this URL. 
- * 
+ * (sendAccountLinking) is pointed to this URL.
+ *
  */
 app.get('/messengerbot/authorize', function(req, res) {
   var accountLinkingToken = req.query['account_linking_token'];
   var redirectURI = req.query['redirect_uri'];
   console.log('autorizando...');
-  // Authorization Code should be generated per user by the developer. This will 
+  // Authorization Code should be generated per user by the developer. This will
   // be passed to the Account Linking callback.
   var authCode = "1234567890";
 
@@ -151,8 +151,8 @@ app.get('/messengerbot/authorize', function(req, res) {
 });
 
 /*
- * Verify that the callback came from Facebook. Using the App Secret from 
- * the App Dashboard, we can verify the signature that is sent with each 
+ * Verify that the callback came from Facebook. Using the App Secret from
+ * the App Dashboard, we can verify the signature that is sent with each
  * callback in the x-hub-signature field, located in the header.
  *
  * https://developers.facebook.com/docs/graph-api/webhooks#setup
@@ -162,7 +162,7 @@ function verifyRequestSignature(req, res, buf) {
   var signature = req.headers["x-hub-signature"];
 //  console.log(signature);
   if (!signature) {
-    // For testing, let's log an error. In production, you should throw an 
+    // For testing, let's log an error. In production, you should throw an
     // error.
     console.error("Couldn't validate the signature.");
   } else {
@@ -183,8 +183,8 @@ function verifyRequestSignature(req, res, buf) {
 /*
  * Authorization Event
  *
- * The value for 'optin.ref' is defined in the entry point. For the "Send to 
- * Messenger" plugin, it is the 'data-ref' field. Read more at 
+ * The value for 'optin.ref' is defined in the entry point. For the "Send to
+ * Messenger" plugin, it is the 'data-ref' field. Read more at
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/authentication
  *
  */
@@ -194,14 +194,14 @@ function receivedAuthentication(event) {
   var timeOfAuth = event.timestamp;
 
   // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
-  // The developer can set this to an arbitrary value to associate the 
+  // The developer can set this to an arbitrary value to associate the
   // authentication callback with the 'Send to Messenger' click event. This is
-  // a way to do account linking when the user clicks the 'Send to Messenger' 
+  // a way to do account linking when the user clicks the 'Send to Messenger'
   // plugin.
   var passThroughParam = event.optin.ref;
 
   console.log("Received authentication for user %d and page %d with pass " +
-    "through param '%s' at %d", senderID, recipientID, passThroughParam, 
+    "through param '%s' at %d", senderID, recipientID, passThroughParam,
     timeOfAuth);
 
   // When an authentication is received, we'll send a message back to the sender
@@ -212,16 +212,16 @@ function receivedAuthentication(event) {
 /*
  * Message Event
  *
- * This event is called when a message is sent to your page. The 'message' 
+ * This event is called when a message is sent to your page. The 'message'
  * object format can vary depending on the kind of message that was received.
  * Read more at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-received
  *
- * For this example, we're going to echo any text that we get. If we get some 
+ * For this example, we're going to echo any text that we get. If we get some
  * special keywords ('button', 'generic', 'receipt'), then we'll send back
- * examples of those bubbles to illustrate the special message bubbles we've 
- * created. If we receive a message with an attachment (image, video, audio), 
+ * examples of those bubbles to illustrate the special message bubbles we've
+ * created. If we receive a message with an attachment (image, video, audio),
  * then we'll simply confirm that we've received the attachment.
- * 
+ *
  */
 function receivedMessage(event) {
   var senderID = event.sender.id;
@@ -229,7 +229,7 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
   //console.log("");
-  //console.log("Received message for user %d and page %d at %d with message:", 
+  //console.log("Received message for user %d and page %d at %d with message:",
     //senderID, recipientID, timeOfMessage);
   //console.log(JSON.stringify(message));
   //console.log("");
@@ -242,11 +242,11 @@ function receivedMessage(event) {
   var messageText = message.text;
   var messageAttachments = message.attachments;
   var quickReply = message.quick_reply;
-  
+
   if (isEcho) {
 	 // console.log("---isEcho---");
     // Just logging message echoes to console
-   // console.log("Received echo for message %s and app %d with metadata %s", 
+   // console.log("Received echo for message %s and app %d with metadata %s",
     //  messageId, appId, metadata);
 	//  console.log("-----");
     return;
@@ -268,14 +268,18 @@ function receivedMessage(event) {
 	switch (par[0].substring(0,3).toLocaleLowerCase()) {
 		case 'pol':
 			//seach congressman message
-			
-			getPolitico(messageText.substring(3,messageText.length).toLocaleUpperCase().trim(), null, senderID)
+			var firstName = par[1].toLocaleUpperCase().trim();
+      var fullName = null;
+      if(par.length > 2){
+        var fullName = par[1].toLocaleUpperCase().trim()+" "+par[2].toLocaleUpperCase().trim();
+      }
+			getPolitico(firstName, fullName, null, senderID)
 			isFunction = true;
 			break;
 		case 'pro':
 			var keys = [];
 			for(var i =1; i < par.length; i++){
-				keys.push(par[i]);				
+				keys.push(par[i]);
 			}
 			searchProjects(keys, senderID);
 			isFunction = true;
@@ -293,26 +297,26 @@ function receivedMessage(event) {
 						siglaPartido = value;
 					}
 				}
-				
+
 			}
 			getRanking(uf, siglaPartido, senderID);
 			isFunction = true;
         break;
 	}
-	
+
 	if (messageText.substring(0,2).toLocaleLowerCase() === "uf"){
 		getPolitico(null,messageText.substring(2,messageText.length).toLocaleUpperCase().trim(), senderID)
 		isFunction = true;
 	}
-	
+
 	if(!isFunction){
 		// If we receive a text message, check to see if it matches any special
 		// keywords and send back the corresponding example. Otherwise, just echo
-		// the text we received.	
-		switch (messageText) {	  	
+		// the text we received.
+		switch (messageText) {
 		  default:
 			messageText = "Olá! Quer saber informações de algum deputado? Tem as seguintes opções \n"+
-			"pol <nome de um político> \nEx: pol Tiririca\n\n"+ 
+			"pol <nome de um político> \nEx: pol Tiririca\n\n"+
 			"uf <UF>\nEx: uf SP\n\n"+
 			"rank \n"+
 			"rank uf <UF> \n"+
@@ -321,7 +325,7 @@ function receivedMessage(event) {
 			sendTextMessage(senderID, messageText);
 		}
 	}
-    
+
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
   }
@@ -331,7 +335,7 @@ function receivedMessage(event) {
 /*
  * Delivery Confirmation Event
  *
- * This event is sent to confirm the delivery of a message. Read more about 
+ * This event is sent to confirm the delivery of a message. Read more about
  * these fields at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
  *
  */
@@ -345,7 +349,7 @@ function receivedDeliveryConfirmation(event) {
 
   if (messageIDs) {
     messageIDs.forEach(function(messageID) {
-     // console.log("Received delivery confirmation for message ID: %s", 
+     // console.log("Received delivery confirmation for message ID: %s",
     //    messageID);
     });
   }
@@ -357,50 +361,56 @@ function receivedDeliveryConfirmation(event) {
 /*
  * Postback Event
  *
- * This event is called when a postback is tapped on a Structured Message. 
+ * This event is called when a postback is tapped on a Structured Message.
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/postback-received
- * 
+ *
  */
 function receivedPostback(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfPostback = event.timestamp;
 
-  // The 'payload' param is a developer-defined field which is set in a postback 
-  // button for Structured Messages. 
+  // The 'payload' param is a developer-defined field which is set in a postback
+  // button for Structured Messages.
   var payload = event.postback.payload;
-  
+
   var json = JSON.parse(payload);
   var idPolitico = json.id_politico;
   var nome = json.nome;
   var politico = Parse.Object.extend("Politico");
   politico.id = idPolitico;
+  if(json.casa){
+    var casa = json.casa;
+  }
+  if(json.sexo){
+    var sexo = json.sexo;
+  }
   //type of action
   var type = json.type;
-  
+
   switch (type) {
 	  case "gastos_cota":
 		//send spend´s information
-			getGastos(politico, nome, senderID);
+			getGastos(politico, nome, casa, sexo, senderID);
 		break;
-	   case "presenca":	
+	   case "presenca":
 			getPresenca(politico, nome, senderID);
 		break;
-	   case "projetos":	
+	   case "projetos":
 			getProjects(politico, senderID);
 		break;
-	   case "project_ementa":	
+	   case "project_ementa":
 			var PP = Parse.Object.extend("Proposicao");
 			var query = new Parse.Query(PP);
 			query.get(json.id_project, {
 			  success: function(project) {
-				var message = 
+				var message =
 							project.get("tx_nome")+"\nAutor: "+
 							project.get("nome_autor")+"\n"+project.get("txt_ementa").replace(/["]/g,'\'');
 				if(project.get("tx_ultimo_despacho").trim().length > 0){
 					setTimeout(function(){ sendTextMessage(senderID, "Último despacho: "+
 							project.get("tx_ultimo_despacho")); }, 2000);
-					
+
 				}
 				if(project.get("tx_link").trim().length > 0){
 					setTimeout(function(){ sendTextMessage(senderID, "Link para o projeto: "+
@@ -410,16 +420,16 @@ function receivedPostback(event) {
 				setTimeout(function(){ sendQuickReply(senderID); }, 3000);
 			  },
 			  error: function(object, error) {
-				
+
 			  }
 			});
-			
-			
+
+
 		break;
-		
-		
+
+
   }
-  
+
 
 }
 
@@ -428,7 +438,7 @@ function receivedPostback(event) {
  *
  * This event is called when a previously-sent message has been read.
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-read
- * 
+ *
  */
 function receivedMessageRead(event) {
   var senderID = event.sender.id;
@@ -441,7 +451,7 @@ function receivedMessageRead(event) {
 //  console.log("Received message read event for watermark %d and sequence " +
  //   "number %d", watermark, sequenceNumber);
  // console.log("");
-	
+
 }
 
 /*
@@ -450,7 +460,7 @@ function receivedMessageRead(event) {
  * This event is called when the Link Account or UnLink Account action has been
  * tapped.
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/account-linking
- * 
+ *
  */
 function receivedAccountLink(event) {
   var senderID = event.sender.id;
@@ -499,7 +509,7 @@ function sendFileCongressman(cards, recipientId) {
         }
       }
     }
-  };  
+  };
 
   callSendAPI(messageData);
 }
@@ -609,14 +619,14 @@ function sendAccountLinking(recipientId) {
         }
       }
     }
-  };  
+  };
 
   callSendAPI(messageData);
 }
 
 /*
- * Call the Send API. The message data goes in the body. If successful, we'll 
- * get the message id in a response 
+ * Call the Send API. The message data goes in the body. If successful, we'll
+ * get the message id in a response
  *
  */
 function callSendAPI(messageData) {
@@ -632,17 +642,17 @@ function callSendAPI(messageData) {
       var messageId = body.message_id;
 
     /*  if (messageId) {
-        console.log("Successfully sent message with id %s to recipient %s", 
+        console.log("Successfully sent message with id %s to recipient %s",
           messageId, recipientId);
       } else {
-      console.log("Successfully called Send API for recipient %s", 
+      console.log("Successfully called Send API for recipient %s",
         recipientId);
       }*/
     } else {
-     
+
       console.error(response.body.error.message);
     }
-  });  
+  });
 }
 
 
@@ -653,34 +663,42 @@ Search a congressman by name
 
 */
 
-function getPolitico (nome, uf, senderID){
+function getPolitico (firstName, fullName, uf, senderID){
 	sendTypingOn(senderID);
-	
+
 	var params = {};
-	params.nome = nome;
+	params.firstName = firstName;
+  if(fullName)
+    params.fullName = fullName;
 	params.uf = uf;
-	Monitora.getPolitico(params, function(ret){		
-		sendFileCongressman(ret, senderID);
-	});	
+	Monitora.getPolitico(params, function(ret){
+    console.log(ret);
+    if(ret.success){
+      sendFileCongressman(ret.cards, senderID);
+    }else{
+      sendTextMessage(senderID,ret.message);
+    }
+
+	});
 }
 
 /*
 
-get congressman spending´s rank 
-params 
+get congressman spending´s rank
+params
 	uf - state of congressman
 	siglaPartido - parties
-	senderID - sender id 
+	senderID - sender id
 
 */
 
 function getRanking ( uf, siglaPartido, senderID){
-	
+
 	sendTypingOn(senderID);
 	var params = {};
 	params.uf = uf;
 	params.siglaPartido = siglaPartido;
-	Monitora.getRanking(params, function(ret){		
+	Monitora.getRanking(params, function(ret){
 		sendTextMessage(senderID, ret[0]);
 	});
 }
@@ -696,36 +714,38 @@ function getProjects (qPolitico, senderID){
 	sendTypingOn(senderID);
 	var params = {};
 	params.politicoId = qPolitico.id;
-	Monitora.getProjects(params, function(ret){		
+	Monitora.getProjects(params, function(ret){
 		if(ret.length == 0){
 			  sendTextMessage(senderID, "Nenhum projeto encontrado!");
-		  }else{			  
+		  }else{
 				sendFileCongressman(ret, senderID);
 		  }
 	});
-	
-	
+
+
 }
 
 
  /*
- 
+
  Get congressman´s spending
  */
-function getGastos(qPolitico, nome, senderID){
+function getGastos(qPolitico, nome,  casa, sexo, senderID){
 	sendTypingOn(senderID);
 	var json = {};
 	json.politicoId = qPolitico.id;
 	json.nome=nome;
+  json.casa = casa;
+  json.sexo = sexo;
 	var params = [json];
 	//console.log(params);
-	Monitora.getGastos(params, function(ret){	
+	Monitora.getGastos(params, function(ret){
 		sendTextMessage(senderID,ret[0]);
-	});	
+	});
 }
 
  /*
- 
+
  Get congressman´s presence
  */
 function getPresenca(qPolitico, nome, senderID){
@@ -735,34 +755,33 @@ function getPresenca(qPolitico, nome, senderID){
 	json.nome=nome;
 	var params = [json];
 	//console.log(params);
-	Monitora.getPresenca(params, function(ret){	
+	Monitora.getPresenca(params, function(ret){
 		sendTextMessage(senderID,ret[0]);
 	});
 }
 
 
  /*
- 
+
  Get projects with keywords
  */
 function searchProjects(keys,  senderID){
 	sendTypingOn(senderID);
 	var params = {};
-	params.keys = keys;	
-	Monitora.searchProjects(params, function(ret){		
+	params.keys = keys;
+	Monitora.searchProjects(params, function(ret){
 		if(ret.length == 0){
 			  sendTextMessage(senderID, "Nenhum projeto encontrado!");
-		  }else{			  
+		  }else{
 				sendFileCongressman(ret, senderID);
 		  }
 	});
 }
 // Start server
-// Webhooks must be available via SSL with a certificate signed by a valid 
+// Webhooks must be available via SSL with a certificate signed by a valid
 // certificate authority.
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
 module.exports = app;
-
