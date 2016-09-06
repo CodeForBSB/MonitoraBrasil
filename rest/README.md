@@ -44,6 +44,14 @@ Parâmetros:
 
 Ex: [https://monitorabrasil.com/monitorarest/searchprojeto?keys=moradia](https://monitorabrasil.com/monitorarest/searchprojeto?keys=moradia)
 
+###getpartidos
+Parâmetros:
+- partido (sigla do partido)(opcional)
+
+
+Ex: [https://monitorabrasil.com/monitorarest/getpartidos](https://monitorabrasil.com/monitorarest/getpartidos)
+	[https://monitorabrasil.com/monitorarest/getpartidos?partido=PTN](https://monitorabrasil.com/monitorarest/getpartidos?partido=PTN)
+
 
 # Copyright
 Copyright 2013 de Geraldo Augusto de Morais Figueiredo<br>

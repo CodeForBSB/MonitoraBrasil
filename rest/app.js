@@ -81,6 +81,16 @@ app.get(path+'/getpolitico/', function(req, res) {
 	});	
 });
 
+app.get(path+'/getpartidos/', function(req, res) {	
+	var partido = req.param('partido');	
+	if(partido)
+		req.params.siglaPartido=partido.toUpperCase();
+	Monitora.getPartidos(req.params, function(ret){	
+		res.send(ret);
+		
+	});	
+});
+
 
 
 // Start server

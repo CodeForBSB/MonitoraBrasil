@@ -20,7 +20,7 @@
     "ejs": "^2.4.2",
     "express": "^4.13.4",
     "format-number": "^2.0.1",
-    "monitora-brasil": "^0.2.1",
+    "monitora-brasil": "^0.3.1",
     "request": "^2.72.0"
   },
   "engines": {
