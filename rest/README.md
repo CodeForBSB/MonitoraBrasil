@@ -50,7 +50,17 @@ Parâmetros:
 
 
 Ex: [https://monitorabrasil.com/monitorarest/getpartidos](https://monitorabrasil.com/monitorarest/getpartidos)
+
 	[https://monitorabrasil.com/monitorarest/getpartidos?partido=PTN](https://monitorabrasil.com/monitorarest/getpartidos?partido=PTN)
+	
+###getgastos
+Parâmetros:
+- idPolitico (id do político)
+- ano
+
+
+Ex: [https://monitorabrasil.com/monitorarest/getgastos/?idPolitico=160653&ano=2016](https://monitorabrasil.com/monitorarest/getgastos/?idPolitico=160653&ano=2016)
+
 
 
 # Copyright
