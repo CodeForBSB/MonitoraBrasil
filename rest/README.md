@@ -51,7 +51,7 @@ Parâmetros:
 
 Ex: [https://monitorabrasil.com/monitorarest/getpartidos](https://monitorabrasil.com/monitorarest/getpartidos)
 
-	[https://monitorabrasil.com/monitorarest/getpartidos?partido=PTN](https://monitorabrasil.com/monitorarest/getpartidos?partido=PTN)
+[https://monitorabrasil.com/monitorarest/getpartidos?partido=PTN](https://monitorabrasil.com/monitorarest/getpartidos?partido=PTN)
 	
 ###getgastos
 Parâmetros:
@@ -60,6 +60,20 @@ Parâmetros:
 
 
 Ex: [https://monitorabrasil.com/monitorarest/getgastos/?idPolitico=160653&ano=2016](https://monitorabrasil.com/monitorarest/getgastos/?idPolitico=160653&ano=2016)
+
+	
+###getgastoscategoria
+Parâmetros:
+- idPolitico (id do político)
+- ano (opcional)
+- mes (opcional)
+
+
+Ex: [https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847&ano=2015&mes=4](https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847&ano=2015&mes=4)
+
+[https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847&ano=2015](https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847&ano=2015)
+
+[https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847](https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847)
 
 
 
