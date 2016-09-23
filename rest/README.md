@@ -76,6 +76,23 @@ Ex: [https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=7484
 [https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847](https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847)
 
 
+	
+###getlistgastoscategoria
+Parâmetros:
+- idPolitico (id do político)
+- subcota (SERVIÇOS POSTAIS, FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR, DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.,COMBUSTÍVEIS E LUBRIFICANTES., MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR, TELEFONIA, Emissão Bilhete Aéreo)
+- ano (opcional)
+- mes (opcional)
+
+
+Ex: [https://monitorabrasil.com/monitorarest/getlistgastoscategoria/?idPolitico=74847&subcota=COMBUSTÍVEIS E LUBRIFICANTES.&ano=2015&mes=4](https://monitorabrasil.com/monitorarest/getlistgastoscategoria/?idPolitico=74847&subcota=COMBUST%C3%8DVEIS%20E%20LUBRIFICANTES.&ano=2015&mes=4)
+
+[https://monitorabrasil.com/monitorarest/getlistgastoscategoria/?idPolitico=74847&subcota=DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.&ano=2015&mes=4](https://monitorabrasil.com/monitorarest/getlistgastoscategoria/?idPolitico=74847&subcota=DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.&ano=2015&mes=4)
+
+
+
+
+
 
 # Copyright
 Copyright 2013 de Geraldo Augusto de Morais Figueiredo<br>
