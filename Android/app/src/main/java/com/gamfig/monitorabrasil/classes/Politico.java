@@ -69,11 +69,11 @@ public class Politico {
     @DatabaseField
     private int nrVotos;
 	
-	public adicionarPresenca(Presenca presenca){
+	public void adicionarPresenca(Presenca presenca){
 		presencas.add(presenca);
 	}
 	
-	public adicionarProjeto(Projeto projeto){
+	public void adicionarProjeto(Projeto projeto){
 		projetos.add(projeto);
 	}
 
@@ -206,10 +206,10 @@ public class Politico {
 	
 	
 	public ArrayList<Presenca> getPresenca() {
-		return presenca;
+		return presencas;
 	}
 	public void setPresenca(ArrayList<Presenca> presenca) {
-		this.presenca = presenca;
+		this.presencas = presenca;
 	}
 	public int getNrProjetos() {
 		return nrProjetos;

@@ -12,7 +12,7 @@ public class Votacao {
 	private ArrayList<Politico> politicos = new ArrayList<Politico>();
 	
 	public void adicionarPolitico(Politico politico){
-		politicos.add(Politico politico);
+		politicos.add(politico);
 	}
 	
 	public int getId() {
