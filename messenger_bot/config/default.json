@@ -1,6 +1,6 @@
 {
-    "appSecret": "20128d5c3c747dd2cd6673285385c0da",
-    "pageAccessToken": "EAAIQKYAU01QBAH5RbI1GjCv0LZAotyh55kV0UbPN58uUIZBh3WUqWuTjpbvU7x4oNg1OClFEGqghFhcB7wtYGIfsZARZBKMhb99mAzuNKZCjoJZAwBbji46gaEKFcgc7SCNduXwo9h10WE1yqgZCbZAHgsOovEQ8RSS4dsLw4AsKugZDZD",
-    "validationToken": "myvoiceismypass",
+    "appSecret": "",
+    "pageAccessToken": "",
+    "validationToken": "",
     "serverURL": "https://monitorabrasil.com/messengerbot/"
 }
