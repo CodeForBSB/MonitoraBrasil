@@ -65,15 +65,16 @@ Ex: [https://monitorabrasil.com/monitorarest/getgastos/?idPolitico=160653&ano=20
 ###getgastoscategoria
 Parâmetros:
 - idPolitico (id do político)
+- casa (c ou s)
 - ano (opcional)
 - mes (opcional)
 
 
-Ex: [https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847&ano=2015&mes=4](https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847&ano=2015&mes=4)
+Ex: [https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847&ano=2015&mes=4&casa=c](https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847&ano=2015&mes=4&casa=c)
 
-[https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847&ano=2015](https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847&ano=2015)
+[https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847&ano=2015&casa=c](https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847&ano=2015&casa=c)
 
-[https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847](https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847)
+[https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847&casa=c](https://monitorabrasil.com/monitorarest/getgastoscategoria/?idPolitico=74847&casa=c)
 
 
 	
