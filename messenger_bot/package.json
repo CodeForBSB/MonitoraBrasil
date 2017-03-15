@@ -18,10 +18,12 @@
     "body-parser": "^1.15.0",
     "config": "^1.20.4",
     "ejs": "^2.4.2",
+    "everyauth": "^0.4.9",
     "express": "^4.13.4",
     "format-number": "^2.0.1",
     "parse": "^1.9.1",
-    "request": "^2.72.0"
+    "request": "^2.80.0",
+    "underscore": "^1.8.3"
   },
   "engines": {
     "node": "~4.1.2"
