@@ -238,199 +238,94 @@ function IsJsonString(str) {
 *
 */
 function receivedMessage(event) {
-  var senderID = event.sender.id;  
-  var recipientID = event.recipient.id;
-  var timeOfMessage = event.timestamp;
-  var message = event.message;
-  //console.log("");
-  //console.log("Received message for user %d and page %d at %d with message:",
-  //senderID, recipientID, timeOfMessage);
-  //console.log(JSON.stringify(event));
-  //console.log("");
-  var isEcho = message.is_echo;
-  var messageId = message.mid;
-  var appId = message.app_id;
-  var metadata = message.metadata;
+	var senderID = event.sender.id;  
+	var recipientID = event.recipient.id;
+	var timeOfMessage = event.timestamp;
+	var message = event.message;
 
-  // You may get a text or attachment but not both
-  var messageText = message.text;
-  var messageAttachments = message.attachments;
-  var quickReply = message.quick_reply;
+	//console.log("Received message for user %d and page %d at %d with message:",
+	//senderID, recipientID, timeOfMessage);
 
-  if (isEcho) {
-    // console.log("---isEcho---");
-    // Just logging message echoes to console
-    // console.log("Received echo for message %s and app %d with metadata %s",
-    //  messageId, appId, metadata);
-    //  console.log("-----");
-    return;
-  } else if (quickReply) {
-    // console.log("---quickReply---");
-    var quickReplyPayload = quickReply.payload;
-    // console.log("Quick reply for message %s with payload %s",
-    //  messageId, quickReplyPayload);
-    //  console.log("-----");
-    //verify if is a rank quickReply
+	var isEcho = message.is_echo;
+	var messageId = message.mid;
+	var appId = message.app_id;
+	var metadata = message.metadata;
 
-    //console.log(quickReplyPayload);
-	if(IsJsonString(quickReplyPayload)){
-		var j = JSON.parse(quickReplyPayload);
-		
-		var pQr = {tipo: j.type, senderID: senderID, escolha: j.escolha, payload: j}
-		Brain.analiseQuickReply(pQr, function(ret){			
-			for(var i=0; i < ret.length; i++){
-				var m = ret[i]
-				if(m.tipo === "text"){
-					if(i == 0){
-						sendTextMessage(senderID, m.mensagem);
-					}else{
-						setTimeout( 
+	// You may get a text or attachment but not both
+	var messageText = message.text;
+	var messageAttachments = message.attachments;
+	var quickReply = message.quick_reply;
+
+	if (quickReply) {
+		var quickReplyPayload = quickReply.payload;
+		// console.log("Quick reply for message %s with payload %s",
+		//  messageId, quickReplyPayload);
+
+		if(IsJsonString(quickReplyPayload)){
+			var j = JSON.parse(quickReplyPayload);
+			var pQr = {tipo: j.type, senderID: senderID, escolha: j.escolha, payload: j}
+			Brain.analiseQuickReply(pQr, function(ret){			
+				for(var i=0; i < ret.length; i++){
+					var m = ret[i]
+					if(m.tipo === "text"){
+						if(i == 0){
+							sendTextMessage(senderID, m.mensagem);
+						}else{
+							setTimeout( 
 							sendTextMessage(senderID, m.mensagem)
-						, 2000);
+							, 2000);
+						}
+					}
+					if(m.tipo === "quickReply"){
+						sendTypingOn(senderID)
+						setTimeout( function(){callSendAPI(m.mensagem)}, 3000);
+					}
+					if(m.tipo === "cards"){
+						setTimeout( function(){sendFileCongressman(m.mensagem, senderID)}, 3000);
 					}
 				}
-				if(m.tipo === "quickReply"){
-					sendTypingOn(senderID)
-					setTimeout( function(){callSendAPI(m.mensagem)}, 3000);
-				}
-				if(m.tipo === "cards"){
-					setTimeout( function(){sendFileCongressman(m.mensagem, senderID)}, 3000);
-					
-				}
+			})	
+
+			if(j.type === "HOUSE_CHOOSE"){
+				getRanking(quickReplyPayload, senderID);
+				return;
 			}
-			
-		})	
-			
-		 if(j.type === "HOUSE_CHOOSE"){
-		   getRanking(quickReplyPayload, senderID);
-		   return;
-		 }
-	}else{
-      sendTextMessage(senderID, "Voto registrado!");
-      return;
-     }
-  }else{
-	  if (messageText || messageAttachments) {
-		// console.log("---messageText--- "+messageText);
-		var p ={mensagem: messageText, senderID: senderID}
-		Brain.analiseMensagem(p, function(ret){
-			for(var i=0; i < ret.length; i++){
-				var m = ret[i]
-				if(m.tipo === "text"){
-					if(i == 0){
-						sendTextMessage(senderID, m.mensagem);
-					}else{
-						setTimeout( 
-							sendTextMessage(senderID, m.mensagem)
-						, 2000);
-					}
-				}
-				if(m.tipo === "quickReply"){
-					sendTypingOn(senderID)
-					setTimeout( function(){callSendAPI(m.mensagem)}, 3000);
-				}
-				if(m.tipo === "cards"){
-					setTimeout( function(){sendFileCongressman(m.mensagem, senderID)}, 3000);
-					
-				}
-				
-			}
-			
-		})
-		return;
-	
-	
-	
-	
-	
-	//verifica se ja existe o usuario, se nao existir cria um
-	saveUser(senderID)
-    var isFunction = false;
-    var par = messageText.split(" ");
-    switch (par[0].substring(0,3).toLocaleLowerCase()) {
-		case 'gut':
-			sendText4all();
-			break;
-		case 'pol':
-			if(par.length > 1){
-				//seach congressman message
-				var firstName = par[1].toLocaleUpperCase().trim();
-				var fullName = null;
-				if(par.length > 2){
-				  var fullName = par[1].toLocaleUpperCase().trim()+" "+par[2].toLocaleUpperCase().trim();
-				}
-				getPolitico(firstName, fullName, null, senderID)
-				isFunction = true;
-
-			}else{
-				sendTextMessage(senderID, "Digite Pol nome_do_politico");
-			}
-			break;
-
-
-		case 'pro':
-			var keys = [];
-			for(var i =1; i < par.length; i++){
-				keys.push(par[i]);
-			}
-			searchProjects(keys, senderID);
-			isFunction = true;
-			break;
-
-
-		case 'ran':
-			var uf = null;
-			var siglaPartido = null;
-			if(par[1] && par[2]){
-			var param = par[1].trim().toLocaleLowerCase();
-			var value =  par[2].trim().toLocaleUpperCase();
-			if(param === "uf"){
-			  uf = value;
-			}else{
-			  if(param === "partido"){
-				siglaPartido = value;
-			  }
-			}
-
-		  }
-		  sendHouseChoose(uf, siglaPartido, senderID);
-		  //getRanking(uf, siglaPartido, senderID);
-		  isFunction = true;
-			break;
-
-    }
-
-    if (par[0].toLocaleLowerCase() === "uf"){
-		isFunction = true;
-		if(par[1]){
-			getPolitico(null,null,par[1].toLocaleUpperCase().trim(), senderID)
 		}else{
-			sendTextMessage(senderID, "Qual uf vc quer? Ex: uf sp");
+			//TODO: registrar voto do projeto
+			sendTextMessage(senderID, "Voto registrado!");
+			return;
 		}
+	}else{
+		if (messageText || messageAttachments) {
+			var p ={mensagem: messageText, senderID: senderID}
+			Brain.analiseMensagem(p, function(ret){
+				for(var i=0; i < ret.length; i++){
+					var m = ret[i]
+					if(m.tipo === "text"){
+						if(i == 0){
+							sendTextMessage(senderID, m.mensagem);
+						}else{
+							setTimeout( 
+							sendTextMessage(senderID, m.mensagem)
+							, 2000);
+						}
+					}
+					if(m.tipo === "quickReply"){
+						sendTypingOn(senderID)
+						setTimeout( function(){callSendAPI(m.mensagem)}, 3000);
+					}
+					if(m.tipo === "cards"){
+						setTimeout( function(){sendFileCongressman(m.mensagem, senderID)}, 3000);
+					}
+				}
 
-    }
+			})
+			return;	
+			//verifica se ja existe o usuario, se nao existir cria um
+			saveUser(senderID)
 
-    if(!isFunction){
-      // If we receive a text message, check to see if it matches any special
-      // keywords and send back the corresponding example. Otherwise, just echo
-      // the text we received.
-      switch (messageText) {
-        default:
-        messageText = "Olá! Quer saber informações de algum deputado federal ou senador(a)? Tem as seguintes opções \n"+
-        "pol <nome de um político> \nEx: pol Tiririca\n\n"+
-        "uf <UF>\nEx: uf SP\n\n"+
-        "rank \n"+
-        "rank uf <UF> \n"+
-        "rank partido <PARTIDO>\n\n"+
-        "pro <palavra-chave> - para pesquisar projetos";
-        sendTextMessage(senderID, messageText);
-      }
-    }
-
-  } else if (messageAttachments) {	  
-    //sendTextMessage(senderID, "Message with attachment received");
-  }
-  }
+		} 
+	}
 
   
 }
@@ -571,37 +466,6 @@ function receivedPostback(event) {
 }
 
 /*
-* Send a message with Quick Reply buttons to choose Camara ou Senado for Rank.
-*
-*/
-function sendHouseChoose(uf, siglaPartido, senderID) {
-  var messageData = {
-    recipient: {
-      id: senderID
-    },
-    message: {
-      text: "Qual casa?",
-      metadata: "HOUSE_CHOOSE",
-      quick_replies: [
-	  
-        {
-          "content_type":"text",
-          "title":"Câmara",
-          "payload":"{\"uf\":\""+uf+"\",\"siglaPartido\":\""+siglaPartido+"\",\"casa\":\"c\",\"type\":\"HOUSE_CHOOSE\"}"
-        },
-        {
-          "content_type":"text",
-          "title":"Senado",
-          "payload":"{\"uf\":\""+uf+"\",\"siglaPartido\":\""+siglaPartido+"\",\"casa\":\"s\",\"type\":\"HOUSE_CHOOSE\"}"
-        }
-      ]
-    }
-  };
-
-  callSendAPI(messageData);
-}
-
-/*
 * Message Read Event
 *
 * This event is called when a previously-sent message has been read.
@@ -736,8 +600,6 @@ function sendReadReceipt(recipientId) {
 *
 */
 function sendTypingOn(recipientId) {
-  // console.log("Turning typing indicator on");
-
   var messageData = {
     recipient: {
       id: recipientId
@@ -753,7 +615,6 @@ function sendTypingOn(recipientId) {
 *
 */
 function sendTypingOff(recipientId) {
-  console.log("Turning typing indicator off");
 
   var messageData = {
     recipient: {
@@ -825,32 +686,6 @@ function callSendAPI(messageData) {
 
 
 
-/*
-
-Search a congressman by name
-
-*/
-
-function getPolitico (firstName, fullName, uf, senderID){
-  sendTypingOn(senderID);
-
-  var params = {};
-  if(firstName)
-	params.firstName = firstName;
-  if(fullName)
-	params.fullName = fullName;
-  if(uf)
-	params.uf = uf;
-  Monitora.getPolitico(params, function(ret){
-    //console.log(ret);
-    if(ret.success){
-      sendFileCongressman(ret.cards, senderID);
-    }else{
-      sendTextMessage(senderID,ret.message);
-    }
-
-  });
-}
 
 /*
 
@@ -957,7 +792,6 @@ function searchProjects(keys,  senderID){
 /*
 
 Save user
-// 1173239032747500
 */
 function saveUser(senderID){  
   var params = {};
@@ -1018,20 +852,6 @@ function shareContent(senderID){
 
 }
 
-function sendText4all(){
-	var params = {};
-	
-  
-	
-	 Monitora.sendText4all(params, function(ret){
-		 for (var i = 0; i < ret.length; i++) {
-			// sendImage(ret[i])
-			 //shareContent(ret[i])
-			//sendTextMessage(ret[i], "Vi que você gosta do tema tal, veja os projetos da semana:");
-		 }  
-    
-  });
-}
 
 // Start server
 // Webhooks must be available via SSL with a certificate signed by a valid
